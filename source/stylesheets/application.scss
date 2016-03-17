@@ -1,4 +1,5 @@
 @function icon-url($name) {
+	//  @return url("images/icons/#{$name}.png")
   @return image-url("icons/#{$name}.png")
 }
 

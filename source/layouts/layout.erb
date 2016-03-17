@@ -6,14 +6,11 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>F7 Demo</title>
-    <%= stylesheet_link_tag "f7/css/framework7.ios.min.css" %>
-    <%= stylesheet_link_tag "f7/css/framework7.ios.colors.min.css" %>
-    <%= stylesheet_link_tag :application %>
-    <%= javascript_include_tag 'f7/js/framework7.min.js' %>
-    <%= javascript_include_tag 'jquery/dist/jquery.min.js' %>
-    <%= javascript_include_tag 'handlebars/handlebars.runtime.min.js' %>
+    <%= stylesheet_link_tag "vendor/framework7/css/framework7.ios.min.css" %>
+    <%= stylesheet_link_tag "vendor/framework7/css/framework7.ios.colors.min.css" %>
+    <%= stylesheet_link_tag "www/assets/all" %>
     <%= javascript_include_tag 'templates.js' %>
-    <%= javascript_include_tag :application %>
+    <%= javascript_include_tag 'www/assets/all' %>
   </head>
 
   <body>

@@ -4,7 +4,8 @@ require 'erb'
 require 'json'
 
 task :s do
-  sh "bundle exec middleman serve -p 3000"
+  # sh "bundle exec middleman serve -p 3000"
+  sh "webpack-dev-server --content-base www --port 3000"
 end
 
 $icons_src = Pathname.new 'assets/png-icons'

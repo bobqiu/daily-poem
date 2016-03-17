@@ -13,9 +13,16 @@ import_path(File.expand_path('bower_components/jquery/dist', app.root)) { |path|
 import_path(File.expand_path('bower_components/handlebars', app.root))
 import_path(File.expand_path('tmp/poems', app.root))
 import_path(File.expand_path('tmp/icons', app.root)) { |path| "images/#{path}" }
+import_path(File.expand_path('www', app.root))
+
+# activate :external_pipeline,
+#   name: :handlebars,
+#   command: "handlebars templates/*.hbs -f tmp/handlebars/templates.js -e hbs -k each -k if -k unless",
+#   source: "tmp/handlebars",
+#   latency: 1
 
 activate :external_pipeline,
-  name: :handlebars,
-  command: "handlebars templates/*.hbs -f tmp/handlebars/templates.js -e hbs -k each -k if -k unless",
-  source: "tmp/handlebars",
+  name: :webpack,
+  command: build? ? './node_modules/webpack/bin/webpack.js --bail' : './node_modules/webpack/bin/webpack.js --watch -d',
+  source: "tmp/dist",
   latency: 1
