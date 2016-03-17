@@ -5,17 +5,28 @@ require 'json'
 
 task :s do
   # sh "bundle exec middleman serve -p 3000"
-  sh "webpack-dev-server --content-base www --port 3000"
+  sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3"
+end
+
+def rake(task_name)
+  puts "--- #{task_name}"
+  Rake::Task[task_name].invoke
 end
 
 $icons_src = Pathname.new 'assets/png-icons'
-$icons_dst = Pathname.new 'tmp/icons'
-$poems_src = Pathname.new 'poems'
-$poems_dst = Pathname.new 'tmp/poems'
+$icons_dst = Pathname.new 'www/icons'
+$poems_src = Pathname.new 'assets/poems'
+$poems_dst = Pathname.new 'www/poems'
+$vendor_dir = Pathname.new 'www/vendor'
+
+task :p do
+  rake :icons
+  rake 'data:parse'
+  rake :copy_vendor_files
+end
 
 task :icons do
-  Rake::Task['icons:colorize'].invoke
-  # sh "icons-colorize-all #{$icons_src_dir} #{$icons_dst_dir} -color #0076ff -force"
+  rake 'icons:colorize'
 end
 
 namespace :icons do
@@ -69,4 +80,9 @@ namespace :data do
       File.write $poems_dst / 'summary.json', summary.to_json
     end
   end
+end
+
+task :copy_vendor_files do
+  $vendor_dir.mkpath; $vendor_dir.rmtree; $vendor_dir.mkpath
+  sh "cp -r node_modules/framework7/dist #{$vendor_dir}/framework7"
 end

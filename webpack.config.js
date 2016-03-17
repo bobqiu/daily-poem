@@ -4,18 +4,18 @@ var path = require('path')
 var nodeModulesDir = path.resolve(__dirname, "./node_modules")
 var assetFormat = "[name].[ext]"
 var cssExtractor = new ExtractTextPlugin('css', "[name].css")
+var targetDir = 'bundle'
 
 module.exports = {
   devtool: 'source-map',
-  entry: { all: "./source/javascripts/application.coffee" },
-  output: { path: './www/assets', filename: "[name].js", chunkFilename: "[id].js", publicPath: '' },
+  entry: { all: "./src/js/main.coffee" },
+  output: { path: './www/' + targetDir, filename: "[name].js", chunkFilename: "[id].js", publicPath: '' },
 
   module: {
     loaders: [
       { test: /\.css$/, loader: "style!css?sourceMap" },
       { test: /\.scss$/,
         loader: cssExtractor.extract("style", `css?sourceMap!sass?sourceMap&includePaths[]=${nodeModulesDir}`) },
-        // loader: "style!css!sass!resolve-url" },
       { test: /\.html$/, loaders: ['file?name=' + assetFormat]},
       { test: /\.hbs$/, loader: "handlebars-loader" },
       { test: /\.coffee$/, loaders: ['coffee']},
@@ -26,20 +26,16 @@ module.exports = {
   },
 
   plugins: [
-    cssExtractor
-    // new HtmlWebpackPlugin({
-    //   title: 'Custom Index',
-    //   filename: '../index.html',
-    //   template: 'source/index.html.ejs',
-    //   inject: false
-    // })
+    cssExtractor,
+    new HtmlWebpackPlugin({
+      title: 'Custom Index', filename: '../index.html', template: 'src/index.html.ejs', inject: false,
+      targetDir: ''
+    })
   ],
 
   resolve: {
     extensions: ['', '.js', '.json', '.coffee', '.cjsx']
   },
 
-  ejsHtml: {
-    env: 'device',
-  }
-};
+  ejsHtml: { env: 'device', targetDir: targetDir + '/' }
+}

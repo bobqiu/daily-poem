@@ -1,5 +1,5 @@
 <%- @content.each_line do |line| -%>
-<p class='body'><%= line.chop %></p>
+<p><%= l = line.chop; l == '' ? '&nbsp;' : l %></p>
 <%- end -%>
 
 <% if @author -%>

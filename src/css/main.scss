@@ -15,9 +15,10 @@ i.icon.icon-menu {	@include icon(menu) }
 .app-title { font-variant: small-caps; }
 
 $poem-font-family: Palatino;
-.poem { font-family: $poem-font-family; font-size: 18px; }
-.poem .body { text-align: center; }
-.poem .title { text-align: center; font-weight: bold; }
-.poem .author { text-align: right; font-style: italic; }
-.poem .date { text-align: right; font-style: italic; }
+.poem { font-family: $poem-font-family; font-size: 16px; }
+.poem p { text-align: center; margin: 0; }
+.poem .title { text-align: center; font-weight: bold; margin: 1em 0; }
+.poem .author { text-align: right; font-style: italic; margin: 1em 0; }
+.poem .date { text-align: right; font-style: italic; margin: 1em 0; }
 //.poem .body::first-letter { font-size: 150%; color: #ff0000; }
+.poem-content-block { padding-left: 5px; padding-right: 5px; }
