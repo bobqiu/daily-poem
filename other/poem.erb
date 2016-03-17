@@ -1,0 +1,19 @@
+<%- @content.each_line do |line| -%>
+<p class='body'><%= line.chop %></p>
+<%- end -%>
+
+<% if @author -%>
+<p class='author'>
+  <%= @author %>
+</p>
+<% end -%>
+<% if @date -%>
+<p class='date'>
+  <% @date %>
+</p>
+<% end -%>
+<% if @source -%>
+<p class='source'>
+  <% @source %>
+</p>
+<% end -%>

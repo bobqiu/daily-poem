@@ -1,0 +1,15 @@
+<div class="content-block-title">Все стихи</div>
+
+<div class="list-block">
+  <ul>
+    {{#each poems}}
+      <li>
+        <a href="#poems/{{id}}-{{id}}" class="item-link item-content">
+          <div class="item-inner">
+            <div class="item-title">{{title}}</div>
+          </div>
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+</div>
