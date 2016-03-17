@@ -1,0 +1,18 @@
+{
+  "name": "framework7",
+  "homepage": "https://github.com/mitya/demos",
+  "authors": [
+    "Dmitry Sokurenko <dmitry@sokurenko.name>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

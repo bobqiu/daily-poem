@@ -1,0 +1,21 @@
+@function icon-url($name) {
+  @return image-url("icons/#{$name}.png")
+}
+
+@mixin icon($name, $width: 22, $height: $width) {
+  background-image: icon-url($name);
+  width: $width + px;
+  height: $height + px;
+}
+
+i.icon.icon-share {	@include icon(upload) }
+i.icon.icon-menu {	@include icon(menu) }
+
+.app-title { font-variant: small-caps; }
+
+$poem-font-family: Palatino;
+.poem { padding: 10px 10px 10px 10px; font-family: $poem-font-family; font-size: 18px; }
+.poem .body { text-align: center; }
+.poem .title { text-align: center; font-weight: bold; }
+.poem .author { text-align: right; font-style: italic; }
+.poem .date { text-align: right; font-style: italic; }
