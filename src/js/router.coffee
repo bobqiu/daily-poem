@@ -8,13 +8,12 @@ module.exports =
     switch
       when hash == '' then return
       when hash == 'favorites'
-        console.log App.templates.favorites()
-        App.mainView.router.loadContent App.templates.favorites()
+        App.mainView.router.loadContent App.render('favorites')
 
       when hash.match /poems\//
         [_, poemId] = hash.split('/')
         $.get "poems/#{poemId}.html", (res) ->
-          html = App.templates.poem(content: res, poemId: "poem-#{poemId}")
+          html = App.render('poem', content: res, poemId: "poem-#{poemId}")
           App.mainView.router.loadContent(html)
 
     return false

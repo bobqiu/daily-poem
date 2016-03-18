@@ -1,11 +1,10 @@
 safe = (html) -> new Handlebars.SafeString(html)
-# safeTemplate = (templatePath, args...) -> require("../templates/#{templatePath}.hbs")(args...)
-safeTemplate = (templatePath, args...) -> safe AppTemplates("./#{templatePath}.hbs")(args...)
+render = (templatePath, args...) -> safe App.render(templatePath, args...)
 
-Handlebars.registerHelper
+module.exports =
   navbar: (options) ->
     {title} = options.hash
-    safeTemplate "shared/navbar", title: title
+    render "shared/navbar", title: title
   page: (options) ->
     {pageId} = options.hash
-    safeTemplate "shared/page", id: pageId, content: options.fn(this)
+    render "shared/page", id: pageId, content: options.fn(this)

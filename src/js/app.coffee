@@ -1,2 +1,4 @@
 module.exports =
-  templates: {}
+  templates: null
+  render: (template, args...) ->
+    @templates("./#{template}.hbs")(args...)
