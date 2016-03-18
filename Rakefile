@@ -14,7 +14,7 @@ def rake(task_name)
 end
 
 $icons_src = Pathname.new 'assets/png-icons'
-$icons_dst = Pathname.new 'www/icons'
+$icons_dst = Pathname.new 'src/img'
 $poems_src = Pathname.new 'assets/poems'
 $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
@@ -41,7 +41,7 @@ namespace :icons do
     $icons_dst.mkpath
     Pathname.glob("#{$icons_src}/*.png") do |path|
       file = path.basename('.png')
-      target = $icons_dst / "#{file}.png"
+      target = $icons_dst / "ai-#{file}.png"
       convert.call(path, target, color) if !target.exist? or force
     end
   end
@@ -83,6 +83,7 @@ namespace :data do
 end
 
 task :copy_vendor_files do
-  $vendor_dir.mkpath; $vendor_dir.rmtree; $vendor_dir.mkpath
-  sh "cp -r node_modules/framework7/dist #{$vendor_dir}/framework7"
+  # $vendor_dir.mkpath
+  # sh "cp -r node_modules/framework7/dist #{$vendor_dir}/framework7"
+  sh "cp -r node_modules/framework7/dist/img/* src/img/"
 end

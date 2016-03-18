@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
+  <% conf = htmlWebpackPlugin.options %>
+
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>F7 Demo</title>
-    <link href="vendor/framework7/css/framework7.ios.min.css" rel="stylesheet">
-    <link href="vendor/framework7/css/framework7.ios.colors.min.css" rel="stylesheet">
-    <link href="<%= htmlWebpackPlugin.options.targetDir %>all.css" rel="stylesheet">
-    <script src="<%= htmlWebpackPlugin.options.targetDir %>all.js"></script>
+    <link href="<%= conf.targetDir %>all.css" rel="stylesheet">
+    <script src="<%= conf.targetDir %>all.js"></script>
   </head>
 
   <body>
@@ -84,5 +84,3 @@
 
   </body>
 </html>
-
-

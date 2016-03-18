@@ -1,6 +1,8 @@
+@import "~framework7/dist/css/framework7.ios.min.css";
+@import "~framework7/dist/css/framework7.ios.colors.min.css";
+
 @function icon-url($name) {
-	//  @return url("images/icons/#{$name}.png")
-  @return image-url("icons/#{$name}.png")
+  @return url("../img/ai-#{$name}.png")
 }
 
 @mixin icon($name, $width: 22, $height: $width) {
