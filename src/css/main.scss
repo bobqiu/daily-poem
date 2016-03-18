@@ -31,3 +31,16 @@ $poem-font-family: Palatino;
 .sidebar .item-link .item-inner { background-image: none; }
 
 .panel-overlay { background: #000; opacity: 0.2; }
+
+.swiper-container {
+  height: 200px;
+}
+.swiper-slide {
+  background: #fff;
+}
+.swiper-slide span {
+  text-align:center;
+  display:block;
+  margin:20px;
+  font-size:21px;
+}

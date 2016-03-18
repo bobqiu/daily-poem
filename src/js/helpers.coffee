@@ -6,5 +6,5 @@ module.exports =
     {title} = options.hash
     render "shared/navbar", title: title
   page: (options) ->
-    {pageId} = options.hash
-    render "shared/page", id: pageId, content: options.fn(this)
+    {id} = options.hash
+    render "shared/page", id: id, content: options.fn(this)
