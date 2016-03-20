@@ -38,3 +38,4 @@ module.exports =
     $('.smm-swiper-slide.prev').html @renderPoemForDate Model.prevDate()
     $('.smm-swiper-slide.current').html @renderPoemForDate Model.currentDate
     $('.smm-swiper-slide.next').html @renderPoemForDate Model.nextDate()
+    @mainView = new Poems.MainView

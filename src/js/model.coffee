@@ -6,6 +6,7 @@ module.exports =
   nextDate: -> new Date(@currentDate.getTime() + 86400 * 1000)
   moveDateForward: -> @currentDate = @nextDate()
   moveDateBackward: -> @currentDate = @prevDate()
+  moveDate: (days) -> new Date(@currentDate.getTime() + days * 86400 * 1000)
 
   getPoemForDate: (date) ->
     console.assert "@poems are not loaded yet" unless @poems
