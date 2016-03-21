@@ -1,7 +1,7 @@
 class Poems.Router
   constructor: ->
     $(window).on 'hashchange', @route
-    $(document).on "click", 'a.action', (e) => @go $(this).attr('href')
+    $(document).on "click", 'a.action', (e) => @go $(e.currentTarget).attr('href')
     $(document).on 'click', 'a.back.link', (e) => @go ''
     @route()
 
@@ -14,13 +14,13 @@ class Poems.Router
     switch
       when hash == '' then return
       when hash == 'favorites'
-        App.mainView.router.loadContent App.render('favorites')
+        App.router().loadContent App.render('favorites')
 
       when hash.match /poems\//
         [_, poemId] = hash.split('/')
         $.get "poems/#{poemId}.html", (res) ->
           html = App.render('poem', content: res, poemId: "poem-#{poemId}")
-          App.mainView.router.loadContent(html)
+          App.router().loadContent(html)
 
     return false
 

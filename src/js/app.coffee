@@ -2,9 +2,6 @@ class Poems.App
   render: (template, args...) ->
     @templates("./#{template}.hbs")(args...)
 
-  # renderPoemForCurrentDate: ->
-  #   @renderPoemForDate Model.currentDate
-
   renderPoemForDate: (date, next) ->
     Model.getPoemForDate date, (poem) =>
       context = $.extend {}, poem, domId: "poem-#{poem.id}"
@@ -17,15 +14,15 @@ class Poems.App
     $('#sidebar').html @render('sidebar')
     $('#pages').html @render('home')
 
-    # $.getJSON "poems/summary.json", (res) ->
-    #   $('#poems-list-box').html App.render('poems', poems: res)
+    @f7 = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
+    @f7View = @f7.addView '.view-main', dynamicNavbar: true
 
-    Model.loadMapping()
-    @initPoemsView()
-    @initCalendar()
+    Model.loadMapping =>
+      @initPoemsView()
+      @initCalendar()
 
   initCalendar: ->
-    @sidebarCalendar = App7.calendar
+    @sidebarCalendar = @f7.calendar
       container: '#calendar-inline-container', value: [new Date()], weekHeader: false,
       toolbarTemplate: @render('shared/calendar_toolbar')
       onOpen: (p) =>
@@ -42,3 +39,6 @@ class Poems.App
     @mainView = new Poems.MainView
 
   monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август' , 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+
+  router: ->
+    @f7View.router

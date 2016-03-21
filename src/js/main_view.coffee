@@ -1,17 +1,24 @@
 class Poems.MainView
   width = 100
   animationDuration = 250
-  unit = '%'
+  defaultUnit = '%'
+  screenWidth = $(window).width()
 
-  translate3d = (value) -> "translate3d(#{value}#{unit}, 0px, 0px)"
+  translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 0px)"
 
   constructor: ->
     @done = yes
     @shift = 0
+
     $(document).on 'click', '.smm-swiper-controls .prev', (e) => @adjust +1
     $(document).on 'click', '.smm-swiper-controls .next', (e) => @adjust -1
 
+    @viewport = $('.smm-swiper-viewport')
+
+    @initSwiping()
+
   adjust: (direction) ->
+    return unless Model.canMove(direction)
     return unless @done
     @done = no
 
@@ -19,7 +26,8 @@ class Poems.MainView
 
     Model.moveDate(direction)
 
-    $('.smm-swiper-viewport').css transform: translate3d(@shift)
+    @viewport.addClass "animating"
+    @viewport.css transform: translate3d(@shift)
 
     prev = $('.smm-swiper-slide.prev')
     curr = $('.smm-swiper-slide.current')
@@ -40,6 +48,32 @@ class Poems.MainView
         App.renderPoemForDate Model.prevDate(), (html) =>
           next.html html
           @done = yes
+
+      @viewport.removeClass "animating"
     , animationDuration
 
     true
+
+  initSwiping: ->
+    @hammer = new Hammer $('#poem-swiper')[0], {}
+    @hammer.get('pan').set direction: Hammer.DIRECTION_HORIZONTAL
+    @hammer.get('swipe').set direction: Hammer.DIRECTION_HORIZONTAL
+
+    # @hammer.on 'pan', (e) =>
+    #   direction = if e.deltaX > 0 then -1 else +1
+    #   delta = Math.floor(e.deltaX / screenWidth * 100)
+    #   if e.isFinal
+    #     console.log  e.isFinal, e.deltaX, delta, direction
+    #     if Math.abs(delta) >= 50
+    #       @adjust direction
+    #     else
+    #       @viewport.css transform: translate3d(@shift, '%')
+    #   else
+    #     @viewport.css transform: translate3d(@shift + delta, '%')
+
+    @hammer.on 'swipe', (e) =>
+      direction = if e.deltaX > 0 then -1 else +1
+      delta = Math.floor(e.deltaX / screenWidth * 100)
+      if Math.abs(delta) >= 30
+        @adjust direction
+

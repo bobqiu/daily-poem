@@ -4,12 +4,28 @@ class Poems.Model
 
   prevDate: -> new Date(@currentDate.getTime() - 86400 * 1000)
   nextDate: -> new Date(@currentDate.getTime() + 86400 * 1000)
+
   moveDateForward: -> @currentDate = @nextDate()
   moveDateBackward: -> @currentDate = @prevDate()
-  moveDate: (days) -> new Date(@currentDate.getTime() + days * 86400 * 1000)
+
+  canMoveForward: -> Util.dateString(@currentDate) isnt Util.dateString(@lastDate)
+  canMoveBackward: -> Util.dateString(@currentDate) isnt Util.dateString(@firstDate)
+  canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()
+
+  moveDate: (days) ->
+    @currentDate = new Date(@currentDate.getTime() + days * 86400 * 1000)
+    console.log "move current date to", @currentDate
 
   getPoemForDate: (date, next) ->
-    id = Math.floor( Math.random() * 10 + 1 )
+    dateKey = Util.dateString date
+    id = @mapping[dateKey]
+
+    console.log "loading data for", dateKey
+
+    unless id
+      console.warn "no data for", dateKey
+      return next ''
+
     $.get "poems/#{id}.json", (res) ->
       next res
 
@@ -22,7 +38,13 @@ class Poems.Model
   #     @poemsLoaded = true
   #     callback()
 
-  loadMapping: ->
+  loadMapping: (next) ->
     $.get "poems/summary.json", (res) =>
       @mapping = res.mapping
       @descriptors = res.items
+
+      allDates = Object.keys(@mapping)
+      @firstDate = new Date allDates[0]
+      @lastDate = new Date allDates[allDates.length - 1]
+
+      next()

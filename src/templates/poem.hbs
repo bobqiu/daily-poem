@@ -6,12 +6,14 @@
 
     <div class='poem-body'>{{{ contentHtml }}}</div>
 
-    <p class='author'>{{author}}</p>
+    <div class='poem-extra'>
+      <p class='author'>{{author}}</p>
 
-    {{#if year}}
-      <p class='date'>{{year}} г</p>
-    {{/if}}
+      {{#if year}}
+        <p class='date'>{{year}} г</p>
+      {{/if}}
 
-    <p class='source'{{source}}</p>
+      <p class='source'{{source}}</p>
+    </div>
   </div>
 </div>
