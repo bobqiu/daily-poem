@@ -4,13 +4,14 @@ module.exports =
   render: (template, args...) ->
     @templates("./#{template}.hbs")(args...)
 
-  renderPoemForCurrentDate: ->
-    @renderPoemForDate Model.currentDate
+  # renderPoemForCurrentDate: ->
+  #   @renderPoemForDate Model.currentDate
 
-  renderPoemForDate: (date) ->
-    poem = Model.getPoemForDate(date)
-    context = Object.assign {}, poem, domId: "poem-#{poem.id}"
-    @render 'poem', context
+  renderPoemForDate: (date, next) ->
+    Model.getPoemForDate date, (poem) =>
+      context = $.extend {}, poem, domId: "poem-#{poem.id}"
+      html = @render 'poem', context
+      next html
 
   init: ->
     @templates = require.context("../templates", true, /\.hbs$/)
@@ -21,7 +22,8 @@ module.exports =
     # $.getJSON "poems/summary.json", (res) ->
     #   $('#poems-list-box').html App.render('poems', poems: res)
 
-    Model.loadPoemsIntoMemory => @initPoemsView()
+    # Model.loadPoemsIntoMemory => @initPoemsView()
+    @initPoemsView()
     @initCalendar()
 
   initCalendar: ->
@@ -36,7 +38,7 @@ module.exports =
         $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear)
 
   initPoemsView: ->
-    $('.smm-swiper-slide.prev').html @renderPoemForDate Model.prevDate()
-    $('.smm-swiper-slide.current').html @renderPoemForDate Model.currentDate
-    $('.smm-swiper-slide.next').html @renderPoemForDate Model.nextDate()
+    @renderPoemForDate Model.prevDate(), (html) => $('.smm-swiper-slide.prev').html html
+    @renderPoemForDate Model.currentDate, (html) => $('.smm-swiper-slide.current').html html
+    @renderPoemForDate Model.nextDate(), (html) => $('.smm-swiper-slide.next').html html
     @mainView = new Poems.MainView

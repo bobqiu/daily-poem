@@ -30,13 +30,16 @@ class Poems.MainView
         curr.toggleClass('current prev')
         next.toggleClass('next current')
         prev.toggleClass('prev next').css transform: translate3d(-@shift + width)
-        prev.html App.renderPoemForDate Model.nextDate()
+        App.renderPoemForDate Model.nextDate(), (html) =>
+          prev.html html
+          @done = yes
       else
         prev.toggleClass('prev current')
         curr.toggleClass('current next')
         next.toggleClass('next prev').css transform: translate3d(-@shift - width)
-        next.html App.renderPoemForDate Model.prevDate()
-      @done = yes
+        App.renderPoemForDate Model.prevDate(), (html) =>
+          next.html html
+          @done = yes
     , animationDuration
 
     true
