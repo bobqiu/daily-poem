@@ -20,13 +20,14 @@ i.icon.icon-about {	@include icon(help) }
 
 $poem-font-family: Palatino;
 .poem { font-family: $poem-font-family; font-size: 16px; }
-.poem h3 { text-align: center; }
+.poem h3 { text-align: center; margin: 10px; }
 .poem p { text-align: center; margin: 0; }
+.poem .app-date { padding-bottom: 5px; color: #aaa; font-style: italic; font-size: smaller; }
 .poem .title { text-align: center; font-weight: bold; margin: 1em 0; }
 .poem .author { text-align: right; font-style: italic; margin: 1em 0; }
 .poem .date { text-align: right; font-style: italic; margin: 1em 0; }
 .poem-extra { padding-right: 5px; }
-.poem-content-block { padding-left: 5px; padding-right: 5px; }
+.poem-content-block { padding-left: 5px; padding-right: 5px; margin-top: 20px; }
 
 //.current .poem-content-block { display: block; }
 //.smm-swiper-viewport.animating .poem-content-block { display: block; }

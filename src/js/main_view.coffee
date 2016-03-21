@@ -74,5 +74,5 @@ class Poems.MainView
     @hammer.on 'swipe', (e) =>
       direction = if e.deltaX > 0 then -1 else +1
       delta = Math.floor(e.deltaX / screenWidth * 100)
-      if Math.abs(delta) >= 30
+      if Math.abs(delta) >= 20
         @adjust direction
