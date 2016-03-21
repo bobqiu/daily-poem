@@ -54,6 +54,7 @@ namespace :data do
     summary = []
 
     Pathname.glob("#{$poems_src}/*.txt") do |src|
+      basename = File.basename(src, '.txt')
       text = File.read(src)
       header, body = text.split("---\n", 2)
 
@@ -63,22 +64,28 @@ namespace :data do
         map[name] = value
       end
 
-      basename = File.basename(src, '.txt')
-      dst = $poems_dst / "#{basename}.html"
-      template = ERB.new(File.read('other/poem.erb'), nil, '-')
+      poem = OpenStruct.new
+      poem.id = basename.to_i
+      # poem.content = body.chomp
+      poem.contentHtml = body.chop.lines.map do |line|
+        line = line.chomp
+        line = "&nbsp;" if line == ''
+        "<p>#{line}</p>"
+      end.join
+      poem.author = tags['автор']
+      poem.year = tags['год'] ? tags['год'].to_i : nil
+      poem.source = tags['источник']
+      poem.title = tags['название']
+      poem.firstLine = body.lines.first.chomp
 
-      @content = body
-      @author = tags['автор']
-      @date = tags['дата']
-      @source = tags['источник']
-      @title = body.lines.first
+      # template = ERB.new(File.read('other/poem.erb'), nil, '-')
+      # template.result(binding)
 
-      File.write dst, template.result(binding)
-
+      File.write $poems_dst / "#{basename}.json", poem.to_h.to_json
       summary << {id: basename.to_i, title: @title, author: @author}
-
-      File.write $poems_dst / 'summary.json', summary.to_json
     end
+
+    File.write $poems_dst / 'summary.json', summary.to_json
   end
 end
 

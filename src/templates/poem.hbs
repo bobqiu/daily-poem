@@ -1,7 +1,17 @@
 <div class="content-block poem-content-block">
-  <div class='poem'>
-    {{ id }}
-    {{{ content }}}
+  <div class='poem' id="{{domId}}">
+    {{#if title}}
+      <h3>{{title}}</h3>
+    {{/if}}
+
+    <div class='poem-body'>{{{ contentHtml }}}</div>
+
+    <p class='author'>{{author}}</p>
+
+    {{#if year}}
+      <p class='date'>{{year}} г</p>
+    {{/if}}
+
+    <p class='source'{{source}}</p>
   </div>
 </div>
-

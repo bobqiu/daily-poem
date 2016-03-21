@@ -11,13 +11,13 @@ module.exports =
   getPoemForDate: (date) ->
     console.assert "@poems are not loaded yet" unless @poems
     id = Math.floor( Math.random() * @poems.length )
-    [@poems[id], id]
+    @poems[id]
 
   loadPoemsIntoMemory: (callback) ->
     @poems = []
     requests = []
-    for i in [1..6]
-      requests.push $.get("poems/#{i}.html").then (res) => @poems.push res
+    for i in [1..11]
+      requests.push $.get("poems/#{i}.json").then (res) => @poems.push res
     Promise.all(requests).then =>
       @poemsLoaded = true
       callback()

@@ -8,8 +8,9 @@ module.exports =
     @renderPoemForDate Model.currentDate
 
   renderPoemForDate: (date) ->
-    [poem, id] = Model.getPoemForDate(date)
-    @render 'poem', content: poem, id: "poem-#{id}"
+    poem = Model.getPoemForDate(date)
+    context = Object.assign {}, poem, domId: "poem-#{poem.id}"
+    @render 'poem', context
 
   init: ->
     @templates = require.context("../templates", true, /\.hbs$/)
