@@ -4,41 +4,52 @@ class Poems.App
 
   renderPoemForDate: (date, next) ->
     Model.getPoemForDate date, (poem) =>
-      context = $.extend {}, poem, domId: "poem-#{poem.id}"
+      context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: date.toLocaleDateString()
       html = @render 'poem', context
       next html
+
+  renderPoemsForDate: (date) ->
+    Model.setDate date
+    @renderPoemForDate date, (html) => $('.smm-swiper-slide.current').html html
+    @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html
+    @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html
 
   constructor: ->
     @templates = require.context("../templates", true, /\.hbs$/)
 
     $('#sidebar').html @render('sidebar')
-    $('#pages').html @render('home')
+    $('#pages').html @render('main')
 
-    @f7 = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
-    @f7View = @f7.addView '.view-main', dynamicNavbar: true
+    @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
+    @f7view = @f7app.addView '.view-main', dynamicNavbar: true
 
     Model.loadMapping =>
-      @initPoemsView()
+      @renderPoemsForDate Util.today()
+      @mainView = new Poems.MainView
       @initCalendar()
 
+    $('.sidebar').on 'open', =>
+      @sidebarCalendar.setValue [Model.currentDate]
+
   initCalendar: ->
-    @sidebarCalendar = @f7.calendar
+    @sidebarCalendar = @f7app.calendar
       container: '#calendar-inline-container', value: [new Date()], weekHeader: false,
-      toolbarTemplate: @render('shared/calendar_toolbar')
+      toolbarTemplate: @render('shared/calendar_toolbar'),
+      value: [Model.currentDate],
+      disabled: [{from: Model.lastDate}, {to: Util.prevDate(Model.firstDate)}]
       onOpen: (p) =>
         $$('.calendar-custom-toolbar .center').text monthNames[p.currentMonth] + ', ' + p.currentYear
         $$('.calendar-custom-toolbar .left .link').on 'click', => @sidebarCalendar.prevMonth()
         $$('.calendar-custom-toolbar .right .link').on 'click', => @sidebarCalendar.nextMonth()
       onMonthYearChangeStart: (p) =>
         $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear)
+      onDayClick: (p, dayContainer, year, month, day) =>
+        date = new Date(year, month, day)
+        @renderPoemsForDate date
+        @f7app.closePanel()
 
-  initPoemsView: ->
-    @renderPoemForDate Model.prevDate(), (html) => $('.smm-swiper-slide.prev').html html
-    @renderPoemForDate Model.currentDate, (html) => $('.smm-swiper-slide.current').html html
-    @renderPoemForDate Model.nextDate(), (html) => $('.smm-swiper-slide.next').html html
-    @mainView = new Poems.MainView
+  router: ->
+    @f7view.router
 
   monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август' , 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 
-  router: ->
-    @f7View.router

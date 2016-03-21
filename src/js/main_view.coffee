@@ -76,4 +76,3 @@ class Poems.MainView
       delta = Math.floor(e.deltaX / screenWidth * 100)
       if Math.abs(delta) >= 30
         @adjust direction
-

@@ -1,9 +1,8 @@
 class Poems.Model
   constructor: ->
-    @currentDate = new Date
 
-  prevDate: -> new Date(@currentDate.getTime() - 86400 * 1000)
-  nextDate: -> new Date(@currentDate.getTime() + 86400 * 1000)
+  prevDate: -> Util.prevDate @currentDate
+  nextDate: -> Util.nextDate @currentDate
 
   moveDateForward: -> @currentDate = @nextDate()
   moveDateBackward: -> @currentDate = @prevDate()
@@ -12,8 +11,14 @@ class Poems.Model
   canMoveBackward: -> Util.dateString(@currentDate) isnt Util.dateString(@firstDate)
   canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()
 
+  hasDataFor: (date) ->
+    Util.dateString(@firstDate) <= Util.dateString(date) <= Util.dateString(@lastDate)
+
   moveDate: (days) ->
-    @currentDate = new Date(@currentDate.getTime() + days * 86400 * 1000)
+    @setDate new Date(@currentDate.getTime() + days * 86400 * 1000)
+
+  setDate: (date) ->
+    @currentDate = date
     console.log "move current date to", @currentDate
 
   getPoemForDate: (date, next) ->
