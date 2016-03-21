@@ -2,6 +2,7 @@ require 'pp'
 require 'pathname'
 require 'erb'
 require 'json'
+require 'date'
 
 task :s do
   # sh "bundle exec middleman serve -p 3000"
@@ -51,7 +52,7 @@ namespace :data do
   task :parse do
     $poems_dst.mkpath
 
-    summary = []
+    summary = {items: []}
 
     Pathname.glob("#{$poems_src}/*.txt") do |src|
       basename = File.basename(src, '.txt')
@@ -82,8 +83,10 @@ namespace :data do
       # template.result(binding)
 
       File.write $poems_dst / "#{basename}.json", poem.to_h.to_json
-      summary << {id: basename.to_i, title: @title, author: @author}
+      summary[:items] << {id: basename.to_i, title: poem.title, author: poem.author}
     end
+
+    summary[:mapping] = (Date.today - 5 .. Date.today + 5).inject({}) { |map, date| map[date] = map.size + 1; map }
 
     File.write $poems_dst / 'summary.json', summary.to_json
   end

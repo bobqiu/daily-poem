@@ -1,5 +1,5 @@
-module.exports =
-  init: ->
+class Poems.Model
+  constructor: ->
     @currentDate = new Date
 
   prevDate: -> new Date(@currentDate.getTime() - 86400 * 1000)
@@ -21,3 +21,8 @@ module.exports =
   #   Promise.all(requests).then =>
   #     @poemsLoaded = true
   #     callback()
+
+  loadMapping: ->
+    $.get "poems/summary.json", (res) =>
+      @mapping = res.mapping
+      @descriptors = res.items

@@ -1,6 +1,4 @@
-monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август' , 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-
-module.exports =
+class Poems.App
   render: (template, args...) ->
     @templates("./#{template}.hbs")(args...)
 
@@ -13,7 +11,7 @@ module.exports =
       html = @render 'poem', context
       next html
 
-  init: ->
+  constructor: ->
     @templates = require.context("../templates", true, /\.hbs$/)
 
     $('#sidebar').html @render('sidebar')
@@ -22,7 +20,7 @@ module.exports =
     # $.getJSON "poems/summary.json", (res) ->
     #   $('#poems-list-box').html App.render('poems', poems: res)
 
-    # Model.loadPoemsIntoMemory => @initPoemsView()
+    Model.loadMapping()
     @initPoemsView()
     @initCalendar()
 
@@ -30,11 +28,11 @@ module.exports =
     @sidebarCalendar = App7.calendar
       container: '#calendar-inline-container', value: [new Date()], weekHeader: false,
       toolbarTemplate: @render('shared/calendar_toolbar')
-      onOpen: (p) ->
+      onOpen: (p) =>
         $$('.calendar-custom-toolbar .center').text monthNames[p.currentMonth] + ', ' + p.currentYear
-        $$('.calendar-custom-toolbar .left .link').on 'click', -> calendarInline.prevMonth()
-        $$('.calendar-custom-toolbar .right .link').on 'click', -> calendarInline.nextMonth()
-      onMonthYearChangeStart: (p) ->
+        $$('.calendar-custom-toolbar .left .link').on 'click', => @sidebarCalendar.prevMonth()
+        $$('.calendar-custom-toolbar .right .link').on 'click', => @sidebarCalendar.nextMonth()
+      onMonthYearChangeStart: (p) =>
         $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear)
 
   initPoemsView: ->
@@ -42,3 +40,5 @@ module.exports =
     @renderPoemForDate Model.currentDate, (html) => $('.smm-swiper-slide.current').html html
     @renderPoemForDate Model.nextDate(), (html) => $('.smm-swiper-slide.next').html html
     @mainView = new Poems.MainView
+
+  monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август' , 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']

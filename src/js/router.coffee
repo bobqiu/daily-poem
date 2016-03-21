@@ -1,4 +1,10 @@
-module.exports =
+class Poems.Router
+  constructor: ->
+    $(window).on 'hashchange', @route
+    $(document).on "click", 'a.action', (e) => @go $(this).attr('href')
+    $(document).on 'click', 'a.back.link', (e) => @go ''
+    @route()
+
   go: (path) ->
     console.log "opening #{path}"
     location.hash = path
@@ -17,6 +23,7 @@ module.exports =
           App.mainView.router.loadContent(html)
 
     return false
+
     # when hash in page_names
     #   load_page "#{hash}.html", null, ->
     #     $("#sidebar").panel('close')
@@ -26,9 +33,3 @@ module.exports =
     #   page = hash.replace('page:', '')
     #   load_page "pages/#{page}.html", null, -> $("#sidebar").panel('close')
 
-$ ->
-  $(window).on 'hashchange', Router.route
-  $(document).on "click", 'a.action', (e) -> Router.go $(this).attr('href')
-  $(document).on 'click', 'a.back.link', (e) -> Router.go ''
-
-  Router.route()
