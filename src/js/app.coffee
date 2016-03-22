@@ -4,7 +4,7 @@ class Poems.App
 
   renderPoemForDate: (date, next) ->
     Model.getPoemForDate date, (poem) =>
-      context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: date.toLocaleDateString()
+      context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: Util.formatMonthAndDay(date)
       html = @render 'poem', context
       next html
 
@@ -38,11 +38,12 @@ class Poems.App
       value: [Model.currentDate],
       disabled: [{from: Model.lastDate}, {to: Util.prevDate(Model.firstDate)}]
       onOpen: (p) =>
-        $$('.calendar-custom-toolbar .center').text monthNames[p.currentMonth] + ', ' + p.currentYear
+        $$('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
         $$('.calendar-custom-toolbar .left .link').on 'click', => @sidebarCalendar.prevMonth()
         $$('.calendar-custom-toolbar .right .link').on 'click', => @sidebarCalendar.nextMonth()
       onMonthYearChangeStart: (p) =>
-        $$('.calendar-custom-toolbar .center').text(monthNames[p.currentMonth] + ', ' + p.currentYear)
+        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
+        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
       onDayClick: (p, dayContainer, year, month, day) =>
         date = new Date(year, month, day)
         @renderPoemsForDate date
@@ -50,6 +51,3 @@ class Poems.App
 
   router: ->
     @f7view.router
-
-  monthNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август' , 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-
