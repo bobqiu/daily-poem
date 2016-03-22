@@ -24,7 +24,3 @@ main = ->
 
 event = if cordova? then "deviceready" else "DOMContentLoaded"
 document.addEventListener event, main, false
-
-require "../images/dmitry.jpg"
-require "../images/denis.jpg"
-

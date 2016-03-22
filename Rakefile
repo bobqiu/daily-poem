@@ -4,29 +4,6 @@ require 'erb'
 require 'json'
 require 'date'
 
-task :s do
-  sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3"
-end
-
-task :b do
-  sh "webpack"
-end
-
-task :cb do
-  rake 'clean'
-  rake 'data:parse'
-  sh "touch www/cordova.js"
-  rake 'b'
-end
-
-task :clean do
-  sh "rm -rf www/*"
-end
-
-def rake(task_name)
-  puts "rake #{task_name}"
-  Rake::Task[task_name].invoke
-end
 
 $icons_src = Pathname.new 'assets/png-icons'
 $icons_dst = Pathname.new 'src/img'
@@ -34,15 +11,23 @@ $poems_src = Pathname.new 'assets/poems'
 $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 
-task :p do
-  rake 'icons'
-  rake 'copy_vendor_files'
-  rake 'data:parse'
-end
 
-task :icons do
-  rake 'icons:colorize'
-end
+task(:serve) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
+task(:serve_fs) { sh "ruby -run -e httpd www -p 3000" }
+task(:build) { sh "webpack" }
+task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
+task(:clean) { sh "rm -rf www/*" }
+task(:ios) { sh "cordova run ios" }
+
+task clean_rebuild: %w(clean rebuild)
+task prepare: %w(icons:colorize vendor:copy)
+task c: :clean
+task s: :serve
+task p: :prepare
+task b: :build
+task rb: :rebuild
+task crb: :clean_rebuild
+
 
 namespace :icons do
   task :colorize do
@@ -106,8 +91,8 @@ namespace :data do
   end
 end
 
-task :copy_vendor_files do
-  # $vendor_dir.mkpath
-  # sh "cp -r node_modules/framework7/dist #{$vendor_dir}/framework7"
-  sh "cp -r node_modules/framework7/dist/img/* src/img/"
+namespace :vendor do
+  task :copy do
+    sh "cp -r node_modules/framework7/dist/img/* src/img/"
+  end
 end
