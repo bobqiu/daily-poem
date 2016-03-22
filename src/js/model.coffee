@@ -1,5 +1,6 @@
 class Poems.Model
   constructor: ->
+    @poemsCache = new Poems.Cache
 
   prevDate: -> Util.prevDate @currentDate
   nextDate: -> Util.nextDate @currentDate
@@ -19,17 +20,20 @@ class Poems.Model
 
   setDate: (date) ->
     @currentDate = date
-    console.log "move current date to", @currentDate
+    console.log "move current date to", Util.dateString @currentDate
 
   getPoemForDate: (date, next) ->
     dateKey = Util.dateString date
     id = @mapping[dateKey]
 
+    if not id
+      return next last: yes
+    if @poemsCache.has dateKey
+      return next @poemsCache.get dateKey
+
     console.log "loading data for", dateKey
-
-    return next {last: yes} unless id
-
-    $.get "poems/#{id}.json", (res) ->
+    $.get "poems/#{id}.json", (res) =>
+      @poemsCache.set dateKey, res
       next res
 
   loadMapping: (next) ->
@@ -42,3 +46,23 @@ class Poems.Model
       @lastDate = new Date allDates[allDates.length - 1]
 
       next()
+
+class Poems.Cache
+  constructor: ->
+    @data = new Map
+
+  set: (key, item) ->
+    @data.set key, item
+    @cleanup key if @data.size > 20
+
+  get: (key) ->
+    @data.get key
+
+  has: (key) ->
+    @data.has key
+
+  cleanup: (key) ->
+    keysToLeave = [ key, Util.dateString(Util.nextDate(new Date(key))), Util.dateString(Util.prevDate(new Date(key))) ]
+    @data.forEach (object, key, map) =>
+      if key not in keysToLeave
+        @data.delete(key)
