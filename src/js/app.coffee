@@ -4,15 +4,22 @@ class Poems.App
 
   renderPoemForDate: (date, next) ->
     Model.getPoemForDate date, (poem) =>
-      context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: Util.formatMonthAndDay(date)
-      html = @render 'poem', context
-      next html
+      appDate = Util.formatMonthAndDay(date)
+      if poem.last
+        next @render 'tomorrow', appDate: appDate
+      else
+        context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: appDate
+        html = @render 'poem', context
+        next html
 
-  renderPoemsForDate: (date) ->
+  renderPoemsForDate: (date, next) ->
     Model.setDate date
-    @renderPoemForDate date, (html) => $('.smm-swiper-slide.current').html html
-    @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html
-    @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html
+
+    count = 0
+    done = -> ++count == 3 && next && next()
+    @renderPoemForDate date, (html) => $('.smm-swiper-slide.current').html html; done()
+    @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html; done()
+    @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html; done()
 
   constructor: ->
     @templates = require.context("../templates", true, /\.hbs$/)
@@ -24,9 +31,11 @@ class Poems.App
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
 
     Model.loadMapping =>
-      @renderPoemsForDate Util.today()
-      @mainView = new Poems.MainView
-      @initCalendar()
+      @renderPoemsForDate Util.today(), =>
+        @mainView = new Poems.MainView
+        @initCalendar()
+        Router.route()
+
 
     $('.sidebar').on 'open', =>
       @sidebarCalendar.setValue [Model.currentDate]

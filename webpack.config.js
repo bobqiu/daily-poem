@@ -1,6 +1,9 @@
-var ExtractTextPlugin = require("extract-text-webpack-plugin");
-var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require("extract-text-webpack-plugin")
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var webpack = require('webpack')
 var path = require('path')
+var Visualizer = require('webpack-visualizer-plugin')
+
 var nodeModulesDir = path.resolve(__dirname, "./node_modules")
 var assetFormat = "[name].[ext]"
 var cssExtractor = new ExtractTextPlugin('css', "[name].css")
@@ -28,6 +31,7 @@ module.exports = {
 
   plugins: [
     cssExtractor,
+    new Visualizer(),
     new HtmlWebpackPlugin({
       title: 'Custom Index', filename: '../index.html', template: 'src/index.html.ejs', inject: false,
       targetDir: ''

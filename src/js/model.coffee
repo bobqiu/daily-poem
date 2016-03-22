@@ -7,8 +7,8 @@ class Poems.Model
   moveDateForward: -> @currentDate = @nextDate()
   moveDateBackward: -> @currentDate = @prevDate()
 
-  canMoveForward: -> Util.dateString(@currentDate) isnt Util.dateString(@lastDate)
-  canMoveBackward: -> Util.dateString(@currentDate) isnt Util.dateString(@firstDate)
+  canMoveForward: -> Util.dateString(@currentDate) <= Util.dateString(@lastDate)
+  canMoveBackward: -> Util.dateString(@currentDate) > Util.dateString(@firstDate)
   canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()
 
   hasDataFor: (date) ->
@@ -27,21 +27,10 @@ class Poems.Model
 
     console.log "loading data for", dateKey
 
-    unless id
-      console.warn "no data for", dateKey
-      return next ''
+    return next {last: yes} unless id
 
     $.get "poems/#{id}.json", (res) ->
       next res
-
-  # loadPoemsIntoMemory: (callback) ->
-  #   @poems = []
-  #   requests = []
-  #   for i in [1..11]
-  #     requests.push $.get("poems/#{i}.json").then (res) => @poems.push res
-  #   Promise.all(requests).then =>
-  #     @poemsLoaded = true
-  #     callback()
 
   loadMapping: (next) ->
     $.get "poems/summary.json", (res) =>

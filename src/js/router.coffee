@@ -3,7 +3,6 @@ class Poems.Router
     $(window).on 'hashchange', @route
     $(document).on "click", 'a.action', (e) => @go $(e.currentTarget).attr('href')
     $(document).on 'click', 'a.back.link', (e) => @go ''
-    @route()
 
   go: (path) ->
     console.log "opening #{path}"
@@ -13,6 +12,7 @@ class Poems.Router
     hash = decodeURIComponent location.hash.slice(1)
     switch
       when hash == '' then return
+
       when hash == 'favorites'
         App.router().loadContent App.render('favorites')
 
@@ -21,6 +21,9 @@ class Poems.Router
         $.get "poems/#{poemId}.html", (res) ->
           html = App.render('poem', content: res, poemId: "poem-#{poemId}")
           App.router().loadContent(html)
+
+      when hash.match /tomorrow/
+        App.renderPoemsForDate Util.nextDate(Model.lastDate)
 
     return false
 
