@@ -14,12 +14,16 @@ class Poems.App
 
   renderPoemsForDate: (date, next) ->
     Model.setDate date
-
     count = 0
     done = -> ++count == 3 && next && next()
     @renderPoemForDate date, (html) => $('.smm-swiper-slide.current').html html; done()
     @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html; done()
     @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html; done()
+
+  renderAbout: ->
+    data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
+    data.version = @version()
+    @loadTemplate 'about', data
 
   constructor: ->
     @templates = require.context("../templates", true, /\.hbs$/)
@@ -60,3 +64,12 @@ class Poems.App
 
   router: ->
     @f7view.router
+
+  load: (content) ->
+    @router().loadContent content
+
+  loadTemplate: (template, args...) ->
+    @load @render template, args...
+
+  version: ->
+    '1.0.0'

@@ -14,16 +14,18 @@ class Poems.Router
       when hash == '' then return
 
       when hash == 'favorites'
-        App.router().loadContent App.render('favorites')
+        App.loadTemplate 'favorites'
 
       when hash.match /poems\//
         [_, poemId] = hash.split('/')
         $.get "poems/#{poemId}.html", (res) ->
-          html = App.render('poem', content: res, poemId: "poem-#{poemId}")
-          App.router().loadContent(html)
+          App.loadTemplate 'poem', content: res, poemId: "poem-#{poemId}"
 
       when hash.match /tomorrow/
         App.renderPoemsForDate Util.nextDate(Model.lastDate)
+
+      when hash.match /about/
+        App.renderAbout()
 
     return false
 
