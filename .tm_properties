@@ -1,1 +1,1 @@
-exclude = "{log,vendor,tmp,build,fonts,node_modules,bower_components,src\/img,www}"
+exclude = "{log,vendor,tmp,build,fonts,node_modules,bower_components,src\/img,www,platforms,plugins}"

@@ -17,10 +17,14 @@ require "./app"
 require "./router"
 require './main_view'
 
-$ ->
+main = ->
   window.Model = new Poems.Model
   window.App = new Poems.App
   window.Router = new Poems.Router
 
+event = if cordova? then "deviceready" else "DOMContentLoaded"
+document.addEventListener event, main, false
+
 require "../images/dmitry.jpg"
 require "../images/denis.jpg"
+

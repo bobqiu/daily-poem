@@ -7,13 +7,16 @@ var Visualizer = require('webpack-visualizer-plugin')
 var nodeModulesDir = path.resolve(__dirname, "./node_modules")
 var assetFormat = "[name].[ext]"
 var cssExtractor = new ExtractTextPlugin('css', "[name].css")
-var targetDir = 'bundle'
-var knownHelpers = ['page', 'navbar']
+// var targetDir = 'bundle'
+// var publicPath = '/' + targetDir + '/'
+var targetDir = ''
+var publicPath = ''
+var knownHelpers = ['page', 'navbar', 'assetUrl']
 
 module.exports = {
   devtool: 'source-map',
   entry: { all: "./src/js/main.coffee" },
-  output: { path: './www/' + targetDir, filename: "[name].js", chunkFilename: "[id].js", publicPath: '' },
+  output: { path: './www/' + targetDir, filename: "[name].js", chunkFilename: "[id].js", publicPath: publicPath },
 
   module: {
     loaders: [
@@ -31,10 +34,9 @@ module.exports = {
 
   plugins: [
     cssExtractor,
-    new Visualizer(),
+    // new Visualizer(),
     new HtmlWebpackPlugin({
-      title: 'Custom Index', filename: '../index.html', template: 'src/index.html.ejs', inject: false,
-      targetDir: ''
+      title: 'Custom Index', filename: 'index.html', template: 'src/index.html.ejs', inject: false, targetDir: publicPath
     })
   ],
 

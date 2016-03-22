@@ -32,12 +32,12 @@ class Poems.Model
       return next @poemsCache.get dateKey
 
     console.log "loading data for", dateKey
-    $.get "poems/#{id}.json", (res) =>
+    $.getJSON "poems/#{id}.json", (res) =>
       @poemsCache.set dateKey, res
       next res
 
   loadMapping: (next) ->
-    $.get "poems/summary.json", (res) =>
+    $.getJSON "poems/summary.json", (res) =>
       @mapping = res.mapping
       @descriptors = res.items
 

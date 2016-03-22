@@ -5,12 +5,26 @@ require 'json'
 require 'date'
 
 task :s do
-  # sh "bundle exec middleman serve -p 3000"
   sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3"
 end
 
+task :b do
+  sh "webpack"
+end
+
+task :cb do
+  rake 'clean'
+  rake 'data:parse'
+  sh "touch www/cordova.js"
+  rake 'b'
+end
+
+task :clean do
+  sh "rm -rf www/*"
+end
+
 def rake(task_name)
-  puts "--- #{task_name}"
+  puts "rake #{task_name}"
   Rake::Task[task_name].invoke
 end
 
@@ -21,9 +35,9 @@ $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 
 task :p do
-  rake :icons
+  rake 'icons'
+  rake 'copy_vendor_files'
   rake 'data:parse'
-  rake :copy_vendor_files
 end
 
 task :icons do
