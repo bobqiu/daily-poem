@@ -1,0 +1,16 @@
+$poem-font-family: Palatino;
+
+.poem { font-family: $poem-font-family; font-size: 16px; color: #333; padding-bottom: 1em; }
+.poem .app-date { padding-bottom: 5px; color: $light-gray; font-style: italic; font-size: smaller; margin: 0; text-align: center; }
+.poem .title { text-align: center; font-weight: bold; margin: 1em 0; }
+.poem .author { text-align: right; font-style: italic; margin: 1em 0; }
+.poem .date { text-align: right; font-style: italic; margin: 1em 0; }
+.poem h3 { text-align: center; margin: 10px; }
+.poem-body p { text-align: center; margin: 0; }
+.poem-extra { padding-right: 5px; }
+.poem-content-block { margin-top: 20px; height: calc(100% - 55px); }
+.poem-of-tomorrow {	display: flex; flex-direction: column; align-items: center;	height: 100%; }
+.poem-of-tomorrow-message { font-size: 36px; color: $light-gray; margin: 0; text-align: center; }
+.poem-of-tomorrow-message { flex: 1; display: flex; flex-direction: column; justify-content: center; margin-bottom: 50px; }
+.poem-number { color: $light-gray; font-size: smaller; line-height: $icon-height; }
+.poem-controls { padding: 0 0.5em; }

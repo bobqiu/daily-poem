@@ -10,3 +10,5 @@ module.exports =
     render "shared/page", id: id, content: options.fn(this)
   assetUrl: (path) ->
     "bundle/#{path}"
+  filledIf: (condition) ->
+    if condition then 'filled' else null

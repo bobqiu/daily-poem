@@ -8,7 +8,7 @@ class Poems.App
       if poem.last
         next @render 'tomorrow', appDate: appDate
       else
-        context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: appDate
+        context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: appDate, liked: poem.isLiked()
         html = @render 'poem', context
         next html
 
@@ -48,6 +48,9 @@ class Poems.App
     Model.getCurrentPoem (poem) ->
       if window.plugins?.socialsharing?
         window.plugins.socialsharing.share poem.content, poem.heading(), null, null
+
+  likePoem: ->
+    Model.currentPoem().like()
 
   initCalendar: ->
     @sidebarCalendar = @f7app.calendar

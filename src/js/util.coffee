@@ -34,3 +34,6 @@ module.exports =
 
   t: (key) ->
     strings[@lang][key]
+
+  toggleButton: (button) ->
+    $(button).find('i').toggleClass('filled')

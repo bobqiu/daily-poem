@@ -1,0 +1,31 @@
+$icon-height-value: 22;
+$icon-height: $icon-height-value + px;
+
+@function icon-url($name, $color: 'main') {
+  @return url("../img/ai-#{$name}-#{$color}.png")
+}
+
+@mixin icon($name, $color, $width: $icon-height-value, $height: $width) {
+  background-image: icon-url($name, $color);
+  width: $width + px;
+  height: $height + px;
+}
+
+@mixin define-icon($name, $image-name: $name, $width: $icon-height-value, $height: $width) {
+	i.icon.icon-#{$name} { @include icon($image-name, main) }
+	i.icon.icon-#{$name}.gray { @include icon($image-name, gray) }
+}
+
+@include define-icon(share, upload);
+@include define-icon(menu);
+@include define-icon(star);
+@include define-icon(about, help);
+@include define-icon(like);
+@include define-icon('like.filled', like_filled);
+
+//i.icon.icon-share        { @include icon(upload) }
+//i.icon.icon-menu         { @include icon(menu) }
+//i.icon.icon-star         { @include icon(star) }
+//i.icon.icon-about        { @include icon(help) }
+//i.icon.icon-like         { @include icon(like) }
+//i.icon.icon-like.filled  { @include icon(like_filled) }

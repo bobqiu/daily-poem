@@ -7,7 +7,7 @@ var production = process.argv[1] == '/usr/local/bin/webpack'
 var nodeModulesDir = path.resolve(__dirname, "./node_modules")
 var assetFormat = "[name].[ext]"
 var cssExtractor = new ExtractTextPlugin('css', "[name].css")
-var knownHelpers = ['page', 'navbar', 'assetUrl']
+var knownHelpers = ['page', 'navbar', 'assetUrl', 'filledIf']
 var targetDir = ''
 
 var publicPath;

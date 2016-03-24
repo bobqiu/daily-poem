@@ -1,6 +1,7 @@
 class Poems.Model
   constructor: ->
     @poemsCache = new Poems.Cache
+    @likes = new Set JSON.parse(localStorage.likes ? '[]')
 
   currentDate: null
   prevDate: -> Util.prevDate @currentDate
@@ -13,6 +14,9 @@ class Poems.Model
   canMoveBackward: -> Util.dateString(@currentDate) > Util.dateString(@firstDate)
   canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()
 
+  currentPoem: ->
+    @poemsCache.get Util.dateString @currentDate
+
   getCurrentPoem: (next) ->
     @getPoemForDate @currentDate, next
 
@@ -24,7 +28,7 @@ class Poems.Model
 
   setDate: (date) ->
     @currentDate = date
-    console.log "move current date to", Util.dateString @currentDate
+    console.log "set date to", Util.dateString @currentDate
 
   getPoemForDate: (date, next) ->
     dateKey = Util.dateString date
@@ -35,7 +39,6 @@ class Poems.Model
     if @poemsCache.has dateKey
       return next @poemsCache.get dateKey
 
-    console.log "loading data for", dateKey
     $.getJSON "poems/#{id}.json", (res) =>
       poem = new Poems.Poem(res)
       @poemsCache.set dateKey, poem
@@ -51,6 +54,10 @@ class Poems.Model
       @lastDate = new Date allDates[allDates.length - 1]
 
       next()
+
+  like: (poemId) ->
+    if @likes.has(poemId) then @likes.delete(poemId) else @likes.add(poemId)
+    localStorage.likes = JSON.stringify Array.from @likes
 
 class Poems.Cache
   constructor: ->
@@ -78,3 +85,10 @@ class Poems.Poem
 
   heading: ->
     @title || @firstLine
+
+  like: ->
+    Model.like(@id)
+
+  isLiked: ->
+    Model.likes.has(@id)
+    
