@@ -20,7 +20,7 @@ i.icon.icon-about {	@include icon(help) }
 
 $poem-font-family: Palatino;
 $light-gray: rgba(#000, .3);
-.poem { font-family: $poem-font-family; font-size: 16px; }
+.poem { font-family: $poem-font-family; font-size: 16px; color: #333; }
 .poem h3 { text-align: center; margin: 10px; }
 .poem-body p { text-align: center; margin: 0; }
 .poem .app-date { padding-bottom: 5px; color: $light-gray; font-style: italic; font-size: smaller; margin: 0; text-align: center; }

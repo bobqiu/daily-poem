@@ -23,6 +23,7 @@ task clean_rebuild: %w(clean rebuild)
 task prepare: %w(icons:colorize vendor:copy)
 task c: :clean
 task s: :serve
+task sfs: :serve_fs
 task p: :prepare
 task b: :build
 task rb: :rebuild
@@ -66,7 +67,7 @@ namespace :data do
 
       poem = OpenStruct.new
       poem.id = basename.to_i
-      # poem.content = body.chomp
+      poem.content = body.chomp
       poem.contentHtml = body.chop.lines.map do |line|
         line = line.chomp
         line = "&nbsp;" if line == ''

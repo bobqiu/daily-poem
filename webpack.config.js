@@ -29,7 +29,7 @@ module.exports = {
       { test: /\.css$/, loader: "style!css?sourceMap" },
       { test: /\.scss$/,
         loader: cssExtractor.extract("style", "css?sourceMap!sass?sourceMap&includePaths[]=node_modules") },
-      { test: /\.hbs$/, loader: "handlebars", query: {knownHelpers: knownHelpers, inlineRequires: '\/images\/'} }, // helperDirs: 'src/helpers'
+      { test: /\.hbs$/, loader: "handlebars", query: {knownHelpers: knownHelpers, inlineRequires: '^\.\.\/images\/'} }, // helperDirs: 'src/helpers'
       { test: /\.coffee$/, loaders: ['coffee']},
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel?presets[]=react,presets[]=es2015' },
       { test: /\.(png|jpe?g|gif|svg)$/, loader: 'url?limit=2048&name=' + assetFormat },

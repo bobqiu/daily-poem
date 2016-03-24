@@ -44,6 +44,11 @@ class Poems.App
     $('.sidebar').on 'open', =>
       @sidebarCalendar.setValue [Model.currentDate]
 
+  sharePoem: ->
+    Model.getCurrentPoem (poem) ->
+      if window.plugins?.socialsharing?
+        window.plugins.socialsharing.share poem.content, poem.heading(), null, null
+
   initCalendar: ->
     @sidebarCalendar = @f7app.calendar
       container: '#calendar-inline-container', value: [new Date()], weekHeader: false,

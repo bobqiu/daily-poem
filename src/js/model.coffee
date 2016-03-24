@@ -2,6 +2,7 @@ class Poems.Model
   constructor: ->
     @poemsCache = new Poems.Cache
 
+  currentDate: null
   prevDate: -> Util.prevDate @currentDate
   nextDate: -> Util.nextDate @currentDate
 
@@ -11,6 +12,9 @@ class Poems.Model
   canMoveForward: -> Util.dateString(@currentDate) <= Util.dateString(@lastDate)
   canMoveBackward: -> Util.dateString(@currentDate) > Util.dateString(@firstDate)
   canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()
+
+  getCurrentPoem: (next) ->
+    @getPoemForDate @currentDate, next
 
   hasDataFor: (date) ->
     Util.dateString(@firstDate) <= Util.dateString(date) <= Util.dateString(@lastDate)
@@ -33,8 +37,9 @@ class Poems.Model
 
     console.log "loading data for", dateKey
     $.getJSON "poems/#{id}.json", (res) =>
-      @poemsCache.set dateKey, res
-      next res
+      poem = new Poems.Poem(res)
+      @poemsCache.set dateKey, poem
+      next poem
 
   loadMapping: (next) ->
     $.getJSON "poems/summary.json", (res) =>
@@ -66,3 +71,10 @@ class Poems.Cache
     @data.forEach (object, key, map) =>
       if key not in keysToLeave
         @data.delete(key)
+
+class Poems.Poem
+  constructor: (data) ->
+    this[prop] = value for prop, value of data
+
+  heading: ->
+    @title || @firstLine

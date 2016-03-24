@@ -12,6 +12,7 @@ class Poems.MainView
 
     $(document).on 'click', '.smm-swiper-controls .prev', (e) => @adjust +1
     $(document).on 'click', '.smm-swiper-controls .next', (e) => @adjust -1
+    $(document).on 'click', '.x-share', (e) => App.sharePoem()
 
     @viewport = $('.smm-swiper-viewport')
 
