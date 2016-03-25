@@ -2,8 +2,8 @@ class Poems.Model
   constructor: ->
     @poemsCache = new Poems.Cache
     @likes = new Set JSON.parse(localStorage.likes ? '[]')
+    @currentDate = new Date
 
-  currentDate: null
   prevDate: -> Util.prevDate @currentDate
   nextDate: -> Util.nextDate @currentDate
 
@@ -28,7 +28,7 @@ class Poems.Model
 
   setDate: (date) ->
     @currentDate = date
-    console.log "set date to", Util.dateString @currentDate
+    # console.log "set date to", Util.dateString @currentDate
 
   getPoem: (id, next) ->
     dateKey = @reverseMapping[id]

@@ -1,4 +1,5 @@
 $poem-font-family: Palatino;
+$row-height: 44px;
 
 .poem { font-family: $poem-font-family; font-size: 16px; color: #333; padding-bottom: 1em; }
 .poem .app-date { padding-bottom: 5px; color: $light-gray; font-style: italic; font-size: smaller; margin: 0; text-align: center; }
@@ -12,5 +13,6 @@ $poem-font-family: Palatino;
 .poem-of-tomorrow {	display: flex; flex-direction: column; align-items: center;	height: 100%; }
 .poem-of-tomorrow-message { font-size: 36px; color: $light-gray; margin: 0; text-align: center; }
 .poem-of-tomorrow-message { flex: 1; display: flex; flex-direction: column; justify-content: center; margin-bottom: 50px; }
-.poem-number { color: $light-gray; font-size: smaller; line-height: $icon-height; }
+.poem-number { color: $light-gray; font-size: smaller; line-height: $icon-height;}
+//.poem-likes { line-height: $row-height; vertical-align: baseline; }
 .poem-controls { padding: 0 0.5em; }

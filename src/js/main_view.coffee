@@ -3,19 +3,21 @@ class Poems.MainView
   animationDuration = 250
   defaultUnit = '%'
   screenWidth = $(window).width()
-
   translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 0px)"
 
   constructor: ->
     @done = yes
     @shift = 0
 
-    $(document).on 'click', '.smm-swiper-controls .prev', (e) => @adjust +1
-    $(document).on 'click', '.smm-swiper-controls .next', (e) => @adjust -1
     $(document).on 'click', '.x-share', (e) => App.sharePoem()
     $(document).on 'click', '.x-like', (e) -> Util.toggleButton(e.currentTarget); App.likePoem()
 
     @initSwiping()
+
+  unmount: ->
+    @hammer.off 'swipe'
+    $(document).off 'click', '.x-share'
+    $(document).off 'click', '.x-like'
 
   adjust: (direction) ->
     return unless Model.canMove(direction)

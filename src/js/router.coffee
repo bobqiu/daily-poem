@@ -5,7 +5,6 @@ class Poems.Router
     $(document).on 'click', 'a.back.link', (e) => @go ''
 
   go: (path) ->
-    console.log "opening #{path}"
     location.hash = path
 
   route: =>
@@ -19,36 +18,11 @@ class Poems.Router
       routes[controller](id)
     else
       console.warn "no route for Router.#{controller}(#{id ? ''})"
-      console.log routes[controller]
-      console.log routes
-
-    # switch
-    #   when hash == '' then return
-    #
-    #   when hash == 'favorites'
-    #     App.renderFavorites()
-    #
-    #   when hash.match /poems\//
-    #     [_, poemId] = hash.split('/')
-    #     Model.getPoem poemId, (poem) ->
-    #       console.log poem, poem.date()
-    #       App.renderPoemsForDate poem.date(), ->
-    #
-    #       # $.get "poems/#{poemId}.html", (res) ->
-    #       #   App.loadTemplate 'poem', content: res, poemId: "poem-#{poemId}"
-    #
-    #   when hash.match /tomorrow/
-    #     App.renderPoemsForDate Util.nextDate(Model.lastDate)
-    #
-    #   when hash.match /about/
-    #     App.renderAbout()
 
     return false
 
-  main: -> App.renderMain()
-  favorites: -> App.renderFavorites()
-  about: ->App.renderAbout()
-  tomorrow: -> App.renderPoemsForDate Util.nextDate(Model.lastDate)
-  poems: (id) ->
-    Model.getPoem id, (poem) ->
-      App.renderMain poem.date()
+  main: -> App.openView('Main', Model.currentDate)
+  favorites: -> App.openView('Favorites')
+  about: ->App.openView('About')
+  tomorrow: -> App.openView('Main', Util.nextDate Model.lastDate)
+  poems: (id) -> App.openView('Main', id)

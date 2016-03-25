@@ -11,6 +11,7 @@ $icons_dst = Pathname.new 'src/img'
 $poems_src = Pathname.new 'assets/poems'
 $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
+$ios_emulator_target = "iPhone-6"
 
 
 task(:serve) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
@@ -18,7 +19,8 @@ task(:serve_fs) { sh "ruby -run -e httpd www -p 3000" }
 task(:build) { sh "webpack" }
 task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
-task(:ios) { sh "cordova run ios" }
+task(:ios) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
+task(:ios_device) { sh "cordova run ios --device" }
 
 
 task clean_rebuild: %w(clean rebuild)

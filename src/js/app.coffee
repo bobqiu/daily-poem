@@ -6,10 +6,8 @@ class Poems.App
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
 
     Model.loadMapping =>
-      @renderPoemsForDate Util.today(), =>
-        @mainView = new Poems.MainView
-        @initCalendar()
-        Router.route()
+      Router.route()
+      @initCalendar()
 
     $('.sidebar').on 'open', =>
       @sidebarCalendar.setValue [Model.currentDate]
@@ -35,19 +33,42 @@ class Poems.App
     @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html; done()
     @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html; done()
 
-  renderMain: (date) ->
-    date ?= Model.currentDate
-    @loadTemplateOnMainPage 'main'
-    @renderPoemsForDate date
+  openView: (viewName, args...) ->
+    @currentView?.unmount()
+    @currentView = null
 
-  renderAbout: ->
+    next = =>
+      if viewName == 'Main'
+        @currentView = new Poems.MainView
+
+    @["render#{viewName}"](args..., next)
+
+  renderMain: (identifier, next) ->
+    @loadTemplateOnMainPage 'main'
+
+    switch
+      when identifier instanceof String and identifier.match(/\d{4}-\d{2}-\d{2}/)
+        date = Date.parse(identifier)
+        @renderPoemsForDate date, next
+      when identifier instanceof String and identifier.match(/^\d+$/)
+        id = Number(date)
+        Model.getPoem id, (poem) =>
+          @renderMain poem.date(), next
+      when identifier instanceof Date
+        @renderPoemsForDate identifier, next
+      else
+        @renderPoemsForDate Model.currentDate, next
+
+  renderAbout: (next) ->
     data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
     data.version = @version()
     @loadTemplateOnMainPage 'about', data
+    next && next()
 
-  renderFavorites: ->
+  renderFavorites: (next) ->
     Model.getFavorites (poems) =>
       @loadTemplateOnMainPage 'favorites', poems: poems
+      next && next()
 
   sharePoem: ->
     Model.getCurrentPoem (poem) ->
@@ -72,7 +93,8 @@ class Poems.App
         $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
       onDayClick: (p, dayContainer, year, month, day) =>
         date = new Date(year, month, day)
-        @renderMain date
+        Router.go("poems/#{Util.dateString date}")
+        # @openView 'Main', date
         @f7app.closePanel()
 
   router: ->
