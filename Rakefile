@@ -30,3 +30,19 @@ task p: :prepare
 task b: :build
 task rb: :rebuild
 task crb: :clean_rebuild
+
+namespace :appstore do
+  task :pack do
+    # is_release, build_app_name, file_version = update_config_xml $ios_next_version
+
+    $app_name = 'DailyPoem'
+    is_release = true
+    file_version = "0.1.0"
+
+    puts "Building a RELEASE version!" if is_release
+    source_path = "#{Dir.pwd}/platforms/ios/build/device/#{$app_name}.app"
+    target_path = "#{Dir.home}/desktop/#{$app_name}-#{file_version}.ipa"
+    sh "cordova build --device #{'--release' if is_release} ios"
+    sh %{/usr/bin/xcrun -sdk iphoneos PackageApplication "#{source_path}" -o "#{target_path}"}
+  end
+end

@@ -30,9 +30,8 @@ class Poems.Model
     @currentDate = date
     console.log "set date to", Util.dateString @currentDate
 
-  getPoemForDate: (date, next) ->
-    dateKey = Util.dateString date
-    id = @mapping[dateKey]
+  getPoem: (id, next) ->
+    dateKey = @reverseMapping[id]
 
     if not id
       return next last: yes
@@ -44,9 +43,15 @@ class Poems.Model
       @poemsCache.set dateKey, poem
       next poem
 
+  getPoemForDate: (date, next) ->
+    dateKey = Util.dateString date
+    id = @mapping[dateKey]
+    @getPoem id, next
+
   loadMapping: (next) ->
     $.getJSON "poems/summary.json", (res) =>
       @mapping = res.mapping
+      @reverseMapping = _.invert(@mapping)
       @descriptors = res.items
 
       allDates = Object.keys(@mapping)
@@ -58,6 +63,17 @@ class Poems.Model
   like: (poemId) ->
     if @likes.has(poemId) then @likes.delete(poemId) else @likes.add(poemId)
     localStorage.likes = JSON.stringify Array.from @likes
+
+  getFavorites: (next) ->
+    poemIds = (id for id in Array.from @likes)
+
+    poems = []
+    count = 0
+    done = -> ++count == poemIds.length && next && next(poems)
+    for id in poemIds
+      @getPoem id, (poem) ->
+        poems.push(poem)
+        done()
 
 class Poems.Cache
   constructor: ->
@@ -82,6 +98,7 @@ class Poems.Cache
 class Poems.Poem
   constructor: (data) ->
     this[prop] = value for prop, value of data
+    this.url = "#poems/#{@id}"
 
   heading: ->
     @title || @firstLine
@@ -91,4 +108,6 @@ class Poems.Poem
 
   isLiked: ->
     Model.likes.has(@id)
-    
+
+  date: ->
+    new Date Model.reverseMapping[@id]

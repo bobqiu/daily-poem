@@ -25,6 +25,10 @@ class Poems.App
     data.version = @version()
     @loadTemplate 'about', data
 
+  renderFavorites: ->
+    Model.getFavorites (poems) =>
+      @loadTemplate 'favorites', poems: poems
+
   constructor: ->
     @templates = require.context("../templates", true, /\.hbs$/)
 
@@ -39,7 +43,6 @@ class Poems.App
         @mainView = new Poems.MainView
         @initCalendar()
         Router.route()
-
 
     $('.sidebar').on 'open', =>
       @sidebarCalendar.setValue [Model.currentDate]

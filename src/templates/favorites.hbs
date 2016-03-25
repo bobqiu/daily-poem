@@ -4,7 +4,9 @@
   <div class="page-content">
     <div class="list-block">
       <ul>
-        {{> shared/list_action_item title="Избранный стих" }}
+        {{#each poems}}
+          {{> shared/list_action_item title=firstLine url=url }}
+        {{/each}}
       </ul>
     </div>
   </div>
