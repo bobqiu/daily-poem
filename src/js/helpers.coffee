@@ -1,5 +1,5 @@
 safe = (html) -> new Handlebars.SafeString(html)
-render = (templatePath, args...) -> safe App.render(templatePath, args...)
+render = (templatePath, args...) -> safe Util.render(templatePath, args...)
 
 module.exports =
   navbar: (options) ->
@@ -8,6 +8,8 @@ module.exports =
   page: (options) ->
     {id} = options.hash
     render "shared/page", id: id, content: options.fn(this)
+  navbarBox: (options) ->
+    render "shared/navbar_box", content: options.fn(this)
   assetUrl: (path) ->
     "bundle/#{path}"
   filledIf: (condition) ->

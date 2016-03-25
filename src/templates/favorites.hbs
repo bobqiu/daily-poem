@@ -1,4 +1,11 @@
-{{ navbar title='Избранное' }}
+{{#navbarBox}}
+  <div class="left">
+    {{> shared/navbar_button linkClass="open-panel" iconType="menu" }}
+  </div>
+  <div class="center sliding">Избранное</div>
+  <div class="right"></div>
+</div>
+{{/navbarBox}}
 
 <div data-page="favorites" class="page">
   <div class="page-content">

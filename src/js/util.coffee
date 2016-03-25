@@ -37,3 +37,7 @@ module.exports =
 
   toggleButton: (button) ->
     $(button).find('i').toggleClass('filled')
+
+  render: (template, args...) ->
+    @templates ?= require.context("../templates", true, /\.hbs$/)
+    @templates("./#{template}.hbs")(args...)

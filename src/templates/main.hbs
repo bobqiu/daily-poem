@@ -1,26 +1,18 @@
-<div class="navbar">
-  <div class="navbar-inner">
-    <div class="left">
-      <a href="#" class="link icon-only open-panel">
-        <i class="icon icon-menu"></i>
-      </a>
-    </div>
-    <div class="center sliding">
-      <span class='app-title'>
-        Стих Дня
-      </span>
-    </div>
-    <div class="right">
-      <a href="#" class="link icon-only x-share">
-        <i class="icon icon-share"></i>
-      </a>
-    </div>
+{{#navbarBox}}
+  <div class="left">
+    {{> shared/navbar_button linkClass="open-panel" iconType="menu" }}
+  </div>
+  <div class="center sliding">
+    <span class='app-title'>Стих Дня</span>
+  </div>
+  <div class="right">
+    {{> shared/navbar_button linkClass="x-share" iconType="share" }}
   </div>
 </div>
+{{/navbarBox}}
 
 <div data-page="index" class="page">
   <div class="page-content main-page-content">
-    <div id='poems-list-box'></div>
     <div id='poem-swiper' class='smm-swiper'>
       <div class='smm-swiper-viewport' data-shift="0">
         <div class='smm-swiper-slide prev' style="transform: translate3d(-100%, 0%, 0px)"></div>
@@ -28,12 +20,6 @@
         <div class='smm-swiper-slide next' style="transform: translate3d(100%, 0%, 0px)"></div>
       </div>
     </div>
-    {{!-- <div class='smm-swiper-controls'>
-      <p class="buttons-row">
-        <button class='prev button'>Prev</button>
-        <button class='next button'>Next</button>
-      </p>
-    </div> --}}
   </div>
   {{!-- <div class="toolbar toolbar-bottom">
     <div class="toolbar-inner">

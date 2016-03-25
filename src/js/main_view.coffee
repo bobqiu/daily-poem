@@ -15,14 +15,14 @@ class Poems.MainView
     $(document).on 'click', '.x-share', (e) => App.sharePoem()
     $(document).on 'click', '.x-like', (e) -> Util.toggleButton(e.currentTarget); App.likePoem()
 
-    @viewport = $('.smm-swiper-viewport')
-
     @initSwiping()
 
   adjust: (direction) ->
     return unless Model.canMove(direction)
     return unless @done
     @done = no
+
+    @viewport = $('.smm-swiper-viewport')
 
     @shift = @shift - direction * width
 

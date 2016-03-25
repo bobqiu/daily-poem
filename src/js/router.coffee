@@ -8,37 +8,47 @@ class Poems.Router
     console.log "opening #{path}"
     location.hash = path
 
-  route: ->
+  route: =>
     hash = decodeURIComponent location.hash.slice(1)
-    switch
-      when hash == '' then return
+    [controller, id, other...] = hash.split('/')
 
-      when hash == 'favorites'
-        App.renderFavorites()
+    controller = 'main' unless controller
+    routes = this
+    if routes[controller]
+      console.log "routing to Router.#{controller}(#{id ? ''})"
+      routes[controller](id)
+    else
+      console.warn "no route for Router.#{controller}(#{id ? ''})"
+      console.log routes[controller]
+      console.log routes
 
-      when hash.match /poems\//
-        [_, poemId] = hash.split('/')
-        Model.getPoem poemId, (poem) ->
-          console.log poem, poem.date()
-          App.renderPoemsForDate poem.date(), ->
-
-          # $.get "poems/#{poemId}.html", (res) ->
-          #   App.loadTemplate 'poem', content: res, poemId: "poem-#{poemId}"
-
-      when hash.match /tomorrow/
-        App.renderPoemsForDate Util.nextDate(Model.lastDate)
-
-      when hash.match /about/
-        App.renderAbout()
+    # switch
+    #   when hash == '' then return
+    #
+    #   when hash == 'favorites'
+    #     App.renderFavorites()
+    #
+    #   when hash.match /poems\//
+    #     [_, poemId] = hash.split('/')
+    #     Model.getPoem poemId, (poem) ->
+    #       console.log poem, poem.date()
+    #       App.renderPoemsForDate poem.date(), ->
+    #
+    #       # $.get "poems/#{poemId}.html", (res) ->
+    #       #   App.loadTemplate 'poem', content: res, poemId: "poem-#{poemId}"
+    #
+    #   when hash.match /tomorrow/
+    #     App.renderPoemsForDate Util.nextDate(Model.lastDate)
+    #
+    #   when hash.match /about/
+    #     App.renderAbout()
 
     return false
 
-    # when hash in page_names
-    #   load_page "#{hash}.html", null, ->
-    #     $("#sidebar").panel('close')
-    #     $('#page_content').enhanceWithin()
-    #     $('body').trigger("app:page_loaded:#{hash}_view")
-    # when hash.match(/page:/)
-    #   page = hash.replace('page:', '')
-    #   load_page "pages/#{page}.html", null, -> $("#sidebar").panel('close')
-
+  main: -> App.renderMain()
+  favorites: -> App.renderFavorites()
+  about: ->App.renderAbout()
+  tomorrow: -> App.renderPoemsForDate Util.nextDate(Model.lastDate)
+  poems: (id) ->
+    Model.getPoem id, (poem) ->
+      App.renderMain poem.date()

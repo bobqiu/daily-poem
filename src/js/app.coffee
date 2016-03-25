@@ -1,6 +1,21 @@
 class Poems.App
+  constructor: ->
+    $('#sidebar').html @render('sidebar')
+    @loadTemplateOnMainPage 'main'
+    @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
+    @f7view = @f7app.addView '.view-main', dynamicNavbar: true
+
+    Model.loadMapping =>
+      @renderPoemsForDate Util.today(), =>
+        @mainView = new Poems.MainView
+        @initCalendar()
+        Router.route()
+
+    $('.sidebar').on 'open', =>
+      @sidebarCalendar.setValue [Model.currentDate]
+
   render: (template, args...) ->
-    @templates("./#{template}.hbs")(args...)
+    Util.render(template, args...)
 
   renderPoemForDate: (date, next) ->
     Model.getPoemForDate date, (poem) =>
@@ -20,32 +35,19 @@ class Poems.App
     @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html; done()
     @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html; done()
 
+  renderMain: (date) ->
+    date ?= Model.currentDate
+    @loadTemplateOnMainPage 'main'
+    @renderPoemsForDate date
+
   renderAbout: ->
     data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
     data.version = @version()
-    @loadTemplate 'about', data
+    @loadTemplateOnMainPage 'about', data
 
   renderFavorites: ->
     Model.getFavorites (poems) =>
-      @loadTemplate 'favorites', poems: poems
-
-  constructor: ->
-    @templates = require.context("../templates", true, /\.hbs$/)
-
-    $('#sidebar').html @render('sidebar')
-    $('#pages').html @render('main')
-
-    @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
-    @f7view = @f7app.addView '.view-main', dynamicNavbar: true
-
-    Model.loadMapping =>
-      @renderPoemsForDate Util.today(), =>
-        @mainView = new Poems.MainView
-        @initCalendar()
-        Router.route()
-
-    $('.sidebar').on 'open', =>
-      @sidebarCalendar.setValue [Model.currentDate]
+      @loadTemplateOnMainPage 'favorites', poems: poems
 
   sharePoem: ->
     Model.getCurrentPoem (poem) ->
@@ -70,7 +72,7 @@ class Poems.App
         $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
       onDayClick: (p, dayContainer, year, month, day) =>
         date = new Date(year, month, day)
-        @renderPoemsForDate date
+        @renderMain date
         @f7app.closePanel()
 
   router: ->
@@ -81,6 +83,9 @@ class Poems.App
 
   loadTemplate: (template, args...) ->
     @load @render template, args...
+
+  loadTemplateOnMainPage: (template, args...) ->
+    $('#pages').html @render template, args...
 
   version: ->
     '1.0.0'
