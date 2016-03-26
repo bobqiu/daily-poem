@@ -1,18 +1,23 @@
 $poem-font-family: Palatino;
 $row-height: 44px;
 
+.poem-content-block { margin-top: 20px; height: calc(100% - 55px); }
 .poem { font-family: $poem-font-family; font-size: 16px; color: #333; padding-bottom: 1em; }
+//.poem { position: relative; height: 100%; }
 .poem .app-date { padding-bottom: 5px; color: $light-gray; font-style: italic; font-size: smaller; margin: 0; text-align: center; }
 .poem .title { text-align: center; font-weight: bold; margin: 1em 0; }
 .poem .author { text-align: right; font-style: italic; margin: 1em 0; }
 .poem .date { text-align: right; font-style: italic; margin: 1em 0; }
 .poem h3 { text-align: center; margin: 10px; }
-.poem-body p { text-align: center; margin: 0; }
-.poem-extra { padding-right: 5px; }
-.poem-content-block { margin-top: 20px; height: calc(100% - 55px); }
+.poem .poem-body p { text-align: center; margin: 0; }
+.poem .poem-extra { padding-right: 5px; margin-bottom: $row-height; }
+
 .poem-of-tomorrow {	display: flex; flex-direction: column; align-items: center;	height: 100%; }
-.poem-of-tomorrow-message { font-size: 36px; color: $light-gray; margin: 0; text-align: center; }
 .poem-of-tomorrow-message { flex: 1; display: flex; flex-direction: column; justify-content: center; margin-bottom: 50px; }
-.poem-number { color: $light-gray; font-size: smaller; line-height: $icon-height;}
-//.poem-likes { line-height: $row-height; vertical-align: baseline; }
-.poem-controls { padding: 0 0.5em; }
+.poem-of-tomorrow-message { font-size: 36px; color: $light-gray; margin: 0; text-align: center; }
+
+.poem-controls { padding: 0 0.5em; line-height: $row-height; }
+.poem-controls { position: absolute; left: 0; bottom: 0; right: 0; }
+.poem-controls .poem-number { color: $light-gray; font-size: smaller; }
+.poem-controls .poem-button-actions { }
+.poem-controls .action { display: inline-block; width: $row-height;	text-align: center; }
