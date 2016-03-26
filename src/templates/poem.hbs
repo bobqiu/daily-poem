@@ -1,8 +1,6 @@
 <div class="content-block poem-content-block">
   <div class='poem' id="{{domId}}">
-    <p class='app-date'>
-      {{appDate}}
-    </p>
+    <p class='app-date'>{{ appDate }}</p>
 
     {{#if title}}
       <h3>{{title}}</h3>
@@ -17,7 +15,9 @@
         <p class='date'>{{year}} г</p>
       {{/if}}
 
+      {{#source}}
       <p class='source'{{source}}</p>
+      {{/source}}
     </div>
 
     <div class='poem-controls row'>

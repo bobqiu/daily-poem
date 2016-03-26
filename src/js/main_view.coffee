@@ -24,18 +24,29 @@ class Poems.MainView
     return unless @done
     @done = no
 
+    @container = $('.smm-swiper')
     @viewport = $('.smm-swiper-viewport')
 
     @shift = @shift - direction * width
 
     Model.moveDate(direction)
 
+    @container.addClass "panning"
     @viewport.addClass "animating"
     @viewport.css transform: translate3d(@shift)
 
-    prev = $('.smm-swiper-slide.prev')
-    curr = $('.smm-swiper-slide.current')
-    next = $('.smm-swiper-slide.next')
+    curr = $('.smm-swiper-slide.current', @viewport).show()
+    prev = $('.smm-swiper-slide.prev', @viewport).show()
+    next = $('.smm-swiper-slide.next', @viewport).show()
+
+    animationEnd = =>
+      @done = yes
+      @viewport.removeClass "animating"
+      @container.removeClass "panning"
+      # $('.smm-swiper-slide.prev', @viewport).hide()
+      # $('.smm-swiper-slide.next', @viewport).hide()
+      $('.smm-swiper-slide:not(.current) .content-block', @viewport).scrollTop(0)
+
 
     setTimeout =>
       if direction is +1
@@ -44,16 +55,15 @@ class Poems.MainView
         prev.toggleClass('prev next').css transform: translate3d(-@shift + width)
         App.renderPoemForDate Model.nextDate(), (html) =>
           prev.html html
-          @done = yes
+          animationEnd()
+
       else
         prev.toggleClass('prev current')
         curr.toggleClass('current next')
         next.toggleClass('next prev').css transform: translate3d(-@shift - width)
         App.renderPoemForDate Model.prevDate(), (html) =>
           next.html html
-          @done = yes
-
-      @viewport.removeClass "animating"
+          animationEnd()
     , animationDuration
 
     true
