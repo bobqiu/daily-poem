@@ -24,7 +24,7 @@
       <div class="col-50 poem-number pull-left">#&thinsp;{{id}}</div>
       <div class="col-50 poem-button-actions pull-right">
         <a href='#' class='action x-like'>
-          <i class='icon icon-like gray {{filledIf liked}}'></i>
+          <i class='icon icon-like {{textIf liked "filled"}} {{textUnless liked "gray"}}'></i>
         </a>
       </div>
     </div>

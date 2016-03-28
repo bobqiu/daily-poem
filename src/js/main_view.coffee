@@ -10,7 +10,12 @@ class Poems.MainView
     @shift = 0
 
     $(document).on 'click', '.x-share', (e) => App.sharePoem()
-    $(document).on 'click', '.x-like', (e) -> Util.toggleButton(e.currentTarget); App.likePoem()
+    $(document).on 'click', '.x-like', (e) ->
+      Util.toggleButton(e.currentTarget)
+      icon = $(e.currentTarget).find('i')
+      action = if icon.hasClass('filled') then 'remove' else 'add'
+      icon["#{action}Class"]("gray")
+      App.likePoem()
 
     @initSwiping()
 
