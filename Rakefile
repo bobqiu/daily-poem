@@ -11,8 +11,8 @@ $icons_dst = Pathname.new 'src/img'
 $poems_src = Pathname.new 'assets/poems'
 $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
-$ios_emulator_target = "iPhone-6"
 $app_name = 'DailyPoem'
+$ios_emulator_target = ENV['T'] || "iPhone-6"
 
 
 task(:serve) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
@@ -21,8 +21,9 @@ task(:build) { sh "webpack" }
 task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
 task(:ios) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
-task(:iphone) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
-# task(:iphone) { sh "cordova run ios --device" }
+task('ios-sims') { sh "platforms/ios/cordova/lib/list-emulator-images" }
+task('ios-d') { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
+# task('ios-d') { sh "cordova run ios --device" }
 
 
 task clean_rebuild: %w(clean rebuild)
@@ -34,6 +35,32 @@ task p: :prepare
 task b: :build
 task rb: :rebuild
 task crb: :clean_rebuild
+
+task :config do
+  # build_number = Time.now.strftime('%m%d%H%M')
+  # is_release = ENV['release'] == 'yes'
+  # file_version = "#{version}.#{build_number}"
+  # build_app_name = is_release ? $app_name : $app_name_dev
+  # options = {version: version, build: build_number, name: build_app_name}
+  # render_erb "config.xml.erb", "config.xml", options
+  # [is_release, build_app_name, file_version]
+
+  ios_portrait_screen_sizes = $ios_screen_sizes.keys.map { |size| size.split('x') }
+  ios_landscrape_screen_sizes = ios_portrait_screen_sizes.map { |w, h| [h, w] }
+
+  variables = {
+    version: "0.3",
+    ios_screen_sizes: ios_portrait_screen_sizes + ios_landscrape_screen_sizes,
+    plist_options: {
+      UIStatusBarStyle: 'UIStatusBarStyleDefault',
+      UIStatusBarHidden: true,
+      UIViewControllerBasedStatusBarAppearance: false
+    }
+  }
+
+  template = ERB.new File.read("config.xml.erb"), nil, '-'
+  File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
+end
 
 namespace :appstore do
   task :pack do

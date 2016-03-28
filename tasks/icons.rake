@@ -1,5 +1,14 @@
 $brand_color = '#ff9500'
-$brand_color_end = '#3ACCA2'
+$brand_color_gradient = '#FF7500'
+
+$ios_screen_sizes = {
+  "640x960"   => 2,
+  "640x1136"  => 2,
+  "750x1334"  => 2,
+  "1242x2208" => 3,
+  "1024x768"  => 1,
+  "1536x2048" => 2,
+}
 
 namespace :icons do
   task :build do
@@ -17,6 +26,22 @@ namespace :icons do
         target = $icons_dst / "ai-#{file}-#{color_name}.png"
         convert.call(path, target, color) if !target.exist? or force
       end
+    end
+  end
+
+  task :splash do
+    src = "assets/app-icons/Default-Src.png"
+
+    def convert_size(src, w, h)
+      size = "#{w}x#{h}"
+      dst = "assets/launch-screens/Default-#{size}.png"
+      sh "convert #{src} -resize #{size}^ -gravity center -extent #{size} -quality 75 #{dst}"
+    end
+
+    $ios_screen_sizes.each do |size, density|
+      w, h = size.split('x').map(&:to_i)
+      convert_size src, w, h
+      convert_size src, h, w
     end
   end
 end

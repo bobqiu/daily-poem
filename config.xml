@@ -1,7 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="name.sokurenko.DailyPoem"
   xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"
-  version="0.1.1" android-versionCode="02132046" ios-CFBundleVersion="02132046">
+  version="0.3">
+  
   <name>DailyPoem</name>
   <description>
     DailyPoem – a new poem every day.
@@ -26,6 +27,7 @@
   <preference name="ShowSplashScreenSpinner" value="true"/>
   <preference name="SplashScreenDelay" value="0" />
   <preference name="FadeSplashScreenDuration" value="500"/>
+  <!-- <preference name="FadeSplashScreen" value="false"/> -->
   <!-- <preference name="SplashMaintainAspectRatio" value="false" /> -->
 
   <platform name="ios">
@@ -35,62 +37,46 @@
       <preference name="BackupWebStorage" value="none" />
       <preference name="Orientation" value="all" />
 
-      <config-file target="*-Info.plist" parent="UIStatusBarStyle">
-        <string>UIStatusBarStyleDefault</string>
-      </config-file>
-      <config-file target="*-Info.plist" parent="UIStatusBarHidden">
-        <true/>
-      </config-file>
-      <config-file target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
-        <false/>
-      </config-file>
+        <config-file target="*-Info.plist" parent="UIStatusBarStyle">
+            <string>UIStatusBarStyleDefault</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="UIStatusBarHidden">
+            <true />
+        </config-file>
+        <config-file target="*-Info.plist" parent="UIViewControllerBasedStatusBarAppearance">
+            <false />
+        </config-file>
 
-      <icon height="120" src="assets/app-icons/AppIcon-120.png" width="120" />
-      <icon height="180" src="assets/app-icons/AppIcon-180.png" width="180" />
-      <icon height="76"  src="assets/app-icons/AppIcon-76.png"  width="76" />
-      <icon height="152" src="assets/app-icons/AppIcon-152.png" width="152" />
-      <!-- <icon height="40" src="originals/res/IconApple-40.png" width="40" />
-      <icon height="80" src="originals/res/IconApple-40@2x.png" width="80" />
-      <icon height="29" src="originals/res/IconApple-29.png" width="29" />
-      <icon height="58" src="originals/res/IconApple-29@2x.png" width="58" />
-      <icon height="87" src="originals/res/IconApple-29@2x.png" width="87" /> -->
-      <!-- <splash height="480" src="originals/res/Default.png" width="320" /> -->
-      <!-- <splash height="1024" src="originals/res/Default-Portrait.png" width="768" /> -->
-      <splash src="assets/launch-screens/Default-iPad-1536.png" width="1536" height="2048" />
-      <!-- <splash height="768" src="originals/res/Default-Landscape.png" width="1024" /> -->
-      <!-- <splash height="1536" src="originals/res/Default-Landscape@2x.png" width="2048" /> -->
-      <!-- <splash src="originals/res/Default@2x.png" width="640" height="960" /> -->
-      <splash src="assets/launch-screens/Default-640.png"  width="640"  height="1136" />
-      <splash src="assets/launch-screens/Default-750.png"  width="750"  height="1334" />
-      <splash src="assets/launch-screens/Default-1242.png" width="1242" height="2208" />
-      <!-- <splash height="1242" src="originals/res/Default-Landscape-736@3x.png" width="2208" /> -->
+        <icon src="assets/app-icons/AppIcon-29.png" width="29" height="29" />
+        <icon src="assets/app-icons/AppIcon-40.png" width="40" height="40" />
+        <icon src="assets/app-icons/AppIcon-58.png" width="58" height="58" />
+        <icon src="assets/app-icons/AppIcon-76.png" width="76" height="76" />
+        <icon src="assets/app-icons/AppIcon-87.png" width="87" height="87" />
+        <icon src="assets/app-icons/AppIcon-80.png" width="80" height="80" />
+        <icon src="assets/app-icons/AppIcon-120.png" width="120" height="120" />
+        <icon src="assets/app-icons/AppIcon-152.png" width="152" height="152" />
+        <icon src="assets/app-icons/AppIcon-167.png" width="167" height="167" />
+        <icon src="assets/app-icons/AppIcon-180.png" width="180" height="180" />
+
+        <splash src="assets/launch-screens/Default-640x960.png" width="640" height="960" />
+        <splash src="assets/launch-screens/Default-640x1136.png" width="640" height="1136" />
+        <splash src="assets/launch-screens/Default-750x1334.png" width="750" height="1334" />
+        <splash src="assets/launch-screens/Default-1242x2208.png" width="1242" height="2208" />
+        <splash src="assets/launch-screens/Default-1024x768.png" width="1024" height="768" />
+        <splash src="assets/launch-screens/Default-1536x2048.png" width="1536" height="2048" />
+        <splash src="assets/launch-screens/Default-960x640.png" width="960" height="640" />
+        <splash src="assets/launch-screens/Default-1136x640.png" width="1136" height="640" />
+        <splash src="assets/launch-screens/Default-1334x750.png" width="1334" height="750" />
+        <splash src="assets/launch-screens/Default-2208x1242.png" width="2208" height="1242" />
+        <splash src="assets/launch-screens/Default-768x1024.png" width="768" height="1024" />
+        <splash src="assets/launch-screens/Default-2048x1536.png" width="2048" height="1536" />
   </platform>
 
   <platform name="android">
       <allow-intent href="market:*" />
       <preference name="android-targetSdkVersion" value="23" />
-      <!-- <preference name="StatusBarBackgroundColor" value="#444444" />
-      <icon density="ldpi" src="originals/res/Icon-36.png" />
-      <icon density="mdpi" src="originals/res/Icon-48.png" />
-      <icon density="hdpi" src="originals/res/Icon-72.png" />
-      <icon density="xhdpi" src="originals/res/Icon-96.png" />
-      <icon density="xxhdpi" src="originals/res/Icon-144.png" />
-      <icon density="xxxhdpi" src="originals/res/Icon-192.png" />
-      <splash density="land-ldpi" src="originals/res/Default-Landscape-320.png" />
-      <splash density="land-mdpi" src="originals/res/Default-Landscape-480.png" />
-      <splash density="land-hdpi" src="originals/res/Default-Landscape-800.png" />
-      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1280.png" />
-      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1600.png" />
-      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1920.png" />
-      <splash density="port-ldpi" src="originals/res/Default-Portrait-320.png" />
-      <splash density="port-mdpi" src="originals/res/Default-Portrait-480.png" />
-      <splash density="port-hdpi" src="originals/res/Default-Portrait-800.png" />
-      <splash density="port-xhdpi" src="originals/res/Default-Portrait-1280.png" />
-      <splash density="port-xxhdpi" src="originals/res/Default-Portrait-1600.png" />
-      <splash density="port-xxxhdpi" src="originals/res/Default-Portrait-1920.png" /> -->
+      
   </platform>
-
-  <!-- <plugin name="cordova-plugin-console" spec="~1.0.2" /> -->
 
   <plugin name="cordova-plugin-x-socialsharing " spec="~5.0.11" />
   <plugin name="cordova-plugin-device" spec="~1.1.1" />

@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="name.sokurenko.DailyPoem"
+  xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0"
+  version="<%= version %>">
+  <%# android-versionCode="02132046" ios-CFBundleVersion="02132046"  %>
+  <name>DailyPoem</name>
+  <description>
+    DailyPoem – a new poem every day.
+  </description>
+  <author email="dmitry@sokurenko.name" href="https://allegrotime.firebaseapp.com">
+    Dmitry Sokurenko
+  </author>
+  <content src="index.html" />
+  <access origin="*" />
+  <allow-intent href="http://*/*" />
+  <allow-intent href="https://*/*" />
+  <allow-intent href="tel:*" />
+  <allow-intent href="sms:*" />
+  <allow-intent href="mailto:*" />
+  <allow-intent href="geo:*" />
+
+  <preference name="DisallowOverscroll" value="true" />
+  <preference name="StatusBarOverlaysWebView" value="true" />
+  <!-- <preference name="StatusBarStyle" value="default" /> -->
+
+  <preference name="AutoHideSplashScreen" value="false" />
+  <preference name="ShowSplashScreenSpinner" value="true"/>
+  <preference name="SplashScreenDelay" value="0" />
+  <preference name="FadeSplashScreenDuration" value="500"/>
+  <!-- <preference name="FadeSplashScreen" value="false"/> -->
+  <!-- <preference name="SplashMaintainAspectRatio" value="false" /> -->
+
+  <platform name="ios">
+      <allow-intent href="itms:*" />
+      <allow-intent href="itms-apps:*" />
+
+      <preference name="BackupWebStorage" value="none" />
+      <preference name="Orientation" value="all" />
+
+      <%- plist_options.each do |key, value| -%>
+        <config-file target="*-Info.plist" parent="<%= key %>">
+          <%- case value when String -%>
+            <string><%= value %></string>
+          <%- when true, false -%>
+            <<%= value %> />
+          <%- end -%>
+        </config-file>
+      <%- end -%>
+
+      <%- %w(29 40 58 76 87 80 120 152 167 180).each do |size| -%>
+        <icon src="assets/app-icons/AppIcon-<%= size %>.png" width="<%= size %>" height="<%= size %>" />
+      <%- end -%>
+
+      <%- ios_screen_sizes.each do |w, h| -%>
+        <splash src="assets/launch-screens/Default-<%= w %>x<%= h %>.png" width="<%= w %>" height="<%= h %>" />
+      <%- end -%>
+  </platform>
+
+  <platform name="android">
+      <allow-intent href="market:*" />
+      <preference name="android-targetSdkVersion" value="23" />
+      <%#
+      <!-- <preference name="StatusBarBackgroundColor" value="#444444" />
+      <icon density="ldpi" src="originals/res/Icon-36.png" />
+      <icon density="mdpi" src="originals/res/Icon-48.png" />
+      <icon density="hdpi" src="originals/res/Icon-72.png" />
+      <icon density="xhdpi" src="originals/res/Icon-96.png" />
+      <icon density="xxhdpi" src="originals/res/Icon-144.png" />
+      <icon density="xxxhdpi" src="originals/res/Icon-192.png" />
+      <splash density="land-ldpi" src="originals/res/Default-Landscape-320.png" />
+      <splash density="land-mdpi" src="originals/res/Default-Landscape-480.png" />
+      <splash density="land-hdpi" src="originals/res/Default-Landscape-800.png" />
+      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1280.png" />
+      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1600.png" />
+      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1920.png" />
+      <splash density="port-ldpi" src="originals/res/Default-Portrait-320.png" />
+      <splash density="port-mdpi" src="originals/res/Default-Portrait-480.png" />
+      <splash density="port-hdpi" src="originals/res/Default-Portrait-800.png" />
+      <splash density="port-xhdpi" src="originals/res/Default-Portrait-1280.png" />
+      <splash density="port-xxhdpi" src="originals/res/Default-Portrait-1600.png" />
+      <splash density="port-xxxhdpi" src="originals/res/Default-Portrait-1920.png" /> -->
+      %>
+  </platform>
+
+  <plugin name="cordova-plugin-x-socialsharing " spec="~5.0.11" />
+  <plugin name="cordova-plugin-device" spec="~1.1.1" />
+  <plugin name="cordova-plugin-splashscreen" spec="~3.1.0" />
+  <plugin name="cordova-plugin-statusbar" spec="~2.1.1" />
+  <plugin name="cordova-plugin-whitelist" spec="~1.2.1" />
+  <plugin name="cordova-plugin-app-version" spec="~0.1.8" />
+  <plugin name="cordova-custom-config" spec="~1.2.6" />
+
+  <engine name="ios" spec="~4.1.0" />
+  <engine name="android" spec="~5.1.1" />
+  <engine name="browser" spec="~4.1.0" />
+</widget>
