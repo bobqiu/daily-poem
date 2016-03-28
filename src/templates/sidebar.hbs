@@ -18,23 +18,8 @@
 
 <div class="list-block">
   <ul>
-    <li>
-      <a href="#favorites" class="item-content item-link action close-panel">
-        <div class="item-media"><i class="icon icon-star"></i></div>
-        <div class="item-inner">
-          <div class="item-title">Избранное</div>
-        </div>
-      </a>
-    </li>
-    <li>
-      <a href="#about" class="item-content item-link action  close-panel">
-        <div class="item-media"><i class="icon icon-about"></i></div>
-        <div class="item-inner">
-          <div class="item-title">О Приложении</div>
-        </div>
-      </a>
-    </li>
+    {{> shared/list_media_item title="Избранное" url='#favorites' iconClass="icon icon-star"}}
+    {{> shared/list_media_item title="О Приложении" url='#about' iconClass="icon icon-about"}}
+    {{> shared/list_media_item title="Системное Меню" url='#developer' iconClass="icon icon-about"}}
   </ul>
-</div>
-<div class="content-block">
 </div>

@@ -60,15 +60,23 @@ class Poems.App
         @renderPoemsForDate Model.currentDate, next
 
   renderAbout: (next) ->
-    data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
-    data.version = @version()
-    @loadTemplateOnMainPage 'about', data
-    next && next()
+    version = null
+    buildNumber = null
+    p1 = cordova?.getAppVersion.getVersionNumber().then (value) -> version = value
+    p2 = cordova?.getAppVersion.getBuildNumber().then (value) -> buildNumber = value
+    Util.whenAllDone p1, p2, =>
+      @loadTemplateOnMainPage 'about', versionText: "#{version} (#{buildNumber})"
+      next && next()
 
   renderFavorites: (next) ->
     Model.getFavorites (poems) =>
       @loadTemplateOnMainPage 'favorites', poems: poems
       next && next()
+
+  renderDeveloper: (next) ->
+    data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
+    @loadTemplateOnMainPage 'developer', data
+    next && next()
 
   sharePoem: ->
     Model.getCurrentPoem (poem) ->

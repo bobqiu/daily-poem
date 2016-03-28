@@ -41,3 +41,10 @@ module.exports =
   render: (template, args...) ->
     @templates ?= require.context("../templates", true, /\.hbs$/)
     @templates("./#{template}.hbs")(args...)
+
+  whenAllDone: (promises..., next) ->
+    hasNullPromises = promises.some (p) -> p is null or p is undefined
+    if hasNullPromises
+      next()
+    else
+      Promise.all promises, next
