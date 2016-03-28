@@ -18,8 +18,10 @@ class Poems.App
   renderPoemForDate: (date, next) ->
     Model.getPoemForDate date, (poem) =>
       appDate = Util.formatMonthAndDay(date)
-      if poem.last
+      if Util.dateString(date) > Util.dateString(Model.lastAllowedDate())
         next @render 'tomorrow', appDate: appDate
+      else if poem.last
+        next ""
       else
         context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: appDate, liked: poem.isLiked()
         html = @render 'poem', context
@@ -46,18 +48,21 @@ class Poems.App
   renderMain: (identifier, next) ->
     @loadTemplateOnMainPage 'main'
 
+    renderDate = (date) =>
+      @renderPoemsForDate date, next
+
     switch
-      when identifier instanceof String and identifier.match(/\d{4}-\d{2}-\d{2}/)
-        date = Date.parse(identifier)
-        @renderPoemsForDate date, next
-      when identifier instanceof String and identifier.match(/^\d+$/)
+      when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/)
+        date = new Date(identifier)
+        renderDate date
+      when typeof identifier is 'string' and identifier.match(/^\d+$/)
         id = Number(date)
         Model.getPoem id, (poem) =>
           @renderMain poem.date(), next
       when identifier instanceof Date
-        @renderPoemsForDate identifier, next
+        renderDate identifier
       else
-        @renderPoemsForDate Model.currentDate, next
+        renderDate Model.currentDate
 
   renderAbout: (next) ->
     version = null
@@ -88,10 +93,11 @@ class Poems.App
 
   initCalendar: ->
     @sidebarCalendar = @f7app.calendar
-      container: '#calendar-inline-container', value: [new Date()], weekHeader: false,
-      toolbarTemplate: @render('shared/calendar_toolbar'),
-      value: [Model.currentDate],
-      disabled: [{from: Model.lastDate}, {to: Util.prevDate(Model.firstDate)}]
+      container: '#calendar-inline-container',
+      weekHeader: false,
+      toolbarTemplate: @render('shared/calendar_toolbar')
+      value: [Model.currentDate]
+      disabled: [{from: Model.lastAllowedDate()}, {to: Util.prevDate(Model.firstDate)}]
       onOpen: (p) =>
         $$('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
         $$('.calendar-custom-toolbar .left .link').on 'click', => @sidebarCalendar.prevMonth()
@@ -102,7 +108,6 @@ class Poems.App
       onDayClick: (p, dayContainer, year, month, day) =>
         date = new Date(year, month, day)
         Router.go("poems/#{Util.dateString date}")
-        # @openView 'Main', date
         @f7app.closePanel()
 
   router: ->

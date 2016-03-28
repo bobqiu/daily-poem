@@ -6,11 +6,12 @@ class Poems.Model
 
   prevDate: -> Util.prevDate @currentDate
   nextDate: -> Util.nextDate @currentDate
+  lastAllowedDate: -> new Date
 
   moveDateForward: -> @currentDate = @nextDate()
   moveDateBackward: -> @currentDate = @prevDate()
 
-  canMoveForward: -> Util.dateString(@currentDate) <= Util.dateString(@lastDate)
+  canMoveForward: -> Util.dateString(@currentDate) <= Util.dateString(@lastAllowedDate())
   canMoveBackward: -> Util.dateString(@currentDate) > Util.dateString(@firstDate)
   canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()
 
@@ -21,7 +22,7 @@ class Poems.Model
     @getPoemForDate @currentDate, next
 
   hasDataFor: (date) ->
-    Util.dateString(@firstDate) <= Util.dateString(date) <= Util.dateString(@lastDate)
+    Util.dateString(@firstDate) <= Util.dateString(date) <= Util.dateString(@lastAllowedDate())
 
   moveDate: (days) ->
     @setDate new Date(@currentDate.getTime() + days * 86400 * 1000)

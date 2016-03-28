@@ -25,5 +25,5 @@ class Poems.Router
   favorites: -> App.openView('Favorites')
   about: ->App.openView('About')
   developer: ->App.openView('Developer')
-  tomorrow: -> App.openView('Main', Util.nextDate Model.lastDate)
+  tomorrow: -> App.openView('Main', Util.nextDate Model.lastAllowedDate())
   poems: (id) -> App.openView('Main', id)
