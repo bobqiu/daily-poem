@@ -63,8 +63,8 @@ class Poems.App
     version = null
     buildNumber = null
     p1 = cordova?.getAppVersion.getVersionNumber().then (value) -> version = value
-    p2 = cordova?.getAppVersion.getBuildNumber().then (value) -> buildNumber = value
-    Util.whenAllDone p1, p2, =>
+    p2 = cordova?.getAppVersion.getVersionCode().then (value) -> buildNumber = value
+    Promise.all([p1, p2]).then =>
       @loadTemplateOnMainPage 'about', versionText: "#{version} (#{buildNumber})"
       next && next()
 

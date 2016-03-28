@@ -1,5 +1,4 @@
-$brand_color = '#479E8D'
-$brand_color = '#019875'
+$brand_color = '#ff9500'
 $brand_color_end = '#3ACCA2'
 
 namespace :icons do

@@ -20,7 +20,7 @@ task(:build) { sh "webpack" }
 task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
 task(:ios) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
-task(:ios_device) { sh "cordova run ios --device" }
+task('ios-device') { sh "cordova run ios --device" }
 
 
 task clean_rebuild: %w(clean rebuild)

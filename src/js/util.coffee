@@ -42,9 +42,6 @@ module.exports =
     @templates ?= require.context("../templates", true, /\.hbs$/)
     @templates("./#{template}.hbs")(args...)
 
-  whenAllDone: (promises..., next) ->
-    hasNullPromises = promises.some (p) -> p is null or p is undefined
-    if hasNullPromises
-      next()
-    else
-      Promise.all promises, next
+  # whenAllDone: (promises..., next) ->
+  #   hasNullPromises = promises.some (p) -> p is null or p is undefined
+  #   Promise.all(promises).then(next)

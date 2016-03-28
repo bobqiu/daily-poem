@@ -67,6 +67,8 @@ class Poems.Model
   getFavorites: (next) ->
     poemIds = (id for id in Array.from @likes)
 
+    return next() if poemIds.length is 0
+
     poems = []
     count = 0
     done = -> ++count == poemIds.length && next && next(poems)
