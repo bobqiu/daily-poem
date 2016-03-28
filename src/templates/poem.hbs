@@ -6,18 +6,22 @@
       <h3>{{title}}</h3>
     {{/if}}
 
-    <div class='poem-body'>{{{ contentHtml }}}</div>
+    <div class='poem-wrapper'>
+      <div class='poem-body'>
+        {{{ contentHtml }}}
+      </div>
 
-    <div class='poem-extra'>
-      <p class='author'>{{author}}</p>
+      <div class='poem-extra'>
+        <p class='author'>{{author}}</p>
 
-      {{#if year}}
-        <p class='date'>{{year}} г</p>
-      {{/if}}
+        {{#if year}}
+          <p class='date'>{{year}} г</p>
+        {{/if}}
 
-      {{#source}}
-      <p class='source'{{source}}</p>
-      {{/source}}
+        {{#source}}
+        <p class='source'{{source}}</p>
+        {{/source}}
+      </div>
     </div>
 
     <div class='poem-controls row'>
