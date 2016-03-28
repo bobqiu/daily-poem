@@ -20,10 +20,10 @@ task(:serve_fs) { sh "ruby -run -e httpd www -p 3000" }
 task(:build) { sh "webpack" }
 task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
-task(:ios) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
+task(:sim) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
 task('ios-sims') { sh "platforms/ios/cordova/lib/list-emulator-images" }
-task('ios-d') { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
-# task('ios-d') { sh "cordova run ios --device" }
+task(:i) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
+# task(:i) { sh "cordova run ios --device" }
 
 
 task clean_rebuild: %w(clean rebuild)
@@ -35,6 +35,7 @@ task p: :prepare
 task b: :build
 task rb: :rebuild
 task crb: :clean_rebuild
+task conf: :config
 
 task :config do
   # build_number = Time.now.strftime('%m%d%H%M')

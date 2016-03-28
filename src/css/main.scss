@@ -1,6 +1,8 @@
 @import "~framework7/dist/css/framework7.ios.min.css";
 @import "~framework7/dist/css/framework7.ios.colors.min.css";
 
+$app-color: #ff9500;
+$navbar-text-color: #fff;
 $light-gray: rgba(#000, .3);
 
 @import "shared";
@@ -15,11 +17,13 @@ $light-gray: rgba(#000, .3);
 //
 
 .app-title { font-variant: small-caps; }
-.sidebar { background: #efeff4; border-right: 1px solid #ddd; }
+.sidebar { background: #efeff4; }
 .panel-overlay { background: #000; opacity: 0.2; }
 .main-page-content { overflow: hidden; }
+.navbar { background-color: $app-color; color: $navbar-text-color; }
 
-
+html.ios-gt-8 .navbar .center { font-weight: normal; }
+.statusbar-overlay { background: $app-color; transition: 400ms; }
 
 //
 // About

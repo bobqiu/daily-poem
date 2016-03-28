@@ -15,7 +15,7 @@ class Poems.App
     navigator.splashscreen?.hide()
     setTimeout =>
       StatusBar?.show()
-      StatusBar?.styleDefault()
+      # StatusBar?.styleDefault()
     , 500
 
   render: (template, args...) ->

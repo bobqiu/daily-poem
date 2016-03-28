@@ -14,6 +14,7 @@ $icon-height: $icon-height-value + px;
 @mixin define-icon($name, $image-name: $name, $width: $icon-height-value, $height: $width, $filled: false) {
 	i.icon.icon-#{$name} { @include icon($image-name, main) }
 	i.icon.icon-#{$name}.gray { @include icon($image-name, gray) }
+  .navbar i.icon.icon-#{$name} { @include icon($image-name, white) }
   @if $filled == true {
 		i.icon.filled.icon-#{$name} { @include icon("#{$image-name}_filled", main) }
 		i.icon.filled.icon-#{$name}.gray { @include icon("#{$image-name}_filled", gray) }

@@ -18,6 +18,9 @@ require "./router"
 require './main_view'
 
 main = ->
+  # StatusBar?.backgroundColorByHexString("#ff9500")
+  # StatusBar?.styleLightContent()
+
   window.Model = new Poems.Model
   window.App = new Poems.App
   window.Router = new Poems.Router

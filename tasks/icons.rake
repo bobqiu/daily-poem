@@ -1,4 +1,5 @@
 $brand_color = '#ff9500'
+# $brand_color = '#007aff'
 $brand_color_gradient = '#FF7500'
 
 $ios_screen_sizes = {
@@ -12,8 +13,7 @@ $ios_screen_sizes = {
 
 namespace :icons do
   task :build do
-    force = true
-    colors = { main: $brand_color, gray: '#cccccc' }
+    colors = { main: $brand_color, gray: '#cccccc', white: '#ffffff' }
 
     convert = -> (src, dst, color) do
       sh "convert #{src} -channel RGB -fuzz 99% -fill '#{color}' -opaque '#000' #{dst}"
@@ -24,7 +24,7 @@ namespace :icons do
       file = path.basename('.png')
       colors.each do |color_name, color|
         target = $icons_dst / "ai-#{file}-#{color_name}.png"
-        convert.call(path, target, color) if !target.exist? or force
+        convert.call(path, target, color) if !target.exist? or ENV['force']
       end
     end
   end
