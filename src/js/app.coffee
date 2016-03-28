@@ -12,6 +12,12 @@ class Poems.App
     $('.sidebar').on 'open', =>
       @sidebarCalendar.setValue [Model.currentDate]
 
+    navigator.splashscreen.hide()
+    setTimeout =>
+      StatusBar?.show()
+      StatusBar?.styleDefault()
+    , 500
+
   render: (template, args...) ->
     Util.render(template, args...)
 
