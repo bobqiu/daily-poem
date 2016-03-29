@@ -10,5 +10,6 @@ platforms
 plugins
 assets/app-icons
 assets/launch-screens
-config.xml
 screenshots
+Preview.html
+config.xml

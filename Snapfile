@@ -21,7 +21,7 @@ languages([
 scheme "DailyPoem"
 
 # Where should the resulting screenshots be stored?
-# output_directory "./screenshots"
+output_directory "./assets/screenshots"
 
 clear_previous_screenshots true # remove the '#' to clear all previously generated screenshots before creating new ones
 

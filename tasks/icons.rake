@@ -3,6 +3,7 @@ $brand_color = '#ff9500'
 $brand_color_gradient = '#FF7500'
 
 $ios_screen_sizes = {
+  "320x480"   => 1,
   "640x960"   => 2,
   "640x1136"  => 2,
   "750x1334"  => 2,
@@ -35,7 +36,7 @@ namespace :icons do
     def convert_size(src, w, h)
       size = "#{w}x#{h}"
       dst = "assets/launch-screens/Default-#{size}.png"
-      sh "convert #{src} -resize #{size}^ -gravity center -extent #{size} -quality 75 #{dst}"
+      sh "convert #{src} -resize #{size}^ -gravity center -extent #{size} -quality 100 #{dst}"
     end
 
     $ios_screen_sizes.each do |size, density|

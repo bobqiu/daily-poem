@@ -13,6 +13,7 @@ $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
 $ios_emulator_target = ENV['target'] || "iPhone-6"
+$ios_version = "0.3.0"
 
 
 task(:serve) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
@@ -21,9 +22,10 @@ task(:build) { sh "webpack" }
 task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
 task(:sim) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
-task('ios-sims') { sh "platforms/ios/cordova/lib/list-emulator-images" }
-task(:idev) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
-# task(:i) { sh "cordova run ios --device" }
+task(:ios_sims) { sh "platforms/ios/cordova/lib/list-emulator-images" }
+task(:idev) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
+task(:idev_run) { sh "cordova run ios --device" }
+task('ios-release') { sh "cordova build ios --device --release" }
 
 
 task clean_rebuild: %w(clean rebuild)
@@ -38,7 +40,7 @@ task crb: :clean_rebuild
 task conf: :config
 
 task :config do
-  # build_number = Time.now.strftime('%m%d%H%M')
+  build_number = Time.now.strftime('%m%d%H%M')
   # is_release = ENV['release'] == 'yes'
   # file_version = "#{version}.#{build_number}"
   # build_app_name = is_release ? $app_name : $app_name_dev
@@ -50,7 +52,8 @@ task :config do
   ios_landscrape_screen_sizes = ios_portrait_screen_sizes.map { |w, h| [h, w] }
 
   variables = {
-    version: "0.3.0",
+    version: $ios_version,
+    build_number: build_number,
     ios_screen_sizes: ios_portrait_screen_sizes + ios_landscrape_screen_sizes,
     plist_options: {
       UIStatusBarStyle: 'UIStatusBarStyleDefault',
@@ -63,23 +66,16 @@ task :config do
   File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
 end
 
-task :screens do
-  # sh "snapshot -p platforms/ios/DailyPoem.xcodeproj -s DailyPoem"
-  sh "snapshot"
-end
-
 namespace :appstore do
   task :pack do
     # is_release, build_app_name, file_version = update_config_xml $ios_next_version
-
-    $app_name = 'DailyPoem'
     is_release = true
-    file_version = "0.1.0"
 
     puts "Building a RELEASE version!" if is_release
-    source_path = "#{Dir.pwd}/platforms/ios/build/device/#{$app_name}.app"
-    target_path = "#{Dir.home}/desktop/#{$app_name}-#{file_version}.ipa"
+    source_path = "#{Dir.pwd}/platforms/ios/build/device/#{$app_name}.ipa"
+    target_path = "#{Dir.home}/desktop/#{$app_name}-#{$ios_version}.ipa"
     sh "cordova build --device #{'--release' if is_release} ios"
-    sh %{/usr/bin/xcrun -sdk iphoneos PackageApplication "#{source_path}" -o "#{target_path}"}
+    # sh %{/usr/bin/xcrun -sdk iphoneos PackageApplication "#{source_path}" -o "#{target_path}"}
+    sh "cp #{source_path} #{target_path}"
   end
 end
