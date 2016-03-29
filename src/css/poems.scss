@@ -21,7 +21,8 @@ $smalles-font-size: 10px;
   position: relative;	min-height: 100%;
 
 	.app-date {
-  	margin-top: 30px; margin-bottom: 10px;
+    padding-top: 30px;
+    margin: 0 0 10px;
 	  text-align: center;
 	  color: $light-gray; font-style: italic; font-size: $small-font-size;
 	}

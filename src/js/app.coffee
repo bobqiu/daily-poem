@@ -62,7 +62,8 @@ class Poems.App
         date = new Date(identifier)
         renderDate date
       when typeof identifier is 'string' and identifier.match(/^\d+$/)
-        id = Number(date)
+        id = Number(identifier)
+        console.log id, identifier
         Model.getPoem id, (poem) =>
           @renderMain poem.date(), next
       when identifier instanceof Date

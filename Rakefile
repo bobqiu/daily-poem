@@ -22,7 +22,7 @@ task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
 task(:sim) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
 task('ios-sims') { sh "platforms/ios/cordova/lib/list-emulator-images" }
-task(:i) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
+task(:idev) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.app" }
 # task(:i) { sh "cordova run ios --device" }
 
 
@@ -32,7 +32,7 @@ task c: :clean
 task s: :serve
 task sfs: :serve_fs
 task p: :prepare
-task b: :build
+task b: [:build, :config]
 task rb: :rebuild
 task crb: :clean_rebuild
 task conf: :config
@@ -50,7 +50,7 @@ task :config do
   ios_landscrape_screen_sizes = ios_portrait_screen_sizes.map { |w, h| [h, w] }
 
   variables = {
-    version: "0.3",
+    version: "0.3.0",
     ios_screen_sizes: ios_portrait_screen_sizes + ios_landscrape_screen_sizes,
     plist_options: {
       UIStatusBarStyle: 'UIStatusBarStyleDefault',

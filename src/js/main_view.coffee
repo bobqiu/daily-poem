@@ -10,7 +10,8 @@ class Poems.MainView
     @shift = 0
 
     $(document).on 'click', '.x-share', (e) => App.sharePoem()
-    $(document).on 'click', '.x-like', (e) ->
+    $(document).on 'click', '.x-like', (e) =>
+      e.stopPropagation()
       Util.toggleButton(e.currentTarget)
       icon = $(e.currentTarget).find('i')
       action = if icon.hasClass('filled') then 'remove' else 'add'
