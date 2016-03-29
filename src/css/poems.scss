@@ -1,5 +1,6 @@
 $poem-font-family: Palatino;
 $row-height: 44px;
+$tall-row-height: 56px;
 $main-font-size: 17px;
 $small-font-size: 13.5px;
 $smalles-font-size: 10px;
@@ -62,12 +63,12 @@ $smalles-font-size: 10px;
 	}
 
 	.poem-extra {
-    padding: 0 19px 35px 19px;
+    padding: 0 19px 47px 19px;
 	}
 
 	.poem-controls {
 	  position: absolute; left: 0; bottom: 0; right: 0;
-	  line-height: $row-height; height: $row-height;
+	  line-height: $tall-row-height; height: $tall-row-height;
 	  padding-left: 1em;
 		padding-right: 0.5em;
 
@@ -81,8 +82,8 @@ $smalles-font-size: 10px;
 		  color: $light-gray; font-size: $small-font-size;
 		}
 
-		.action {
-		  display: inline-block; width: $row-height;
+		a {
+		  display: inline-block; width: $tall-row-height;
 		  text-align: center;
 		}
 	}
