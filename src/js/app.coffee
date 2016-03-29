@@ -5,6 +5,12 @@ class Poems.App
     @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
 
+    $(document).click (e) =>
+      [x, y] = [e.pageX, e.pageY]
+      # testMode = yes
+      # if testMode # and y < 100
+      #   @performNextTestAction()
+
     Model.loadMapping =>
       Router.route()
       @initCalendar()
@@ -15,7 +21,6 @@ class Poems.App
     navigator.splashscreen?.hide()
     setTimeout =>
       StatusBar?.show()
-      # StatusBar?.styleDefault()
     , 500
 
   render: (template, args...) ->
@@ -131,3 +136,16 @@ class Poems.App
 
   version: ->
     '1.0.0'
+
+  performNextTestAction: ->
+    @actions ?= [
+      -> Router.go("poems/6")
+      => @f7app.openPanel('left')
+      =>
+        @f7app.closePanel()
+        Router.go("favorites")
+    ]
+    @lastActionIndex ?= 0
+
+    action = @actions[@lastActionIndex++]
+    action && action()

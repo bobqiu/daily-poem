@@ -12,7 +12,7 @@ $poems_src = Pathname.new 'assets/poems'
 $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
-$ios_emulator_target = ENV['T'] || "iPhone-6"
+$ios_emulator_target = ENV['target'] || "iPhone-6"
 
 
 task(:serve) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
@@ -61,6 +61,11 @@ task :config do
 
   template = ERB.new File.read("config.xml.erb"), nil, '-'
   File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
+end
+
+task :screens do
+  # sh "snapshot -p platforms/ios/DailyPoem.xcodeproj -s DailyPoem"
+  sh "snapshot"
 end
 
 namespace :appstore do
