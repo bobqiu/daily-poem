@@ -7,14 +7,26 @@
 </div>
 {{/navbarBox}}
 
-<div data-page="favorites" class="page">
+<div data-page="favorites" class="page favorites-page">
   <div class="page-content">
-    <div class="list-block">
-      <ul>
-        {{#each poems}}
-          {{> shared/list_action_item title=firstLine url=url }}
-        {{/each}}
-      </ul>
-    </div>
+    {{#if poems}}
+      <div class="list-block">
+        <ul>
+          {{#each poems}}
+            {{> shared/list_action_item title=firstLine url=url }}
+          {{/each}}
+        </ul>
+      </div>
+    {{else}}
+      <div class='empty'>
+        <p class='empty-message'>
+          Пока пусто
+        </p>
+        <p class='empty-note'>
+          Нажмите на <i class='icon icon-like'></i>
+          под стихотворением чтобы добавить его в «Избранное»
+        </p>
+      </div>
+    {{/if}}
   </div>
 </div>

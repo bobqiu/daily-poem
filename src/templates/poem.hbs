@@ -1,12 +1,13 @@
 <div class="content-block poem-content-block">
   <div class='poem' id="{{domId}}">
-    <p class='app-date'>{{ appDate }}</p>
-
-    {{#if title}}
-      <h3>{{title}}</h3>
-    {{/if}}
 
     <div class='poem-wrapper'>
+      <p class='app-date'>{{appDate}}</p>
+
+      {{#if title}}
+        <h3>{{title}}</h3>
+      {{/if}}
+
       <div class='poem-body'>
         {{{ contentHtml }}}
       </div>
@@ -32,5 +33,6 @@
         </a>
       </div>
     </div>
+
   </div>
 </div>
