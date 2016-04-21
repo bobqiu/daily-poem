@@ -1,0 +1,25 @@
+task :serve do
+  sh "bundle exec middleman serve"
+end
+
+task :build do
+  sh "bundle exec middleman build"
+end
+
+task deploy: :build do
+  sh "firebase deploy"
+end
+
+task :favicons do
+  src = "../assets/app-icons/AppIcon-1024.png"
+
+  %w(32 96 152).each do |size|
+    dim = "#{size}x#{size}"
+    sh "convert #{src} -resize #{dim} src/images/favicon-#{dim}.png"
+  end
+
+  sh "convert #{src} -resize 16x16 src/favicon.ico"
+
+  mask = "-size 180x180 xc:none -fill green -draw 'roundRectangle 0,0 180,180 22,22'"
+  sh "convert #{mask} #{src} -resize 180x180 -compose SrcIn -composite src/images/favicon-round.png"
+end

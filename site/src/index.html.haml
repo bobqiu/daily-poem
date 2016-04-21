@@ -1,0 +1,48 @@
+---
+title: Стих Дня
+---
+
+#billboard
+  .container
+    #feedback-link
+      %a.btn.btn-sm.btn-success{href: '/comments.html', target: '_blank'} Обратная связь
+    .row
+      .col-md-5
+        %p.text-center
+          = image_tag "v3-promo.png", width: 311, height: 837, srcset: "v3-promo@2x.png 2x"
+      .col-md-7
+        #promo-text
+          %h1.brand Стих Дня
+          %p.concept Новое стихотворение каждый день
+          %p.appstore-badge
+            %a{href:"https://itunes.apple.com/ru/app/allegrotajm/id524992172", target:"_blank"}
+              = image_tag "badge-appstore.png", width: 270, height: 80
+
+          %p.playstore-badge
+            %a{href: "https://play.google.com/store/apps/details?id=name.sokurenko.AllegroTime&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1", target: '_blank'}
+              = image_tag "badge-playstore.png", width: 270, height: 80, alt: "Get it on Google Play"
+
+#screenshots
+  .container
+    .row
+      = partial "screenshot", locals: { image_name: "v3-1.jpg", title: nil }
+      = partial "screenshot", locals: { image_name: "v3-2.jpg", title: nil }
+      = partial "screenshot", locals: { image_name: "v3-3.jpg", title: nil }
+
+    .row
+      .col-lg-12
+        #copyright
+          %p
+            * Apple, логотип Apple, iPhone и iPod touch являются товарными знаками компании Apple Inc., зарегистрированными в США и других странах.
+            App Store является знаком обслуживания, который принадлежит компании Apple Inc.
+
+          %p
+            * Google Play и Android и логотип Google Play являются товарными знаками корпорации Google Inc.
+
+#footer
+  .container
+    %p
+      &copy; 2016 Дмитрий Сокуренко и Денис Белобоков
+      %br
+      Отзывы, вопросы и предложения —
+      = mail_to "dmitry@sokurenko.name"

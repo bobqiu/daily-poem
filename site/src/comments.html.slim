@@ -1,0 +1,12 @@
+#comments-heading
+  .container
+    h1
+      a.home-link href='/'
+        span.icon= image_tag "favicon-round.png", width: 40, height: 40
+        span.text Стих Дня
+      a.appstore-link href="https://itunes.apple.com/ru/app/allegrotajm/id524992172" target="_blank"
+        = image_tag "badge-appstore.png", height: 64
+
+#comments
+  .container
+    = partial 'disqus'
