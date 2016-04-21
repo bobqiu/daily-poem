@@ -13,10 +13,11 @@
 
 <div class="list-block">
   <ul>
-    {{> shared/list_media_item title="Стихи" url='#poems' iconClass="icon icon-align_center"}}
-    {{> shared/list_media_item title="Календарь" url='#calendar' iconClass="icon icon-calendar"}}
-    {{> shared/list_media_item title="Избранное" url='#favorites' iconClass="icon icon-star"}}
-    {{> shared/list_media_item title="О Приложении" url='#about' iconClass="icon icon-about"}}
-    {{> shared/list_media_item title="Системное Меню" url='#developer' iconClass="icon icon-shutdown"}}
+    {{ list-media-item title="Стихи" url='#poems' iconClass="icon icon-align_center"}}
+    {{ list-media-item title="Календарь" url='#calendar' iconClass="icon icon-calendar"}}
+    {{ list-media-item title="Избранное" url='#favorites' iconClass="icon icon-star"}}
+    {{ list-media-item title="О Приложении" url='#about' iconClass="icon icon-about"}}
+    {{ list-media-item title="Системное Меню" url='#developer' iconClass="icon icon-shutdown"
+                       id='developer-tab' hidden=true }}
   </ul>
 </div>

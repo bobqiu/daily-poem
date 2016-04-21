@@ -1,4 +1,7 @@
-<li>
+<li
+  {{#if id}} id={{id}} {{/if}}
+  {{#if hidden}} style="display:none" {{/if}}
+>
   <a href="{{url}}" class="item-content item-link action close-panel">
     <div class="item-media"><i class="{{iconClass}} filled"></i></div>
     <div class="item-inner">

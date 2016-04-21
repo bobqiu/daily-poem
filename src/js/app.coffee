@@ -81,6 +81,11 @@ class Poems.App
     p2 = cordova?.getAppVersion.getVersionCode().then (value) -> buildNumber = value
     Promise.all([p1, p2]).then =>
       @loadTemplateOnMainPage 'pages/about', versionText: "#{version} (#{buildNumber})"
+      $('#dmitry-avatar').click =>
+        @developerClickCount ?= 0
+        @developerClickCount += 1
+        if @developerClickCount % 4 is 0
+          $('#developer-tab').toggle()
       next?()
 
   renderFavorites: (next) ->

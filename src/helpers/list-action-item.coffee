@@ -1,4 +1,4 @@
 {render} = require './support'
 
 module.exports = (options) ->
-  render "shared/navbar-button", options.hash
+  render "shared/list-action-item", options.hash

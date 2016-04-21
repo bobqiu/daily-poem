@@ -15,7 +15,7 @@ window.Util = require "./util"
 require "./model"
 require "./app"
 require "./router"
-require './main_view'
+require './main-view'
 
 main = ->
   # StatusBar?.backgroundColorByHexString("#ff9500")
