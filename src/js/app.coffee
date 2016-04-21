@@ -1,7 +1,7 @@
 class Poems.App
   constructor: ->
     $('#sidebar').html @render('sidebar')
-    @loadTemplateOnMainPage 'main'
+    @loadTemplateOnMainPage 'pages/main'
     @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: yes # ajaxLinks: 'ajax'
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
 
@@ -13,10 +13,8 @@ class Poems.App
 
     Model.loadMapping =>
       Router.route()
-      @initCalendar()
 
     $('.sidebar').on 'open', =>
-      @sidebarCalendar.setValue [Model.currentDate]
 
     navigator.splashscreen?.hide()
     setTimeout =>
@@ -57,7 +55,7 @@ class Poems.App
     @["render#{viewName}"](args..., next)
 
   renderMain: (identifier, next) ->
-    @loadTemplateOnMainPage 'main'
+    @loadTemplateOnMainPage 'pages/main'
 
     renderDate = (date) =>
       @renderPoemsForDate date, next
@@ -82,18 +80,41 @@ class Poems.App
     p1 = cordova?.getAppVersion.getVersionNumber().then (value) -> version = value
     p2 = cordova?.getAppVersion.getVersionCode().then (value) -> buildNumber = value
     Promise.all([p1, p2]).then =>
-      @loadTemplateOnMainPage 'about', versionText: "#{version} (#{buildNumber})"
-      next && next()
+      @loadTemplateOnMainPage 'pages/about', versionText: "#{version} (#{buildNumber})"
+      next?()
 
   renderFavorites: (next) ->
     Model.getFavorites (poems) =>
-      @loadTemplateOnMainPage 'favorites', poems: poems
-      next && next()
+      @loadTemplateOnMainPage 'pages/favorites', poems: poems
+      next?()
 
   renderDeveloper: (next) ->
     data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
-    @loadTemplateOnMainPage 'developer', data
-    next && next()
+    @loadTemplateOnMainPage 'pages/developer', data
+    next?()
+
+  renderCalendar: (next) ->
+    @loadTemplateOnMainPage 'pages/calendar'
+
+    calendar = @f7app.calendar
+      container: '#calendar-inline-container',
+      weekHeader: false,
+      toolbarTemplate: @render('shared/calendar-toolbar')
+      value: [Model.currentDate]
+      disabled: [{from: Model.lastAllowedDate()}, {to: Util.prevDate(Model.firstDate)}]
+      onOpen: (p) =>
+        $$('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
+        $$('.calendar-custom-toolbar .left .link').on 'click', => calendar.prevMonth()
+        $$('.calendar-custom-toolbar .right .link').on 'click', => calendar.nextMonth()
+      onMonthYearChangeStart: (p) =>
+        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
+        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
+      onDayClick: (p, dayContainer, year, month, day) =>
+        date = new Date(year, month, day)
+        Router.go("poems/#{Util.dateString date}")
+        @f7app.closePanel()
+
+    next?()
 
   sharePoem: ->
     Model.getCurrentPoem (poem) ->
@@ -102,25 +123,6 @@ class Poems.App
 
   likePoem: ->
     Model.currentPoem().like()
-
-  initCalendar: ->
-    @sidebarCalendar = @f7app.calendar
-      container: '#calendar-inline-container',
-      weekHeader: false,
-      toolbarTemplate: @render('shared/calendar_toolbar')
-      value: [Model.currentDate]
-      disabled: [{from: Model.lastAllowedDate()}, {to: Util.prevDate(Model.firstDate)}]
-      onOpen: (p) =>
-        $$('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
-        $$('.calendar-custom-toolbar .left .link').on 'click', => @sidebarCalendar.prevMonth()
-        $$('.calendar-custom-toolbar .right .link').on 'click', => @sidebarCalendar.nextMonth()
-      onMonthYearChangeStart: (p) =>
-        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
-        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
-      onDayClick: (p, dayContainer, year, month, day) =>
-        date = new Date(year, month, day)
-        Router.go("poems/#{Util.dateString date}")
-        @f7app.closePanel()
 
   router: ->
     @f7view.router

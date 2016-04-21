@@ -27,3 +27,4 @@ class Poems.Router
   developer: ->App.openView('Developer')
   tomorrow: -> App.openView('Main', Util.nextDate Model.lastAllowedDate())
   poems: (id) -> App.openView('Main', id)
+  calendar: (id) -> App.openView('Calendar')

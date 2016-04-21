@@ -7,7 +7,7 @@ var production = process.argv[1] == '/usr/local/bin/webpack'
 var nodeModulesDir = path.resolve(__dirname, "./node_modules")
 var assetFormat = "[name].[ext]"
 var cssExtractor = new ExtractTextPlugin('css', "[name].css")
-var knownHelpers = ['page', 'navbar', 'assetUrl', 'navbarBox', 'textIf', 'textUnless']
+var knownHelpers = ['assetUrl', 'navbarBox', 'textIf', 'textUnless']
 var targetDir = ''
 
 var publicPath;
@@ -17,7 +17,6 @@ if (production) {
   // publicPath = '/' + targetDir + '/'
   publicPath = ''
 }
-
 
 module.exports = {
   devtool: production ? null : 'source-map',
@@ -29,7 +28,14 @@ module.exports = {
       { test: /\.css$/, loader: "style!css?sourceMap" },
       { test: /\.scss$/,
         loader: cssExtractor.extract("style", "css?sourceMap!sass?sourceMap&includePaths[]=node_modules") },
-      { test: /\.hbs$/, loader: "handlebars", query: {knownHelpers: knownHelpers, inlineRequires: '^\.\.\/images\/'} }, // helperDirs: 'src/helpers'
+      { test: /\.hbs$/, loader: "handlebars", query: {
+        knownHelpers: knownHelpers,
+        exclude: 'node_modules',
+        helperDirs: [__dirname + '/src/helpers'],
+        inlineRequires:  '\.\.\/images\/'
+        // partialDirs: [__dirname + '/src/templates'],
+        // debug: true,
+      }},
       { test: /\.coffee$/, loaders: ['coffee']},
       { test: /\.js$/, exclude: /node_modules/, loader: 'babel?presets[]=react,presets[]=es2015' },
       { test: /\.(png|jpe?g|gif|svg)$/, loader: 'url?limit=2048&name=' + assetFormat },

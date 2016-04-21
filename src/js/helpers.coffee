@@ -1,13 +1,6 @@
-safe = (html) -> new Handlebars.SafeString(html)
-render = (templatePath, args...) -> safe Util.render(templatePath, args...)
+{render} = require '../helpers/support'
 
 module.exports =
-  navbar: (options) ->
-    {title} = options.hash
-    render "shared/navbar", title: title
-  page: (options) ->
-    {id} = options.hash
-    render "shared/page", id: id, content: options.fn(this)
   navbarBox: (options) ->
     render "shared/navbar_box", content: options.fn(this)
   assetUrl: (path) ->

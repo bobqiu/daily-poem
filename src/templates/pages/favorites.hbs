@@ -1,6 +1,6 @@
 {{#navbarBox}}
   <div class="left">
-    {{> shared/navbar_button linkClass="open-panel" iconType="menu" }}
+    {{> ../shared/navbar_button linkClass="open-panel" iconType="menu" }}
   </div>
   <div class="center sliding">Избранное</div>
   <div class="right"></div>
@@ -15,7 +15,7 @@
         <div class="list-block">
           <ul>
             {{#each poems}}
-              {{> shared/list_action_item title=firstLine url=url }}
+              {{> ../shared/list_action_item title=firstLine url=url }}
             {{/each}}
           </ul>
         </div>

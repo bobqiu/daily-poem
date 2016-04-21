@@ -27,3 +27,6 @@ $icon-height: $icon-height-value + px;
 @include define-icon(shutdown, $filled: true);
 @include define-icon(about, help, $filled: true);
 @include define-icon(like, $filled: true);
+@include define-icon(today, $filled: true);
+@include define-icon(calendar, $filled: true);
+@include define-icon(align_center, $filled: true);

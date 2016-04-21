@@ -22,10 +22,10 @@ task(:build) { sh "webpack" }
 task(:rebuild => %w(build data:parse)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
 task(:sim) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
-task(:ios_sims) { sh "platforms/ios/cordova/lib/list-emulator-images" }
-task(:idev) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
-task(:idev_run) { sh "cordova run ios --device" }
-task('ios-release') { sh "cordova build ios --device --release" }
+task(:ios_simulators) { sh "platforms/ios/cordova/lib/list-emulator-images" }
+task(:ios) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
+task(:ios_run) { sh "cordova run ios --device" }
+task(:ios_release) { sh "cordova build ios --device --release" }
 
 
 task clean_rebuild: %w(clean rebuild)

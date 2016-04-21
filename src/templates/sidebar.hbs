@@ -10,14 +10,11 @@
   </div>
 </div>
 
-<div class="content-block">
-  <div style="padding:0; margin-right:-15px; width:auto" class="content-block-inner">
-    <div id="calendar-inline-container"></div>
-  </div>
-</div>
 
 <div class="list-block">
   <ul>
+    {{> shared/list_media_item title="Стихи" url='#poems' iconClass="icon icon-align_center"}}
+    {{> shared/list_media_item title="Календарь" url='#calendar' iconClass="icon icon-calendar"}}
     {{> shared/list_media_item title="Избранное" url='#favorites' iconClass="icon icon-star"}}
     {{> shared/list_media_item title="О Приложении" url='#about' iconClass="icon icon-about"}}
     {{> shared/list_media_item title="Системное Меню" url='#developer' iconClass="icon icon-shutdown"}}
