@@ -4,21 +4,17 @@ Icon8: menu, share
 
 handlebars templates/*.hbs -f tmp/gen/handlebars.js -k each -k if -k unless
 
-
 ## building
 
-    rake p
-    webpack
-
+    rake p b
 
 ## Running
 
-    rake p
-    rake s
+    rake p s
 
 ## Dependencies
 
-    gem install snapshot deliver
+    gem install snapshot deliver frameit
     cordova prepare
 
 ## Making Snapshots

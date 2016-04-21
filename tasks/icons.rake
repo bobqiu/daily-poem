@@ -45,3 +45,8 @@ task :splash do
     convert_size src, h, w
   end
 end
+
+task :frames do
+  Dir.chdir "assets/screenshots"
+  sh "bundle exec frameit silver"
+end
