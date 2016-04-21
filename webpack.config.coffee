@@ -14,7 +14,9 @@ publicPath = ''
 
 module.exports =
   devtool: if production then null else 'source-map'
-  entry: all: './src/js/main.coffee'
+  entry:
+    app: './src/js/main.coffee'
+    lib: './src/js/lib.coffee'
 
   output:
     path: "./www/#{targetDir}"
@@ -32,8 +34,8 @@ module.exports =
         inlineRequires: '../images/'
     }
     { test: /\.coffee$/, loaders: [ 'coffee' ] }
-    { test: /\.js$/, exclude: /node_modules/, loader: 'babel?presets[]=react,presets[]=es2015' }
-    { test: /\.(png|jpe?g|gif|svg)$/, loader: "url?limit=2048&name=#{assetFormat}" }
+    { test: /\.js$/, exclude: /node_modules/, loader: 'babel' } # presets[]=react,presets[]=es2015
+    { test: /\.(png|jpe?g|gif|svg)$/, loader: "url?limit=1024&name=#{assetFormat}" }
     { test: /\.html$/, loader: 'file?name=[name].[ext]!html-minify' }
     { test: /\.(ttf|eot|woff2?|json?)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file?name=#{assetFormat}" }
   ]
@@ -41,10 +43,14 @@ module.exports =
   plugins: [
     cssExtractor
     new HtmlWebpackPlugin(
-      title: 'Custom Index', filename: 'index.html', template: 'src/index.html.ejs', inject: false, targetDir: ''
+      title: 'Custom Index', filename: 'index.html', template: 'src/index.html.ejs', inject: false, targetDir: 'http://10.0.1.3:3000/'
     )
   ]
 
-  resolve: extensions: ['', '.js', '.json', '.coffee', '.cjsx']
+  resolve:
+    root: path.resolve(__dirname)
+    alias:
+      ext: "lib/js"
+    extensions: ['', '.js', '.json', '.coffee', '.cjsx']
 
   ejsHtml: {}

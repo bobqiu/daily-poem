@@ -1,6 +1,6 @@
 {render} = require '../helpers/support'
 
-module.exports =
+Handlebars.registerHelper
   navbarBox: (options) ->
     render "shared/navbar_box", content: options.fn(this)
   assetUrl: (path) ->

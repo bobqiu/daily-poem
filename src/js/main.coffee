@@ -1,14 +1,9 @@
-require "framework7"
-window.$$ = Dom7
-window.$ = require "jquery"
-window._ = require "lodash"
-window.Handlebars = require "handlebars/runtime"
-window.Handlebars.registerHelper require "./helpers"
-require 'hammerjs'
-
 require "../css/main.scss"
 require "../about.html"
 require "../demo.html"
+
+window.Handlebars = require "handlebars/runtime"
+require "./helpers"
 
 window.Poems = {}
 window.Util = require "./util"

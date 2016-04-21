@@ -14,7 +14,7 @@ $ios_screen_sizes = {
 
 
 task :icons do
-  colors = { main: $brand_color, gray: '#cccccc', white: '#ffffff' }
+  colors = { main: $brand_color, gray: '#cccccc', light: '#ffffff' }
 
   convert = -> (src, dst, color) do
     sh "convert #{src} -channel RGB -fuzz 99% -fill '#{color}' -opaque '#000' #{dst}"

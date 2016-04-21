@@ -1,4 +1,3 @@
-moment = require('moment')
 moment.locale 'ru'
 
 millisecondsInDay = 86400 * 1000
