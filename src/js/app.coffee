@@ -108,12 +108,12 @@ class Poems.App
       value: [Model.currentDate]
       disabled: [{from: Model.lastAllowedDate()}, {to: Util.prevDate(Model.firstDate)}]
       onOpen: (p) =>
-        $$('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
-        $$('.calendar-custom-toolbar .left .link').on 'click', => calendar.prevMonth()
-        $$('.calendar-custom-toolbar .right .link').on 'click', => calendar.nextMonth()
+        $('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
+        $('.calendar-custom-toolbar .left .link').click => calendar.prevMonth()
+        $('.calendar-custom-toolbar .right .link').click => calendar.nextMonth()
       onMonthYearChangeStart: (p) =>
-        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
-        $$('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
+        $('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
+        $('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
       onDayClick: (p, dayContainer, year, month, day) =>
         date = new Date(year, month, day)
         Router.go("poems/#{Util.dateString date}")
