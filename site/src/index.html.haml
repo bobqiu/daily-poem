@@ -1,7 +1,3 @@
----
-title: Стих Дня
----
-
 #billboard
   .container
     #feedback-link
@@ -9,19 +5,18 @@ title: Стих Дня
     .row
       .col-sm-5
         %p.text-center
-          / = image_tag "promo.png", width: 270, height: 751.5, srcset: "promo@2x.png 2x"
           = image_tag "promo.png", width: 250, height: 696, srcset: "promo@2x.png 2x"
       .col-sm-7
         #promo-text
           %h1.brand Стих&ensp;Дня
-          %h6.concept Новое стихотворение каждый день
+          %h6.concept= data.site.subtitle
           %p.store-badges
             %span.appstore-badge
-              %a{href:"https://itunes.apple.com/ru/app/allegrotajm/id524992172", target:"_blank"}
-                = image_tag "badge-appstore.png", width: 135, height: 40
+              %a{href: data.site.appstore_url, target:"_blank"}
+                = badge "appstore"
             %span.playstore-badge
-              %a{href: "https://play.google.com/store/apps/details?id=name.sokurenko.AllegroTime&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1", target: '_blank'}
-                = image_tag "badge-playstore.png", width: 135, height: 40, alt: "Get it on Google Play"
+              %a{href: data.site.playstore_url, target: '_blank'}
+                = badge "playstore"
 
 #screenshots
   .container
@@ -42,7 +37,7 @@ title: Стих Дня
 #footer
   .container
     %p
-      &copy; 2016 Дмитрий Сокуренко и Денис Белобоков
+      = data.site.copyright
       %br
       Отзывы, вопросы и предложения —
       = mail_to "dmitry@sokurenko.name"

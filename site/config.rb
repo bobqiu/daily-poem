@@ -17,3 +17,13 @@ configure :build do
   # activate :relative_assets
   # set :http_prefix, "/Content/images/"
 end
+
+helpers do
+  def badge(type)
+    alt = case type
+      when 'appstore' then  "Загрузите в AppStore"
+      when 'playstore' then "Загрузите на Google Play"
+    end
+    image_tag "badge-#{type}.png", width: 135, height: 40, alt: alt
+  end
+end
