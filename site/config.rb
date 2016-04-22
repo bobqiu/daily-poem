@@ -35,3 +35,5 @@ helpers do
     end
   end
 end
+
+ignore "/poem.html"

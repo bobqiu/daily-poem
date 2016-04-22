@@ -3,7 +3,7 @@ task :serve do
 end
 
 task :build do
-  sh "bundle exec middleman build"
+  sh "bundle exec middleman build --verbose"
 end
 
 task deploy: :build do
