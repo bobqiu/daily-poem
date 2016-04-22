@@ -5,22 +5,23 @@ title: Стих Дня
 #billboard
   .container
     #feedback-link
-      %a.btn.btn-sm.btn-success{href: '/comments.html', target: '_blank'} Обратная связь
+      %a.btn.btn-sm.btn-success{href: '/comments.html', target: '_blank'} Оставить комментарий
     .row
-      .col-md-5
+      .col-sm-5
         %p.text-center
-          = image_tag "promo.png", width: 300, height: 835, srcset: "promo@2x.png 2x"
-      .col-md-7
+          / = image_tag "promo.png", width: 270, height: 751.5, srcset: "promo@2x.png 2x"
+          = image_tag "promo.png", width: 250, height: 696, srcset: "promo@2x.png 2x"
+      .col-sm-7
         #promo-text
-          %h1.brand Стих Дня
-          %p.concept Новое стихотворение каждый день
-          %p.appstore-badge
-            %a{href:"https://itunes.apple.com/ru/app/allegrotajm/id524992172", target:"_blank"}
-              = image_tag "badge-appstore.png", width: 270, height: 80
-
-          %p.playstore-badge
-            %a{href: "https://play.google.com/store/apps/details?id=name.sokurenko.AllegroTime&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1", target: '_blank'}
-              = image_tag "badge-playstore.png", width: 270, height: 80, alt: "Get it on Google Play"
+          %h1.brand Стих&ensp;Дня
+          %h6.concept Новое стихотворение каждый день
+          %p.store-badges
+            %span.appstore-badge
+              %a{href:"https://itunes.apple.com/ru/app/allegrotajm/id524992172", target:"_blank"}
+                = image_tag "badge-appstore.png", width: 135, height: 40
+            %span.playstore-badge
+              %a{href: "https://play.google.com/store/apps/details?id=name.sokurenko.AllegroTime&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-AC-global-none-all-co-pr-py-PartBadges-Oct1515-1", target: '_blank'}
+                = image_tag "badge-playstore.png", width: 135, height: 40, alt: "Get it on Google Play"
 
 #screenshots
   .container

@@ -1,9 +1,13 @@
-$font-size-base: 20px
-$font-family-sans-serif: "Open Sans", "Lucida Grande", "Helvetica Neue", "Helvetica", "Arial", "Verdana", "sans-serif"
-$headings-font-family: "Open Sans", "Lucida Grande", "Helvetica Neue", "Helvetica", "Arial", "Verdana", "sans-serif"
-$headings-font-weight: 300
+$default-font-families: "Roboto", -apple-system-body, sans-serif
+$fancy-font: "Bad Script"
 
-$brand-success: #f22a1e
+// bootstrap overrides
+$font-size-base: 20px
+$font-family-sans-serif: $default-font-families
+$headings-font-family: $fancy-font, -apple-system-headline, $default-font-families
+$headings-font-weight: 400
+// $brand-success: #f22a1e
+$brand-success: #fe952e
 
 @import "bootstrap-sprockets"
 @import "bootstrap/variables"
@@ -22,21 +26,29 @@ $brand-success: #f22a1e
 @import "bootstrap/responsive-utilities"
 @import "bootstrap/theme"
 
+= phone
+  @media screen and (max-width: $screen-sm-min - 1)
+    @content
+
+= larger-device
+  @media screen and (min-width: $screen-sm-min)
+    @content
+
 #billboard
   padding: 10px 0 0
-  background: linear-gradient(0deg, #f2f2f2, #aaa) #f2f2f2
+  background: linear-gradient(0deg, #fff, #FFBE7F) #f2f2f2
 
   #promo-text
     padding-top: 250px
-    font-weight: 300
-    @media screen and (max-width: $screen-md-min)
+    font-weight: 400
+    +phone
       padding: 10px 0 40px
 
   h1.brand
     font-size: 72px
     text-align: center
-    font-weight: 300
-    @media screen and (max-width: $screen-md-min)
+    font-weight: 400
+    +phone
       font-size: 48px
 
     img
@@ -46,16 +58,17 @@ $brand-success: #f22a1e
     font-size: 28px
     text-align: center
 
-  p.concept
+  .concept
     font-size: 24px
     text-align: center
 
-  p.appstore-text, p.playstore-text
-    padding-top: 15px
-    margin-bottom: 10px
+  .store-badges
+    margin-top: 25px
     text-align: center
 
-  p.appstore-badge, p.playstore-badge
+  .appstore-text, .playstore-text
+    padding-top: 15px
+    margin-bottom: 10px
     text-align: center
 
 
@@ -78,8 +91,10 @@ $brand-success: #f22a1e
     a.btn
       font-size: 14px
       border-radius: 4px
-    @media screen and (max-width: $screen-xs-min)
+
+    +phone
       position: static
+      text-align: center
 
 #screenshots
   background: #fafafa
@@ -105,9 +120,8 @@ $brand-success: #f22a1e
   p
     font-size: 16px
     line-height: 1.6
-    @media screen and (max-width: $screen-md-min)
+    +phone
       text-align: center
-
 
 #comments-heading
   padding: 30px 0 30px
@@ -122,8 +136,8 @@ $brand-success: #f22a1e
     padding-right: 10px
   h1 a.appstore-link
     float: right
-    @media screen and (max-width: $screen-md-min)
-    display: none
+    +phone
+      display: none
 
 #comments
   padding: 0 0 10px
@@ -132,4 +146,8 @@ $brand-success: #f22a1e
 #copyright
   p
     font-size: 8px
-    color: #ccc
+    color: #bbb
+
+.no-padding-on-xs
+  +phone
+    padding: 0
