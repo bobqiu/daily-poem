@@ -1,6 +1,7 @@
 task :data do
   $poems_dst.mkpath
 
+  details = {}
   summary = {items: []}
 
   Pathname.glob("#{$poems_src}/*.txt") do |src|
@@ -31,11 +32,15 @@ task :data do
     # template = ERB.new(File.read('other/poem.erb'), nil, '-')
     # template.result(binding)
 
-    File.write $poems_dst / "#{basename}.json", poem.to_h.to_json
     summary[:items] << {id: basename.to_i, title: poem.title, author: poem.author}
+    details[basename] = poem.to_h
   end
 
   summary[:mapping] = (Date.today - 5 .. Date.today + 5).inject({}) { |map, date| map[date] = map.size + 1; map }
 
+  details.each { |basename, data| File.write $poems_dst / "#{basename}.json", data.to_json }
   File.write $poems_dst / 'summary.json', summary.to_json
+
+  File.write "site/data/poem_details.json", details.to_json
+  File.write "site/data/poem_summary.json", summary.to_json
 end

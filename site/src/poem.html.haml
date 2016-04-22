@@ -1,0 +1,11 @@
+- poem = data.poem_details[poem_id]
+- content_for(:page_title) { "#{poem.author} – #{poem_title}" }
+
+.poem
+  %h1.poem-title
+    = poem.firstLine
+  .poem-body
+    = poem.contentHtml
+
+  .poem-author
+    = poem.author
