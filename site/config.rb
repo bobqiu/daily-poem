@@ -26,10 +26,12 @@ end
 
 helpers do
   def badge(type)
-    alt = case type
-      when 'appstore' then  "Загрузите в AppStore"
-      when 'playstore' then "Загрузите на Google Play"
+    url, alt = case type
+      when 'appstore' then [data.site.appstore_url, "Загрузите в AppStore"]
+      when 'playstore' then [data.site.playstore_url, "Загрузите на Google Play"]
     end
-    image_tag "badge-#{type}.png", width: 135, height: 40, alt: alt
+    link_to url, target: '_blank' do
+      image_tag "badge-#{type}.png", width: 135, height: 40, alt: alt
+    end
   end
 end

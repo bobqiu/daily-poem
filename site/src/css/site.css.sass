@@ -4,9 +4,7 @@ $fancy-font: "Bad Script"
 // bootstrap overrides
 $font-size-base: 20px
 $font-family-sans-serif: $default-font-families
-$headings-font-family: $fancy-font, -apple-system-headline, $default-font-families
 $headings-font-weight: 400
-// $brand-success: #f22a1e
 $brand-success: #fe952e
 
 @import "bootstrap-sprockets"
@@ -40,27 +38,21 @@ $brand-success: #fe952e
 
   #promo-text
     padding-top: 250px
-    font-weight: 400
     +phone
       padding: 10px 0 40px
 
-  h1.brand
-    font-size: 72px
-    text-align: center
+  .brand, .concept
     font-weight: 400
+    font-family: $fancy-font, -apple-system-headline, $default-font-families
+    text-align: center
+
+  .brand
+    font-size: 72px
     +phone
       font-size: 48px
 
-    img
-      vertical-align: baseline
-
-  h2
-    font-size: 28px
-    text-align: center
-
   .concept
     font-size: 24px
-    text-align: center
 
   .store-badges
     margin-top: 25px
@@ -129,20 +121,19 @@ $brand-success: #fe952e
   h1
     margin: 0
     font-size: 32px
-  h1 a.home-link
-    color: black
-    span.icon
-      padding-right: 10px
-    span.text
-      vertical-align: -7px
-  h1 a.appstore-link
-    float: right
-    +phone
-      display: none
+    .home-link
+      color: black
+      .icon
+        padding-right: 10px
+      .text
+        vertical-align: -7px
+    .appstore-link
+      float: right
+      +phone
+        display: none
 
 #comments
   padding: 0 0 10px
-
 
 #copyright
   p
@@ -152,3 +143,5 @@ $brand-success: #fe952e
 .no-padding-on-xs
   +phone
     padding: 0
+
+@import "poems.css"

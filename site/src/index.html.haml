@@ -2,6 +2,9 @@
 title: "Стих Дня — новое стихотворение каждый день. Приложение для iPhone и Android."
 ---
 
+- content_for :head do
+  %meta{name: "apple-itunes-app", content: "app-id=#{data.site.appstore_id}"}
+
 #billboard
   .container
     #feedback-link
@@ -15,12 +18,8 @@ title: "Стих Дня — новое стихотворение каждый 
           %h1.brand Стих&ensp;Дня
           %h6.concept= data.site.subtitle
           %p.store-badges
-            %span.appstore-badge
-              %a{href: data.site.appstore_url, target:"_blank"}
-                = badge "appstore"
-            %span.playstore-badge
-              %a{href: data.site.playstore_url, target: '_blank'}
-                = badge "playstore"
+            %span.appstore-badge= badge "appstore"
+            %span.playstore-badge= badge "playstore"
 
 #screenshots
   .container

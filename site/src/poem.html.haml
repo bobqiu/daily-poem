@@ -1,11 +1,21 @@
 - poem = data.poem_details[poem_id]
 - content_for(:page_title) { "#{poem.author} – #{poem_title}" }
+- content_for :head do
+  %meta{name: "apple-itunes-app", content: "app-id=#{data.site.appstore_id}, app-argument=poems/#{poem_id}"}
 
-.poem
-  %h1.poem-title
-    = poem.firstLine
-  .poem-body
-    = poem.contentHtml
+%article.poem
+  %p.poem-date
+  %h2.poem-title= poem.firstLine
+  .poem-body= poem.contentHtml
+  .poem-extra
+    .poem-author= poem.author
+    .poem-year
+    .poem-source
 
-  .poem-author
-    = poem.author
+%footer.poem-footer
+  .poem-stores
+    %span.appstore-badge= badge "appstore"
+    %span.playstore-badge= badge "playstore"
+
+  .poem-copy
+    %p= data.site.copyright

@@ -1,0 +1,57 @@
+@import "bootstrap/variables"
+
+$light-gray: rgba(#000, .3)
+$small-font-size: 13px
+$poem-font-family: Palatino, Georgia, serif
+
+body.poems
+  background: #efeff4
+
+.poem
+  font-family: $poem-font-family
+  font-size: 16px
+  font-weight: 300
+  color: #333
+  margin: 0 auto
+  padding: 1em
+  max-width: $screen-sm-min
+
+  .poem-date
+    margin: 1em 0
+    text-align: center
+    color: $light-gray
+    font-style: italic
+    font-size: $small-font-size
+
+  .poem-title
+    text-align: center
+    font-weight: 700
+    margin: 1em 0
+
+  .poem-body
+    margin: 1em 0
+    text-align: center
+    p
+      margin: 0
+
+  .poem-extra
+    padding: 0 2em
+    text-align: right
+    font-style: italic
+    .poem-author
+      margin: 1em 0
+    .poem-years
+      margin: 1em 0
+
+.poem-footer
+  border-top: 1px solid #ccc
+
+  .poem-stores
+    margin: 1em
+    text-align: right
+  .poem-copy
+    margin: 1em
+    p
+      text-align: right
+      color: #999
+      font-size: 14px
