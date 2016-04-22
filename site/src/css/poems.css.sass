@@ -7,6 +7,18 @@ $poem-font-family: Palatino, Georgia, serif
 body.poems
   background: #efeff4
 
+.poem-header
+  margin-top: 1em
+  a
+    color: black
+    .logo
+    .title
+      font-family: $fancy-font
+      font-size: 32px
+      vertical-align: -10px
+    &:hover
+      text-decoration: none
+
 .poem
   font-family: $poem-font-family
   font-size: 16px
@@ -14,6 +26,7 @@ body.poems
   color: #333
   margin: 0 auto
   padding: 1em
+  padding-top: 0
   max-width: $screen-sm-min
 
   .poem-date
@@ -26,7 +39,7 @@ body.poems
   .poem-title
     text-align: center
     font-weight: 700
-    margin: 1em 0
+    margin: 0 0 0.5em
 
   .poem-body
     margin: 1em 0
@@ -35,13 +48,13 @@ body.poems
       margin: 0
 
   .poem-extra
-    padding: 0 2em
     text-align: right
     font-style: italic
-    .poem-author
-      margin: 1em 0
-    .poem-years
-      margin: 1em 0
+    p
+      margin: 0.5em 0
+    .poem-id
+      float: left
+      color: #ccc
 
 .poem-footer
   border-top: 1px solid #ccc

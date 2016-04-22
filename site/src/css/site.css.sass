@@ -16,10 +16,15 @@ $brand-success: #fe952e
 @import "bootstrap/type"
 @import "bootstrap/grid"
 @import "bootstrap/buttons"
+// @import "bootstrap/dropdowns"
+// @import "bootstrap/button-groups"
+// @import "bootstrap/input-groups"
+@import "bootstrap/forms"
+@import "bootstrap/navs"
+@import "bootstrap/navbar"
 // @import "bootstrap/component-animations"
 // @import "bootstrap/code"
 // @import "bootstrap/tables"
-// @import "bootstrap/forms"
 @import "bootstrap/utilities"
 @import "bootstrap/responsive-utilities"
 @import "bootstrap/theme"
@@ -32,116 +37,10 @@ $brand-success: #fe952e
   @media screen and (min-width: $screen-sm-min)
     @content
 
-#billboard
-  padding: 10px 0 0
-  background: linear-gradient(0deg, #fff, #FFBE7F) #f2f2f2
-
-  #promo-text
-    padding-top: 250px
-    +phone
-      padding: 10px 0 40px
-
-  .brand, .concept
-    font-weight: 400
-    font-family: $fancy-font, -apple-system-headline, $default-font-families
-    text-align: center
-
-  .brand
-    font-size: 72px
-    +phone
-      font-size: 48px
-
-  .concept
-    font-size: 24px
-
-  .store-badges
-    margin-top: 25px
-    text-align: center
-
-  .appstore-text, .playstore-text
-    padding-top: 15px
-    margin-bottom: 10px
-    text-align: center
-
-
-  #feedback-link
-    position: absolute
-    top: 0px
-    right: 0px
-    text-align: right
-    padding: 10px
-    z-index: 10
-
-    // position: fixed
-    // top: 50%
-    // left: -50px
-    // width: 110px
-    // height: 21px
-    // transform: rotate(-90deg)
-    // -webkit-transform: rotate(-90deg)
-
-    a.btn
-      font-size: 14px
-      border-radius: 4px
-
-    +phone
-      position: static
-      text-align: center
-
-#screenshots
-  background: #fafafa
-  padding-bottom: 30px
-
-  .screenshot
-    padding-top: 30px
-    padding-bottom: 20px
-
-  h3
-    text-align: center
-    font-size: 28px
-    margin-bottom: 20px
-
-#support
-  background: #f2f2f2
-  padding: 50px 0
-
-#footer
-  padding: 50px 0
-  text-align: right
-  color: #999
-  p
-    font-size: 16px
-    line-height: 1.6
-    +phone
-      text-align: center
-
-#comments-heading
-  padding: 30px 0 30px
-  background: #f2f2f2
-  h1
-    margin: 0
-    font-size: 32px
-    .home-link
-      color: black
-      .icon
-        padding-right: 10px
-      .text
-        vertical-align: -7px
-    .appstore-link
-      float: right
-      +phone
-        display: none
-
-#comments
-  padding: 0 0 10px
-
-#copyright
-  p
-    font-size: 8px
-    color: #bbb
-
 .no-padding-on-xs
   +phone
     padding: 0
 
-@import "poems.css"
+
+@import "home.css.sass"
+@import "poems.css.sass"

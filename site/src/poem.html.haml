@@ -3,19 +3,32 @@
 - content_for :head do
   %meta{name: "apple-itunes-app", content: "app-id=#{data.site.appstore_id}, app-argument=poems/#{poem_id}"}
 
-%article.poem
-  %p.poem-date
-  %h2.poem-title= poem.firstLine
-  .poem-body= poem.contentHtml
-  .poem-extra
-    .poem-author= poem.author
-    .poem-year
-    .poem-source
+.container
+  %header.poem-header
+    = link_to '/' do
+      = image_tag "favicon-round.png", width: 40, height: 40, class: 'logo'
+      %span.title= data.site.title
 
-%footer.poem-footer
-  .poem-stores
-    %span.appstore-badge= badge "appstore"
-    %span.playstore-badge= badge "playstore"
+  %article.poem
+    / %p.poem-date
 
-  .poem-copy
-    %p= data.site.copyright
+    - if poem_title
+      %h2.poem-title= poem_title
+    .poem-body= poem.contentHtml
+    .poem-extra
+      - if poem.author
+        %p.poem-author
+          %span.poem-id= "##{poem.id}"
+          = poem.author
+      - if poem.year
+        %p.poem-year= poem.year
+      - if poem.source
+        %p.poem-source= poem.source
+
+  %footer.poem-footer
+    .poem-stores
+      %span.appstore-badge= badge "appstore"
+      %span.playstore-badge= badge "playstore"
+
+    .poem-copy
+      %p= data.site.copyright
