@@ -13,7 +13,7 @@ $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
 $ios_emulator_target = ENV['target'] || "iPhone-6"
-$ios_version = "0.3.0"
+$ios_version = "0.4.0"
 
 
 task(:serve) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
@@ -23,7 +23,7 @@ task(:watch) { sh "webpack -w" }
 task(:rebuild => %w(build data)) {  sh "touch www/cordova.js" }
 task(:clean) { sh "rm -rf www/*" }
 task(:sim) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
-task(:dev) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
+task(:device) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
 
 task(:ios_release) { sh "cordova build ios --device --release" }
 task(:xcode) {   sh "open platforms/ios/#$app_name.xcodeproj" }

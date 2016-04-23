@@ -122,9 +122,9 @@ class Poems.App
     next?()
 
   sharePoem: ->
-    Model.getCurrentPoem (poem) ->
+    Model.getCurrentPoem (poem) =>
       if window.plugins?.socialsharing?
-        window.plugins.socialsharing.share poem.content, poem.heading(), null, null
+        window.plugins.socialsharing.share poem.content, poem.heading(), null, poem.getUrl()
 
   likePoem: ->
     Model.currentPoem().like()

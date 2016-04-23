@@ -112,5 +112,8 @@ class Poems.Poem
   isLiked: ->
     Model.likes.has(@id)
 
+  getUrl: ->
+    "https://dailypoem.firebaseapp.com/poems/#{@id}.html"
+
   date: ->
     new Date Model.reverseMapping[@id]
