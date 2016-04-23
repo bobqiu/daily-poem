@@ -30,3 +30,4 @@ $icon-height: $icon-height-value + px;
 @include define-icon(today, $filled: true);
 @include define-icon(calendar, $filled: true);
 @include define-icon(align_center, $filled: true);
+@include define-icon(random, dice);

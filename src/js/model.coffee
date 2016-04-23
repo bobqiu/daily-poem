@@ -65,6 +65,21 @@ class Poems.Model
     if @likes.has(poemId) then @likes.delete(poemId) else @likes.add(poemId)
     localStorage.likes = JSON.stringify Array.from @likes
 
+  randomPoemId: ->
+    currentDate = Util.dateString new Date
+    currentPoemId = @currentPoem().id
+    visibleIds = for date, id of @mapping
+      break if date > currentDate
+      id
+
+    currentPoemIndex = visibleIds.indexOf currentPoemId
+    randomIndex = Math.floor(Math.random() * visibleIds.length)
+    if randomIndex == currentPoemIndex
+      randomIndex += if randomIndex isnt 0 then -1 else +1
+
+    randomId = visibleIds[randomIndex]
+    randomId
+
   getFavorites: (next) ->
     poemIds = (id for id in Array.from @likes)
 

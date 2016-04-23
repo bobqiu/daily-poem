@@ -9,6 +9,7 @@ class Poems.MainView
     @done = yes
     @shift = 0
 
+    $(document).on 'click', '.x-random', (e) => App.openRandomPoem()
     $(document).on 'click', '.x-share', (e) => App.sharePoem()
     $(document).on 'click', '.x-like', (e) =>
       e.stopPropagation()
@@ -22,6 +23,7 @@ class Poems.MainView
 
   unmount: ->
     @hammer.off 'swipe'
+    $(document).off 'click', '.x-random'
     $(document).off 'click', '.x-share'
     $(document).off 'click', '.x-like'
 

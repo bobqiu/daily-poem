@@ -66,7 +66,6 @@ class Poems.App
         renderDate date
       when typeof identifier is 'string' and identifier.match(/^\d+$/)
         id = Number(identifier)
-        console.log id, identifier
         Model.getPoem id, (poem) =>
           @renderMain poem.date(), next
       when identifier instanceof Date
@@ -120,6 +119,9 @@ class Poems.App
         @f7app.closePanel()
 
     next?()
+
+  openRandomPoem: ->
+    Router.go "poems/#{Model.randomPoemId()}"
 
   sharePoem: ->
     Model.getCurrentPoem (poem) =>
