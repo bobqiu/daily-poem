@@ -93,6 +93,22 @@ class Poems.Model
         poems.push(poem)
         done()
 
+  closestPoems: (limit = 5, next) ->
+    count = 0
+    currentDate = Util.dateString new Date
+    ids = []
+    for date, id of @mapping when date > currentDate
+      ids.push id
+      count += 1
+      break if count == limit
+
+    poems = []
+    for id in ids
+      @getPoem id, (poem) =>
+        poems.push poem
+        if poems.length == ids.length
+          next(poems)
+
 class Poems.Cache
   constructor: ->
     @data = new Map
@@ -121,6 +137,9 @@ class Poems.Poem
   heading: ->
     @title || @firstLine
 
+  headingWithAuthor: ->
+    "#{@author}: #{@heading()}"
+
   like: ->
     Model.like(@id)
 
@@ -129,6 +148,9 @@ class Poems.Poem
 
   getUrl: ->
     "https://dailypoem.firebaseapp.com/poems/#{@id}.html"
+
+  notificationTime: ->
+    moment(@date()).startOf('day').add({hours: 12, minutes: 30}).valueOf()
 
   date: ->
     new Date Model.reverseMapping[@id]

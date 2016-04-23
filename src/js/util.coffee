@@ -44,3 +44,6 @@ module.exports =
   # whenAllDone: (promises..., next) ->
   #   hasNullPromises = promises.some (p) -> p is null or p is undefined
   #   Promise.all(promises).then(next)
+
+window.__console_ins = (arg) -> console.log(arg)
+window.__console_ins_arr = (args) -> console.log(arg) for arg in args
