@@ -35,7 +35,7 @@ class Poems.App
       else if poem.last
         next ""
       else
-        context = $.extend {}, poem, domId: "poem-#{poem.id}", appDate: appDate, liked: poem.isLiked()
+        context = Object.assign {}, poem, domId: "poem-#{poem.id}", appDate: appDate, liked: poem.isLiked()
         html = @render 'poem', context
         next html
 

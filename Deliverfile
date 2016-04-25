@@ -20,5 +20,9 @@ ipa "./platforms/ios/build/device/DailyPoem.ipa"
 #   "en-US" => "Keyword1, Keyword2"
 # )
 
+team_id 1183101
+team_name "Dmitry Sokurenko"
+
 skip_screenshots true
-skip_binary_upload true
+skip_metadata true
+skip_binary_upload true unless ENV['BINARY']

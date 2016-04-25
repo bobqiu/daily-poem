@@ -43,9 +43,9 @@ class Poems.MainView
     @viewport.addClass "animating"
     @viewport.css transform: translate3d(@shift)
 
-    curr = $('.smm-swiper-slide.current', @viewport).show()
-    prev = $('.smm-swiper-slide.prev', @viewport).show()
-    next = $('.smm-swiper-slide.next', @viewport).show()
+    curr = @viewport.find('.smm-swiper-slide.current').show()
+    prev = @viewport.find('.smm-swiper-slide.prev').show()
+    next = @viewport.find('.smm-swiper-slide.next').show()
 
     animationEnd = =>
       @done = yes
@@ -53,7 +53,7 @@ class Poems.MainView
       @container.removeClass "panning"
       # $('.smm-swiper-slide.prev', @viewport).hide()
       # $('.smm-swiper-slide.next', @viewport).hide()
-      $('.smm-swiper-slide:not(.current) .content-block', @viewport).scrollTop(0)
+      @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
 
 
     setTimeout =>

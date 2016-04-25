@@ -4,13 +4,18 @@ webpack = require('webpack')
 path = require('path')
 Visualizer = require('webpack-visualizer-plugin')
 
-production = process.argv[1] == '/usr/local/bin/webpack'
 nodeModulesDir = path.resolve(__dirname, './node_modules')
 assetFormat = '[name].[ext]'
 cssExtractor = new ExtractTextPlugin('css', '[name].css')
 knownHelpers = ['assetUrl', 'navbarBox', 'textIf', 'textUnless']
+
+production = process.argv[1] == '/usr/local/bin/webpack'
+release = process.env.RELEASE
+
+
 targetDir = ''
 publicPath = ''
+sourcePrefix = if release then '' else 'http://10.0.1.3:3000/'
 
 module.exports =
   devtool: if production then null else 'source-map'
@@ -43,7 +48,7 @@ module.exports =
   plugins: [
     cssExtractor
     new HtmlWebpackPlugin(
-      title: 'Custom Index', filename: 'index.html', template: 'src/index.html.ejs', inject: false, targetDir: 'http://10.0.1.3:3000/'
+      title: 'Custom Index', filename: 'index.html', template: 'src/index.html.ejs', inject: false, targetDir: sourcePrefix
     )
   ]
 

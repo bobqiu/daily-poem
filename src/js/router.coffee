@@ -1,18 +1,20 @@
 class Poems.Router
   constructor: ->
     $(window).on 'hashchange', @route
-    $(document).on "click", 'a.action', (e) => @go $(e.currentTarget).attr('href')
+    $(document).on "click", 'a.action', (e) => @go $(e.target).closest("a.action").attr('href')
     $(document).on 'click', 'a.back.link', (e) => @go ''
 
   go: (path) ->
     location.hash = path
 
   route: =>
+    console.log 'routing'
     hash = decodeURIComponent location.hash.slice(1)
     [controller, id, other...] = hash.split('/')
 
     controller = 'main' unless controller
     routes = this
+
     if routes[controller]
       console.log "routing to Router.#{controller}(#{id ? ''})"
       routes[controller](id)
@@ -21,10 +23,10 @@ class Poems.Router
 
     return false
 
-  main: -> App.openView('Main', Model.currentDate)
-  favorites: -> App.openView('Favorites')
-  about: ->App.openView('About')
-  developer: ->App.openView('Developer')
-  tomorrow: -> App.openView('Main', Util.nextDate Model.lastAllowedDate())
-  poems: (id) -> App.openView('Main', id)
+  main:          -> App.openView('Main', Model.currentDate)
+  favorites:     -> App.openView('Favorites')
+  about:         -> App.openView('About')
+  developer:     -> App.openView('Developer')
+  tomorrow:      -> App.openView('Main', Util.nextDate Model.lastAllowedDate())
+  poems: (id)    -> App.openView('Main', id)
   calendar: (id) -> App.openView('Calendar')
