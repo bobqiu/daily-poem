@@ -2,15 +2,22 @@ require "../css/main.scss"
 require "../about.html"
 require "../demo.html"
 
+requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
+
 window.Handlebars = require "handlebars/runtime"
 require "./helpers"
 
-window.Poems = {}
+window.Poems = {Views: {}, Services: {}}
 window.Util = require "./util"
 require "./model"
 require "./app"
 require "./router"
-require './main-view'
+require './services/notifications'
+
+require './views/base'
+requireAll require.context("./views", true, /.coffee$/)
+requireAll require.context("./services", true, /.coffee$/)
+
 
 main = ->
   # StatusBar?.backgroundColorByHexString("#ff9500")

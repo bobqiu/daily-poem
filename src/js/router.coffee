@@ -1,14 +1,19 @@
 class Poems.Router
   constructor: ->
-    $(window).on 'hashchange', @route
-    $(document).on "click", 'a.action', (e) => @go $(e.target).closest("a.action").attr('href')
-    $(document).on 'click', 'a.back.link', (e) => @go ''
+    $(window).on 'hashchange', =>
+      @route()
+
+    $(document).on "click", 'a.action', (e) =>
+      @go $(e.target).closest("a.action").attr('href')
+
+    $(document).on 'click', 'a.back.link', (e) =>
+      @go ''
 
   go: (path) ->
+    console.log "going to #{path}"
     location.hash = path
 
   route: =>
-    console.log 'routing'
     hash = decodeURIComponent location.hash.slice(1)
     [controller, id, other...] = hash.split('/')
 
@@ -23,10 +28,13 @@ class Poems.Router
 
     return false
 
-  main:          -> App.openView('Main', Model.currentDate)
-  favorites:     -> App.openView('Favorites')
-  about:         -> App.openView('About')
-  developer:     -> App.openView('Developer')
-  tomorrow:      -> App.openView('Main', Util.nextDate Model.lastAllowedDate())
-  poems: (id)    -> App.openView('Main', id)
-  calendar: (id) -> App.openView('Calendar')
+  main:          -> @openView 'Main', Model.currentDate
+  favorites:     -> @openView 'Favorites'
+  about:         -> @openView 'About'
+  developer:     -> @openView 'DeveloperMenu'
+  tomorrow:      -> @openView 'Main', Util.nextDate Model.lastAllowedDate()
+  poems: (id)    -> @openView 'Main', id
+  calendar: (id) -> @openView 'Calendar'
+
+  openView: (args...) ->
+    App.openView args...

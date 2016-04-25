@@ -13,7 +13,10 @@ class Poems.App
 
     Model.loadMapping =>
       Router.route()
-      setTimeout @setReminders, 100
+      setTimeout =>
+        @notifications = new Poems.Services.Notifications
+        @notifications.setReminders()
+      , 100
 
     $('.sidebar').on 'open', =>
 
@@ -24,148 +27,19 @@ class Poems.App
 
     $(document).on 'resume', @resuming
 
-  render: (template, args...) ->
-    Util.render(template, args...)
-
-  renderPoemForDate: (date, next) ->
-    Model.getPoemForDate date, (poem) =>
-      appDate = Util.formatMonthAndDay(date)
-      if Util.dateString(date) > Util.dateString(Model.lastAllowedDate())
-        next @render 'tomorrow', appDate: appDate
-      else if poem.last
-        next ""
-      else
-        context = Object.assign {}, poem, domId: "poem-#{poem.id}", appDate: appDate, liked: poem.isLiked()
-        html = @render 'poem', context
-        next html
-
-  renderPoemsForDate: (date, next) ->
-    Model.setDate date
-    count = 0
-    done = -> ++count == 3 && next && next()
-    @renderPoemForDate date, (html) => $('.smm-swiper-slide.current').html html; done()
-    @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html; done()
-    @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html; done()
-
   openView: (viewName, args...) ->
     @currentView?.unmount()
-    @currentView = null
 
-    next = =>
-      if viewName == 'Main'
-        @currentView = new Poems.MainView
-
-    @["render#{viewName}"](args..., next)
-
-  renderMain: (identifier, next) ->
-    @loadTemplateOnMainPage 'pages/main'
-
-    renderDate = (date) =>
-      @renderPoemsForDate date, next
-
-    switch
-      when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/)
-        date = new Date(identifier)
-        renderDate date
-      when typeof identifier is 'string' and identifier.match(/^\d+$/)
-        id = Number(identifier)
-        Model.getPoem id, (poem) =>
-          @renderMain poem.date(), next
-      when identifier instanceof Date
-        renderDate identifier
-      else
-        renderDate Model.currentDate
-
-  renderAbout: (next) ->
-    version = null
-    buildNumber = null
-    p1 = cordova?.getAppVersion.getVersionNumber().then (value) -> version = value
-    p2 = cordova?.getAppVersion.getVersionCode().then (value) -> buildNumber = value
-    Promise.all([p1, p2]).then =>
-      @loadTemplateOnMainPage 'pages/about', versionText: "#{version} (#{buildNumber})"
-      $('#dmitry-avatar').click =>
-        @developerClickCount ?= 0
-        @developerClickCount += 1
-        if @developerClickCount % 4 is 0
-          $('#developer-tab').toggle()
-      next?()
-
-  renderFavorites: (next) ->
-    Model.getFavorites (poems) =>
-      @loadTemplateOnMainPage 'pages/favorites', poems: poems
-      next?()
-
-  renderDeveloper: (next) ->
-    data = firstDate: Util.dateString(Model.firstDate), lastDate: Util.dateString(Model.lastDate)
-    @loadTemplateOnMainPage 'pages/developer', data
-    next?()
-
-  renderCalendar: (next) ->
-    @loadTemplateOnMainPage 'pages/calendar'
-
-    calendar = @f7app.calendar
-      container: '#calendar-inline-container',
-      weekHeader: false,
-      toolbarTemplate: @render('shared/calendar-toolbar')
-      value: [Model.currentDate]
-      disabled: [{from: Model.lastAllowedDate()}, {to: Util.prevDate(Model.firstDate)}]
-      onOpen: (p) =>
-        $('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
-        $('.calendar-custom-toolbar .left .link').click => calendar.prevMonth()
-        $('.calendar-custom-toolbar .right .link').click => calendar.nextMonth()
-      onMonthYearChangeStart: (p) =>
-        $('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
-        $('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
-      onDayClick: (p, dayContainer, year, month, day) =>
-        date = new Date(year, month, day)
-        Router.go("poems/#{Util.dateString date}")
-        @f7app.closePanel()
-
-    next?()
-
-  setReminders: =>
-    notifications = cordova?.plugins.notification.local
-    return unless notifications?
-
-    console.time "setting up notifications"
-    notifications.cancelAll()
-
-    Model.closestPoems 7, (poems) =>
-      for poem, index in poems
-        notifications.schedule
-          id: poem.id
-          badge: 1
-          at: poem.notificationTime()
-          # at: Date.now() + (index + 1) * 1000 * 30
-          text: poem.headingWithAuthor()
-          data: poem_id: poem.id
-
-      notifications.on "schedule", (notification) ->
-        console.log "notification scheduled #{notification.id}", notification
-
-      notifications.on "trigger", (notification) ->
-        console.log "notification triggered #{notification.id}", notification
-
-      notifications.on "click", (notification) ->
-        notifications.clearAll()
-        Router.go "poems/#{notification.id}"
-        console.log "notification clicked #{notification.id}", notification, notification.data
-
-    console.timeEnd "setting up notifications"
-
-  openRandomPoem: ->
-    Router.go "poems/#{Model.randomPoemId()}"
-
-  sharePoem: ->
-    Model.getCurrentPoem (poem) =>
-      if window.plugins?.socialsharing?
-        window.plugins.socialsharing.share poem.content, poem.heading(), null, poem.getUrl()
-
-  likePoem: ->
-    Model.currentPoem().like()
+    @currentView = new Poems.Views[viewName](args...)
+    @currentView.renderLayout()
+    @currentView.mount()
+    @currentView.render()
 
   router: ->
     @f7view.router
+
+  render: (template, args...) ->
+    Util.render(template, args...)
 
   load: (content) ->
     @router().loadContent content
@@ -192,6 +66,5 @@ class Poems.App
     action = @actions[@lastActionIndex++]
     action && action()
 
-
   resuming: ->
-    cordova?.plugins.notification.local.clearAll()
+    @notifications?.clearAll()
