@@ -3,9 +3,14 @@ class window.BaseView
     App.f7view.router
 
   renderLayout: ->
-  mount: ->
   render: ->
+  mount: ->
   unmount: ->
+
+  show: ->
+    @renderLayout()
+    @render()
+    @mount()
 
   renderTemplate: (template, args...) ->
     Util.render(template, args...)

@@ -22,7 +22,7 @@ class Poems.Views.Main extends BaseView
         id = Number(identifier)
         Model.getPoem id, (poem) =>
           @identifier = poem.date()
-          @show(next)
+          @render(next)
       when identifier instanceof Date
         renderDate identifier
       else
@@ -46,12 +46,14 @@ class Poems.Views.Main extends BaseView
 
   onOpenRandom: (e) => @openRandomPoem()
 
-  onShare: (e) => @sharePoem()
+  onShare: (e) =>
+    @sharePoem()
 
   onLike: (e) =>
-    e.stopPropagation()
-    Util.toggleButton(e.currentTarget)
-    icon = $(e.currentTarget).find('i')
+    target = $(e.target).closest(".x-like")
+    icon = $(target).find('i')
+
+    Util.toggleButton(target)
     action = if icon.hasClass('filled') then 'remove' else 'add'
     icon["#{action}Class"]("gray")
     @likePoem()
