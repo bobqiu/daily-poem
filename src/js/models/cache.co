@@ -1,0 +1,19 @@
+class Poems.Models.Cache
+  constructor: ->
+    @data = new Map
+
+  set: (key, item) ->
+    @data.set key, item
+    @cleanup key if @data.size > 20
+
+  get: (key) ->
+    @data.get key
+
+  has: (key) ->
+    @data.has key
+
+  cleanup: (key) ->
+    keysToLeave = [ key, Util.dateString(Util.nextDate(new Date(key))), Util.dateString(Util.prevDate(new Date(key))) ]
+    @data.forEach (object, key, map) =>
+      if key not in keysToLeave
+        @data.delete(key)

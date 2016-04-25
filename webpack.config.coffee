@@ -38,7 +38,7 @@ module.exports =
         helperDirs: [ "#{__dirname}/src/helpers" ]
         inlineRequires: '../images/'
     }
-    { test: /\.coffee$/, loaders: [ 'coffee' ] }
+    { test: /\.(coffee|co)$/, loaders: [ 'coffee' ] }
     { test: /\.js$/, exclude: /node_modules/, loader: 'babel' } # presets[]=react,presets[]=es2015
     { test: /\.(png|jpe?g|gif|svg)$/, loader: "url?limit=1024&name=#{assetFormat}" }
     { test: /\.html$/, loader: 'file?name=[name].[ext]!html-minify' }

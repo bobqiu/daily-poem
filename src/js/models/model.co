@@ -1,6 +1,6 @@
-class Poems.Model
+class Poems.Models.PoemApi
   constructor: ->
-    @poemsCache = new Poems.Cache
+    @poemsCache = new Poems.Models.Cache
     @likes = new Set JSON.parse(localStorage.likes ? '[]')
     @currentDate = new Date
 
@@ -31,23 +31,23 @@ class Poems.Model
     @currentDate = date
     # console.log "set date to", Util.dateString @currentDate
 
-  getPoem: (id, next) ->
-    dateKey = @reverseMapping[id]
-
-    if not id
-      return next last: yes
-    if @poemsCache.has dateKey
-      return next @poemsCache.get dateKey
-
-    $.getJSON "poems/#{id}.json", (res) =>
-      poem = new Poems.Poem(res)
-      @poemsCache.set dateKey, poem
-      next poem
-
-  getPoemForDate: (date, next) ->
-    dateKey = Util.dateString date
-    id = @mapping[dateKey]
-    @getPoem id, next
+  # getPoem: (id, next) ->
+  #   dateKey = @reverseMapping[id]
+  #
+  #   if not id
+  #     return next last: yes
+  #   if @poemsCache.has dateKey
+  #     return next @poemsCache.get dateKey
+  #
+  #   $.getJSON "poems/#{id}.json", (res) =>
+  #     poem = new Poems.Models.Poem(res)
+  #     @poemsCache.set dateKey, poem
+  #     next poem
+  #
+  # getPoemForDate: (date, next) ->
+  #   dateKey = Util.dateString date
+  #   id = @mapping[dateKey]
+  #   @getPoem id, next
 
   loadMapping: (next) ->
     $.getJSON "poems/summary.json", (res) =>
@@ -108,49 +108,3 @@ class Poems.Model
         poems.push poem
         if poems.length == ids.length
           next(poems)
-
-class Poems.Cache
-  constructor: ->
-    @data = new Map
-
-  set: (key, item) ->
-    @data.set key, item
-    @cleanup key if @data.size > 20
-
-  get: (key) ->
-    @data.get key
-
-  has: (key) ->
-    @data.has key
-
-  cleanup: (key) ->
-    keysToLeave = [ key, Util.dateString(Util.nextDate(new Date(key))), Util.dateString(Util.prevDate(new Date(key))) ]
-    @data.forEach (object, key, map) =>
-      if key not in keysToLeave
-        @data.delete(key)
-
-class Poems.Poem
-  constructor: (data) ->
-    this[prop] = value for prop, value of data
-    this.url = "#poems/#{@id}"
-
-  heading: ->
-    @title || @firstLine
-
-  headingWithAuthor: ->
-    "#{@author}: #{@heading()}"
-
-  like: ->
-    Model.like(@id)
-
-  isLiked: ->
-    Model.likes.has(@id)
-
-  getUrl: ->
-    "https://dailypoem.firebaseapp.com/poems/#{@id}.html"
-
-  notificationTime: ->
-    moment(@date()).startOf('day').add({hours: 12, minutes: 30}).valueOf()
-
-  date: ->
-    new Date Model.reverseMapping[@id]

@@ -1,0 +1,25 @@
+class Poems.Models.Poem
+  constructor: (data) ->
+    this[prop] = value for prop, value of data
+    this.url = "#poems/#{@id}"
+
+  heading: ->
+    @title || @firstLine
+
+  headingWithAuthor: ->
+    "#{@author}: #{@heading()}"
+
+  like: ->
+    Model.like(@id)
+
+  isLiked: ->
+    Model.likes.has(@id)
+
+  getUrl: ->
+    "https://dailypoem.firebaseapp.com/poems/#{@id}.html"
+
+  notificationTime: ->
+    moment(@date()).startOf('day').add({hours: 12, minutes: 30}).valueOf()
+
+  date: ->
+    new Date Model.reverseMapping[@id]
