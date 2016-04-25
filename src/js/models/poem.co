@@ -22,4 +22,4 @@ class Poems.Models.Poem
     moment(@date()).startOf('day').add({hours: 12, minutes: 30}).valueOf()
 
   date: ->
-    new Date Model.reverseMapping[@id]
+    new JustDate Model.reverseMapping[@id]

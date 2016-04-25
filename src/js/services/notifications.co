@@ -6,7 +6,7 @@ class Poems.Services.Notifications
     console.time "setting up notifications"
     notifications.cancelAll()
 
-    Model.closestPoems 7, (poems) =>
+    Model.closest 7, (poems) =>
       for poem, index in poems
         notifications.schedule
           id: poem.id

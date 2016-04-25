@@ -1,0 +1,14 @@
+class window.JustMutableDate extends JustDate
+  first: -> @_first ? JustDate.today()
+  last: -> JustDate.today()
+
+  moveForward:  -> @set @next()
+  moveBackward: -> @set @prev()
+  move: (days)  -> @set @plus days
+
+  set: (date) ->
+    @value = new JustDate(date).value
+
+  canMoveForward: -> @value.lte @last()
+  canMoveBackward: -> @value.gt @first()
+  canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()

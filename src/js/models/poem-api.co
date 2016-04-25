@@ -1,0 +1,97 @@
+class Poems.Models.PoemApi
+  constructor: ->
+    @cache = new Poems.Models.DateCache
+    @likes = new Set JSON.parse(localStorage.likes ? '[]')
+    @currentDate = JustMutableDate.today()
+
+  setDate: (date) ->
+    @currentDate = new JustDate(date)
+
+  cachedCurrent: ->
+    @cache.get @currentDate
+
+  getCurrent: (next) ->
+    @getForDate @currentDate, next
+
+  hasDataFor: (date) ->
+    @firstDate.lte date and date.lte @currentDate.last()
+
+  get: (id, next) ->
+    date = new JustDate @reverseMapping[id]
+
+    if id is null
+      return next last: yes
+
+    if @cache.has date
+      return next @cache.get date
+
+    $.getJSON "poems/#{id}.json", (res) =>
+      poem = new Poems.Models.Poem(res)
+      @cache.set date, poem
+      next poem
+
+  getForDate: (date, next) ->
+    id = @mapping[date.string()]
+    @get id, next
+
+  load: (next) ->
+    $.getJSON "poems/summary.json", (res) =>
+      @mapping = res.mapping
+      @reverseMapping = _.invert(@mapping)
+      @descriptors = res.items
+
+      allDates = Object.keys(@mapping)
+
+      @firstDate = new JustDate allDates[0]
+      @lastDate = new JustDate allDates[allDates.length - 1]
+      @currentDate._first = @firstDate
+
+      next()
+
+  like: (poemId) ->
+    if @likes.has(poemId) then @likes.delete(poemId) else @likes.add(poemId)
+    localStorage.likes = JSON.stringify Array.from @likes
+
+  randomPoemId: ->
+    currentDate = new DatePlus
+    currentPoemId = @current().id
+    visibleIds = for date, id of @mapping
+      break if date > currentDate
+      id
+
+    currentPoemIndex = visibleIds.indexOf currentPoemId
+    randomIndex = Math.floor(Math.random() * visibleIds.length)
+    if randomIndex == currentPoemIndex
+      randomIndex += if randomIndex isnt 0 then -1 else +1
+
+    randomId = visibleIds[randomIndex]
+    randomId
+
+  getFavorites: (next) ->
+    poemIds = (id for id in Array.from @likes)
+
+    return next() if poemIds.length is 0
+
+    poems = []
+    count = 0
+    done = -> ++count == poemIds.length && next && next(poems)
+    for id in poemIds
+      @get id, (poem) ->
+        poems.push(poem)
+        done()
+
+  closest: (limit = 5, next) ->
+    count = 0
+    currentDateStr = new JustDate().string()
+    ids = []
+    for date, id of @mapping when date > currentDate
+      ids.push id
+      count += 1
+      break if count == limit
+
+    poems = []
+    for id in ids
+      @get id, (poem) =>
+        poems.push poem
+        if poems.length == ids.length
+          next(poems)

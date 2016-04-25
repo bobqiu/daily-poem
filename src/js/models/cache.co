@@ -13,7 +13,9 @@ class Poems.Models.Cache
     @data.has key
 
   cleanup: (key) ->
-    keysToLeave = [ key, Util.dateString(Util.nextDate(new Date(key))), Util.dateString(Util.prevDate(new Date(key))) ]
+    @removeAllKeysBut [key]
+
+  removeAllKeysBut: (keysToLeave) ->
     @data.forEach (object, key, map) =>
       if key not in keysToLeave
         @data.delete(key)

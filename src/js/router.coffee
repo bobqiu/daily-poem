@@ -32,9 +32,11 @@ class Poems.Router
   favorites:     -> @openView 'Favorites'
   about:         -> @openView 'About'
   developer:     -> @openView 'DeveloperMenu'
-  tomorrow:      -> @openView 'Main', Util.nextDate Model.lastAllowedDate()
+  tomorrow:      -> @openView 'Main', Util.nextDate Model.currentDate.last()
   poems: (id)    -> @openView 'Main', id
   calendar: (id) -> @openView 'Calendar'
 
-  openView: (args...) ->
-    App.openView args...
+  openView: (viewName, args...) ->
+    @currentView?.unmount()
+    @currentView = new Poems.Views[viewName](args...)
+    @currentView.show()

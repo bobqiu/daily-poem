@@ -1,0 +1,14 @@
+class Poems.Models.DateCache extends Poems.Models.Cache
+  set: (key, item) ->
+    super key.string(), item
+
+  get: (key) ->
+    super key.string()
+
+  has: (key) ->
+    super key.string()
+
+  cleanup: (key) ->
+    date = key
+    keysToLeave = [ date, date.next(), date.prev() ].map (d) -> d.string()
+    @removeAllKeysBut keysToLeave

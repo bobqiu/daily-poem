@@ -20,7 +20,7 @@ class Poems.Views.Main extends BaseView
         renderDate date
       when typeof identifier is 'string' and identifier.match(/^\d+$/)
         id = Number(identifier)
-        Model.getPoem id, (poem) =>
+        Model.get id, (poem) =>
           @identifier = poem.date()
           @render(next)
       when identifier instanceof Date
@@ -59,7 +59,7 @@ class Poems.Views.Main extends BaseView
     @likePoem()
 
   adjust: (direction) ->
-    return unless Model.canMove(direction)
+    return unless Model.currentDate.canMove(direction)
     return unless @done
     @done = no
 
@@ -92,7 +92,7 @@ class Poems.Views.Main extends BaseView
         curr.toggleClass('current prev')
         next.toggleClass('next current')
         prev.toggleClass('prev next').css transform: translate3d(-@shift + width)
-        @renderPoemForDate Model.nextDate(), (html) =>
+        @renderPoemForDate Model.currentDate.next(), (html) =>
           prev.html html
           animationEnd()
 
@@ -100,7 +100,7 @@ class Poems.Views.Main extends BaseView
         prev.toggleClass('prev current')
         curr.toggleClass('current next')
         next.toggleClass('next prev').css transform: translate3d(-@shift - width)
-        @renderPoemForDate Model.prevDate(), (html) =>
+        @renderPoemForDate Model.currentDate.prev(), (html) =>
           next.html html
           animationEnd()
     , animationDuration
@@ -131,9 +131,9 @@ class Poems.Views.Main extends BaseView
         @adjust direction
 
   renderPoemForDate: (date, next) ->
-    Model.getPoemForDate date, (poem) =>
+    Model.getForDate date, (poem) =>
       appDate = Util.formatMonthAndDay(date)
-      if Util.dateString(date) > Util.dateString(Model.lastAllowedDate())
+      if date.gt Model.date.last()
         next @renderTemplate 'tomorrow', appDate: appDate
       else if poem.last
         next ""

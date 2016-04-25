@@ -10,6 +10,7 @@ require "./helpers"
 window.Poems = {Views: {}, Services: {}, Models: {}}
 window.Util = require "./util"
 
+requireAll require.context("./lib", true, /.(co|coffee)$/)
 requireAll require.context("./models", true, /.(co|coffee)$/)
 requireAll require.context("./services", true, /.(co|coffee)$/)
 
@@ -23,8 +24,8 @@ main = ->
   # StatusBar?.backgroundColorByHexString("#ff9500")
   # StatusBar?.styleLightContent()
 
-  window.Model = new Poems.Models.PoemApi
-  window.PoemApi = Model
+  window.PoemApi = new Poems.Models.PoemApi
+  window.Model = PoemApi
   window.App = new Poems.App
   window.Router = new Poems.Router
 
