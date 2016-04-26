@@ -1,0 +1,38 @@
+describe 'XDate', ->
+  beforeEach ->
+    @apr10 = new XDate '2016-04-10'
+
+  it 'can be created with a Date', ->
+    date = new Date
+    expect( new XDate(date).value ).toBe date
+
+  it "formats itself into string", ->
+    expect( @apr10.string() ).toBe "2016-04-10"
+
+  it "calculates prev/next dates", ->
+    expect( @apr10.prev().string() ).toBe "2016-04-09"
+    expect( @apr10.next().string() ).toBe "2016-04-11"
+
+  it "adds/subtracts days", ->
+    expect( @apr10.plus(3).string() ).toBe "2016-04-13"
+    expect( @apr10.plus(-3).string() ).toBe "2016-04-07"
+
+  it "returns the native date", ->
+    date = @apr10.getDate()
+    expect( date.getFullYear() ).toBe 2016
+    expect( date.getMonth() ).toBe 3
+    expect( date.getDate() ).toBe 10
+
+  it "builds a today date by default", ->
+    expect( new XDate().getDate().toDateString() ).toBe new Date().toDateString()
+    expect( XDate.today().getDate().toDateString() ).toBe new Date().toDateString()
+
+  it "can be comapred", ->
+    @apr12 = new XDate '2016-04-12'
+    @apr10_other = new XDate '2016-04-10'
+
+    expect( @apr12.gt @apr10 ).toBe true
+    expect( @apr10.gt @apr12 ).toBe false
+    expect( @apr10.lte @apr12 ).toBe true
+    expect( @apr12.lte @apr10 ).toBe false
+    expect( @apr10.lte @apr10_other ).toBe true

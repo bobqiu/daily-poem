@@ -1,6 +1,5 @@
 require "../css/main.scss"
 require "../about.html"
-require "../demo.html"
 
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 

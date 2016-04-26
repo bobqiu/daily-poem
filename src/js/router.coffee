@@ -1,5 +1,9 @@
 class Poems.Router
   constructor: ->
+    if @constructor.disabled
+      console.warn "router disabled"
+      return
+
     $(window).on 'hashchange', =>
       @route()
 
@@ -14,6 +18,8 @@ class Poems.Router
     location.hash = path
 
   route: =>
+    return if @constructor.disabled
+
     hash = decodeURIComponent location.hash.slice(1)
     [controller, id, other...] = hash.split('/')
 

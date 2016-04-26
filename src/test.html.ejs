@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <% conf = htmlWebpackPlugin.options %>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>Стих Дня</title>
+    <link href="<%= conf.targetDir %>app.css" rel="stylesheet">
+    <script src="cordova.js"></script>
+    <script src="<%= conf.targetDir %>lib.js"></script>
+    <script src="<%= conf.targetDir %>app.js"></script>
+    <script src="<%= conf.targetDir %>spec.js"></script>
+  </head>
+
+  <body class="theme-orange">
+    <div class="statusbar-overlay"></div>
+    <div class="panel-overlay"></div>
+    <div class="panel panel-left panel-cover sidebar" id='sidebar'></div>
+
+    <div class="views" style="display: none">
+      <div class="view view-main left-view">
+        <div class="pages navbar-fixed" id='pages'></div>
+      </div>
+    </div>
+  </body>
+</html>
