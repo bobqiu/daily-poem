@@ -25,8 +25,14 @@ class window.XDate
   string: ->
     Util.dateString @value
 
+  toString: ->
+    @string()
+
   getDate: ->
     @value
+
+  formattedString: ->
+    Util.formatMonthAndDay @value
 
   @today = ->
     new this

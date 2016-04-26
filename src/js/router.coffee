@@ -34,11 +34,11 @@ class Poems.Router
 
     return false
 
-  main:          -> @openView 'Main', Model.currentDate
+  main:          -> @openView 'Main', Model.date
   favorites:     -> @openView 'Favorites'
   about:         -> @openView 'About'
   developer:     -> @openView 'DeveloperMenu'
-  tomorrow:      -> @openView 'Main', Util.nextDate Model.currentDate.last()
+  tomorrow:      -> @openView 'Main', Util.nextDate Model.date.last()
   poems: (id)    -> @openView 'Main', id
   calendar: (id) -> @openView 'Calendar'
 

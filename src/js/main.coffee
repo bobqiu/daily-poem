@@ -1,6 +1,8 @@
 require "../css/main.scss"
 require "../about.html"
 
+console.xdebug ?= ->
+
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 
 window.Handlebars = require "handlebars/runtime"

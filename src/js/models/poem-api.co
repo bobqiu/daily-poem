@@ -2,25 +2,27 @@ class Poems.Models.PoemApi
   constructor: ->
     @cache = new Poems.Models.DateCache
     @likes = new Set JSON.parse(localStorage.likes ? '[]')
-    @currentDate = MutableXDate.today()
+    @date = MutableXDate.today()
 
   setDate: (date) ->
-    @currentDate = new MutableXDate(date)
+    @date = new MutableXDate(date)
 
   cachedCurrent: ->
-    @cache.get @currentDate
+    @cache.get @date
 
   getCurrent: (next) ->
-    @getForDate @currentDate, next
+    @getForDate @date, next
 
   hasDataFor: (date) ->
-    @firstDate.lte date and date.lte @currentDate.last()
+    @firstDate.lte date and date.lte @date.last()
 
   get: (id, next) ->
+    console.xdebug "loading poem ##{id}"
+
     date = new MutableXDate @reverseMapping[id]
 
-    if id is null
-      return next last: yes
+    if not id
+      return next null
 
     if @cache.has date
       return next @cache.get date
@@ -28,6 +30,8 @@ class Poems.Models.PoemApi
     $.getJSON "poems/#{id}.json", (res) =>
       poem = new Poems.Models.Poem(res)
       @cache.set date, poem
+
+      console.debug "loaded poem ##{id}"
       next poem
 
   getForDate: (date, next) ->
@@ -42,9 +46,9 @@ class Poems.Models.PoemApi
 
       allDates = Object.keys(@mapping)
 
-      @firstDate = new MutableXDate allDates[0]
-      @lastDate = new MutableXDate allDates[allDates.length - 1]
-      @currentDate._first = @firstDate
+      @firstDate = new XDate allDates[0]
+      @lastDate = new XDate allDates[allDates.length - 1]
+      MutableXDate.first = @firstDate
 
       next()
 
@@ -53,8 +57,8 @@ class Poems.Models.PoemApi
     localStorage.likes = JSON.stringify Array.from @likes
 
   randomPoemId: ->
-    currentDate = new MutableXDate
-    currentPoemId = @current().id
+    currentDate = MutableXDate.today()
+    currentPoemId = @cachedCurrent().id
     visibleIds = for date, id of @mapping
       break if date > currentDate
       id
@@ -67,18 +71,21 @@ class Poems.Models.PoemApi
     randomId = visibleIds[randomIndex]
     randomId
 
+  exists: (id) ->
+    !!Model.reverseMapping[id]
+
   getFavorites: (next) ->
     poemIds = (id for id in Array.from @likes)
+    poemIds = poemIds.filter @exists
 
     return next() if poemIds.length is 0
 
-    poems = []
-    count = 0
-    done = -> ++count == poemIds.length && next && next(poems)
+    poems = []; count = 0
     for id in poemIds
       @get id, (poem) ->
         poems.push(poem)
-        done()
+        if ++count == poemIds.length
+          next?(poems)
 
   closest: (limit = 5, next) ->
     count = 0
