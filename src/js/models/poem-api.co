@@ -2,10 +2,10 @@ class Poems.Models.PoemApi
   constructor: ->
     @cache = new Poems.Models.DateCache
     @likes = new Set JSON.parse(localStorage.likes ? '[]')
-    @currentDate = JustMutableDate.today()
+    @currentDate = MutableXDate.today()
 
   setDate: (date) ->
-    @currentDate = new JustDate(date)
+    @currentDate = new MutableXDate(date)
 
   cachedCurrent: ->
     @cache.get @currentDate
@@ -17,7 +17,7 @@ class Poems.Models.PoemApi
     @firstDate.lte date and date.lte @currentDate.last()
 
   get: (id, next) ->
-    date = new JustDate @reverseMapping[id]
+    date = new MutableXDate @reverseMapping[id]
 
     if id is null
       return next last: yes
@@ -42,8 +42,8 @@ class Poems.Models.PoemApi
 
       allDates = Object.keys(@mapping)
 
-      @firstDate = new JustDate allDates[0]
-      @lastDate = new JustDate allDates[allDates.length - 1]
+      @firstDate = new MutableXDate allDates[0]
+      @lastDate = new MutableXDate allDates[allDates.length - 1]
       @currentDate._first = @firstDate
 
       next()
@@ -53,7 +53,7 @@ class Poems.Models.PoemApi
     localStorage.likes = JSON.stringify Array.from @likes
 
   randomPoemId: ->
-    currentDate = new DatePlus
+    currentDate = new MutableXDate
     currentPoemId = @current().id
     visibleIds = for date, id of @mapping
       break if date > currentDate
@@ -82,7 +82,7 @@ class Poems.Models.PoemApi
 
   closest: (limit = 5, next) ->
     count = 0
-    currentDateStr = new JustDate().string()
+    currentDateStr = MutableXDate.today().string()
     ids = []
     for date, id of @mapping when date > currentDate
       ids.push id

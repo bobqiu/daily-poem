@@ -2,6 +2,8 @@ class Poems.Views.Calendar extends BaseView
   render: (next) ->
     @loadTemplateOnMainPage 'pages/calendar'
 
+    console.log [ {from: Model.currentDate.last().getDate()}, {to: Model.currentDate.first().getDate()} ]
+
     calendar = @f7app().calendar
       container: '#calendar-inline-container',
       weekHeader: false,

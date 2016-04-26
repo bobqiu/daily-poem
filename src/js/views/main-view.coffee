@@ -16,7 +16,7 @@ class Poems.Views.Main extends BaseView
 
     switch
       when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/)
-        date = new Date(identifier)
+        date = new XDate(identifier)
         renderDate date
       when typeof identifier is 'string' and identifier.match(/^\d+$/)
         id = Number(identifier)
@@ -59,6 +59,8 @@ class Poems.Views.Main extends BaseView
     @likePoem()
 
   adjust: (direction) ->
+    console.log Model.currentDate
+    console.log Model.currentDate.canMove(direction)
     return unless Model.currentDate.canMove(direction)
     return unless @done
     @done = no
@@ -68,7 +70,7 @@ class Poems.Views.Main extends BaseView
 
     @shift = @shift - direction * width
 
-    Model.moveDate(direction)
+    Model.currentDate.move(direction)
 
     @container.addClass "panning"
     @viewport.addClass "animating"
@@ -133,7 +135,7 @@ class Poems.Views.Main extends BaseView
   renderPoemForDate: (date, next) ->
     Model.getForDate date, (poem) =>
       appDate = Util.formatMonthAndDay(date)
-      if date.gt Model.date.last()
+      if date.gt Model.currentDate.last()
         next @renderTemplate 'tomorrow', appDate: appDate
       else if poem.last
         next ""
@@ -147,8 +149,8 @@ class Poems.Views.Main extends BaseView
     count = 0
     done = -> ++count == 3 && next && next()
     @renderPoemForDate date, (html) => $('.smm-swiper-slide.current').html html; done()
-    @renderPoemForDate Util.prevDate(date), (html) => $('.smm-swiper-slide.prev').html html; done()
-    @renderPoemForDate Util.nextDate(date), (html) => $('.smm-swiper-slide.next').html html; done()
+    @renderPoemForDate date.prev(), (html) => $('.smm-swiper-slide.prev').html html; done()
+    @renderPoemForDate date.prev(), (html) => $('.smm-swiper-slide.next').html html; done()
 
   openRandomPoem: ->
     Router.go "poems/#{Model.randomPoemId()}"

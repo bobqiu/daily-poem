@@ -1,0 +1,22 @@
+require "./x-date"
+
+class window.MutableXDate extends XDate
+  constructor: (value) ->
+    super
+    if value instanceof @constructor
+      @_first = value._first
+
+  first: -> @_first ? @constructor.today()
+  last: -> @constructor.today()
+
+  moveForward:  -> @replace @next()
+  moveBackward: -> @replace @prev()
+  move: (days)  -> @replace @plus days
+
+  replace: (other) ->
+    throw new Error("MutableXDate can not hold undefined value") unless other
+    @value = other.value
+
+  canMoveForward: -> @lte @last()
+  canMoveBackward: -> @gt @first()
+  canMove: (direction) -> if direction is 1 then @canMoveForward() else @canMoveBackward()

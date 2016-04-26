@@ -1,7 +1,7 @@
-class window.JustDate
+class window.XDate
   constructor: (value) ->
     @value = switch value?.constructor
-      when JustDate then value.value
+      when XDate, MutableXDate then value.value
       when Date then value
       when Number then new Date(value)
       when String then new Date(value)

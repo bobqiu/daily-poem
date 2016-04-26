@@ -56,6 +56,6 @@ module.exports =
     root: path.resolve(__dirname)
     alias:
       ext: "lib/js"
-    extensions: ['', '.js', '.json', '.coffee', '.cjsx']
+    extensions: ['', '.js', '.json', '.coffee', '.co', '.cjsx']
 
   ejsHtml: {}
