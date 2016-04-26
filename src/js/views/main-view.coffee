@@ -159,7 +159,7 @@ class AP.MainView extends BaseView
     Router.go "poems/#{Model.randomPoemId()}"
 
   sharePoem: ->
-    Model.getCurrentPoem (poem) =>
+    Model.getCurrent (poem) =>
       if window.plugins?.socialsharing?
         window.plugins.socialsharing.share poem.content, poem.heading(), null, poem.getUrl()
 
