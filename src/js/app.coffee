@@ -1,6 +1,6 @@
-class Poems.App
+class AP.App
   constructor: ->
-    @sidebar = new Poems.Views.Sidebar
+    @sidebar = new AP.SidebarView
     @sidebar.show()
 
     @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: true
@@ -15,13 +15,13 @@ class Poems.App
       Router.route()
 
       setTimeout =>
-        @notifications = new Poems.Services.Notifications
+        @notifications = new AP.Notifications
         @notifications.setReminders()
       , 100
 
-      @lifecycle = new Poems.Services.Lifecycle
+      @lifecycle = new AP.Lifecycle
 
       if @screenshotsMode
-        @screenshots ?= Poems.Services.Screenshots
+        @screenshots ?= AP.Screenshots
         @screenshots.enable()
         @screenshots.performNextTestAction()

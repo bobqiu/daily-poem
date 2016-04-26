@@ -7,7 +7,7 @@ strings =
   ru:
     months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август' , 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
 
-module.exports =
+module.exports = window.Util =
   today: ->
     new Date
 
@@ -38,7 +38,7 @@ module.exports =
     $(button).find('i').toggleClass('filled')
 
   render: (template, args...) ->
-    @templates ?= require.context("../templates", true, /\.hbs$/)
+    @templates ?= require.context("../../templates", true, /\.hbs$/)
     @templates("./#{template}.hbs")(args...)
 
   # whenAllDone: (promises..., next) ->

@@ -1,4 +1,4 @@
-class Poems.Views.Sidebar extends BaseView
+class AP.SidebarView extends BaseView
   mount: ->
     $('.sidebar').on 'open', =>
 

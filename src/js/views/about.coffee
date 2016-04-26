@@ -1,4 +1,4 @@
-class Poems.Views.About extends BaseView
+class AP.AboutView extends BaseView
   render: (next) ->
     version = null
     buildNumber = null

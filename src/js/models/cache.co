@@ -1,4 +1,4 @@
-class Poems.Models.Cache
+class AP.Cache
   constructor: ->
     @data = new Map
 

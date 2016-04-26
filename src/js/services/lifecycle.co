@@ -1,4 +1,4 @@
-class Poems.Services.Lifecycle
+class AP.Lifecycle
   constructor: ->
     $(document).on 'resume', @resume
 

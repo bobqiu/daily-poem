@@ -1,4 +1,4 @@
-class Poems.Services.Notifications
+class AP.Notifications
   setReminders: =>
     notifications = cordova?.plugins.notification.local
     return unless notifications?

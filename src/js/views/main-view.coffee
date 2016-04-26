@@ -1,4 +1,4 @@
-class Poems.Views.Main extends BaseView
+class AP.MainView extends BaseView
   width = 100
   animationDuration = 250
   defaultUnit = '%'

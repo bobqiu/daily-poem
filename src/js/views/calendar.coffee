@@ -1,4 +1,4 @@
-class Poems.Views.Calendar extends BaseView
+class AP.CalendarView extends BaseView
   render: (next) ->
     @loadTemplateOnMainPage 'pages/calendar'
 

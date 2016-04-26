@@ -1,4 +1,4 @@
-class Poems.Router
+class AP.Router
   constructor: ->
     if @constructor.disabled
       console.warn "router disabled"
@@ -44,5 +44,5 @@ class Poems.Router
 
   openView: (viewName, args...) ->
     @currentView?.unmount()
-    @currentView = new Poems.Views[viewName](args...)
+    @currentView = new AP["#{viewName}View"](args...)
     @currentView.show()

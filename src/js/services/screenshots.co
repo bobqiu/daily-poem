@@ -1,4 +1,4 @@
-class Poems.Services.Screenshots
+class AP.Screenshots
   enable: ->
     $(document).click (e) =>
       [x, y] = [e.pageX, e.pageY]

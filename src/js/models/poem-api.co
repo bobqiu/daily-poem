@@ -1,6 +1,6 @@
-class Poems.Models.PoemApi
+class AP.PoemApi
   constructor: ->
-    @cache = new Poems.Models.DateCache
+    @cache = new AP.DateCache
     @likes = new Set JSON.parse(localStorage.likes ? '[]')
     @date = MutableXDate.today()
 
@@ -28,7 +28,7 @@ class Poems.Models.PoemApi
       return next @cache.get date
 
     $.getJSON "poems/#{id}.json", (res) =>
-      poem = new Poems.Models.Poem(res)
+      poem = new AP.Poem(res)
       @cache.set date, poem
 
       console.debug "loaded poem ##{id}"

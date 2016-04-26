@@ -1,4 +1,4 @@
-class Poems.Models.Poem
+class AP.Poem
   constructor: (data) ->
     this[prop] = value for prop, value of data
     this.url = "#poems/#{@id}"

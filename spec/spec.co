@@ -4,6 +4,6 @@ window.jasmineRequire = require "../lib/js/jasmine/jasmine.js"
 require "../lib/js/jasmine/jasmine-html.js"
 require "../lib/js/jasmine/boot.js"
 
-Poems.Router.disabled = true
+AP.Router.disabled = true
 
 require "./x-date-spec"

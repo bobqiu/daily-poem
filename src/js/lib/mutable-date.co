@@ -1,4 +1,4 @@
-require "./x-date"
+require "./date"
 
 class window.MutableXDate extends XDate
   constructor: (value) ->
