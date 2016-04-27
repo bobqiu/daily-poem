@@ -22,6 +22,9 @@ class window.XDate
   gt: (other) ->
     @string() > other.string()
 
+  eq: (other) ->
+    @string() == other.string()
+
   string: ->
     Util.dateString @value
 

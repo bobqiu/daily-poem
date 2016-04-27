@@ -41,6 +41,14 @@ module.exports = window.Util =
     @templates ?= require.context("../../templates", true, /\.hbs$/)
     @templates("./#{template}.hbs")(args...)
 
+  dumpBools: (options) ->
+    str = ""
+    for key, condition of options
+      if condition
+        str += "#{key} "
+
+    str
+
   # whenAllDone: (promises..., next) ->
   #   hasNullPromises = promises.some (p) -> p is null or p is undefined
   #   Promise.all(promises).then(next)

@@ -12,7 +12,7 @@ class AP.ClickManager
       if touch
         [x, y] = [touch.pageX, touch.pageY]
 
-    if @activeElement
+    if (type is "touchend" or type is "mouseup") and @activeElement?
       @deactivate @activeElement
 
     console.xlog "#{type} (#{x}, #{y}) #{ if $(e.target).closest("a.link").length then 'inside' else '' }", e
@@ -32,7 +32,7 @@ class AP.ClickManager
       switch type
         when 'click' then @click(link)
         when 'mousedown', 'touchstart' then @activate(link)
-        when 'mouseup', 'touchdown' then @deactivate(link)
+        when 'mouseup', 'touchend' then @deactivate(link)
 
   click: (link) ->
     if link.classList.contains("open-panel")

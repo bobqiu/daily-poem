@@ -38,7 +38,7 @@ class AP.Router
   favorites:     -> @openView 'Favorites'
   about:         -> @openView 'About'
   developer:     -> @openView 'DeveloperMenu'
-  tomorrow:      -> @openView 'Main', Util.nextDate Model.date.last()
+  tomorrow:      -> @openView 'Main', Model.date.last().next()
   poems: (id)    -> @openView 'Main', id
   calendar: (id) -> @openView 'Calendar'
 

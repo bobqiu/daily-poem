@@ -109,27 +109,65 @@ class AP.MainView extends BaseView
     true
 
   initSwiping: ->
-    @hammer = new Hammer $('#poem-swiper')[0], {}
-    @hammer.get('pan').set direction: Hammer.DIRECTION_HORIZONTAL
-    @hammer.get('swipe').set direction: Hammer.DIRECTION_HORIZONTAL
+    @viewport = $('.smm-swiper-viewport')
 
-    # @hammer.on 'pan', (e) =>
+    @hammer = new Hammer $('#poem-swiper')[0], {}
+    @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
+    # @hammer.get('swipe').set direction: Hammer.DIRECTION_HORIZONTAL
+
+    # $('#poem-swiper')[0].addEventListener 'touchstart', (e) =>
+    #   console.log e
+    # , false
+    #
+    # $('#poem-swiper')[0].addEventListener 'touchmove', (e) =>
+    #   console.log e
+    # , false
+
+    {floor, abs} = Math
+
+    @hammer.on 'pan', (e) =>
+      dx = e.deltaX
+      dy = e.deltaY
+      vxo = e.overallVelocityX
+      tooVerticalToStart = !@panningStep? and (abs(dy) > 20 or abs(dx) < 10)
+
+      # console.log "pan dx=#{dx} dy=#{dy} vx=#{vxo.toFixed(2)}
+      #   #{Util.dumpBools first: e.isFirst, cont: @panningStep, final: e.isFinal, vertical: tooVerticalToStart}"
+
+      return true if tooVerticalToStart
+
+      @panningStep ?= 0
+      @panningStep += 1
+
+      @viewport.addClass("swiping")
+
+      dx_pc = dx / screenWidth * 100
+
+      unless e.isFinal
+        @viewport.css transform: translate3d(@shift + dx_pc, '%'), 'transition-duration': '0ms'
+
+      else
+        delete @panningStep
+
+        direction = if e.deltaX > 0 then -1 else +1
+        # console.log "final #{dx}px #{dx_pc}% dir=#{direction} vel=#{vxo.toFixed(2)}"
+        # console.log ""
+
+        if (abs(dx_pc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
+          @viewport.css "transition-duration": '.4s'
+          @adjust direction
+        else
+          @viewport.css "transition-duration": '.6s'
+          @viewport.css transform: translate3d(@shift, '%')
+
+        @viewport.removeClass("swiping")
+
+    # @hammer.on 'swipe', (e) =>
+    #   console.log 'swipe', e
     #   direction = if e.deltaX > 0 then -1 else +1
     #   delta = Math.floor(e.deltaX / screenWidth * 100)
-    #   if e.isFinal
-    #     console.log  e.isFinal, e.deltaX, delta, direction
-    #     if Math.abs(delta) >= 50
-    #       @adjust direction
-    #     else
-    #       @viewport.css transform: translate3d(@shift, '%')
-    #   else
-    #     @viewport.css transform: translate3d(@shift + delta, '%')
-
-    @hammer.on 'swipe', (e) =>
-      direction = if e.deltaX > 0 then -1 else +1
-      delta = Math.floor(e.deltaX / screenWidth * 100)
-      if Math.abs(delta) >= 20
-        @adjust direction
+    #   if Math.abs(delta) >= 20
+    #     @adjust direction
 
   renderPoemForDate: (date, next) ->
     console.xdebug "will render poem for #{date}"
@@ -140,8 +178,11 @@ class AP.MainView extends BaseView
       if not poem
         return next ""
 
-      if date.gt Model.date.last()
+      if date.eq Model.date.last().next()
         return next @renderTemplate 'tomorrow', appDate: date.formattedString()
+
+      if date.gt Model.date.last().next()
+        return next ""
 
       context = Object.assign {}, poem, domId: "poem-#{poem.id}", appDate: date.formattedString(), liked: poem.isLiked()
       html = @renderTemplate 'poem', context
