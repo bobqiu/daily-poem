@@ -2,6 +2,7 @@ require "../css/main.scss"
 require "../about.html"
 
 console.xdebug ?= ->
+console.xlog ?= ->
 
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 

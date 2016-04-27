@@ -20,6 +20,7 @@ class AP.App
       , 100
 
       @lifecycle = new AP.Lifecycle
+      @clickManager = new AP.ClickManager
 
       if @screenshotsMode
         @screenshots ?= AP.Screenshots

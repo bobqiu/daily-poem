@@ -17,15 +17,15 @@ class AP.Notifications
           data: poem_id: poem.id
 
       notifications.on "schedule", (notification) ->
-        console.log "notification scheduled #{notification.id}", notification
+        console.xlog "notification scheduled #{notification.id}", notification
 
       notifications.on "trigger", (notification) ->
-        console.log "notification triggered #{notification.id}", notification
+        console.xlog "notification triggered #{notification.id}", notification
 
       notifications.on "click", (notification) ->
         notifications.clearAll()
         Router.go "poems/#{notification.id}"
-        console.log "notification clicked #{notification.id}", notification, notification.data
+        console.xlog "notification clicked #{notification.id}", notification, notification.data
 
     console.timeEnd "setting up notifications"
 

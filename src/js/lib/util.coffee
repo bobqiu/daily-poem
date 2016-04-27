@@ -47,3 +47,6 @@ module.exports = window.Util =
 
 window.__console_ins = (arg) -> console.log(arg)
 window.__console_ins_arr = (args) -> console.log(arg) for arg in args
+
+window.setTimeoutTo = (ms, callback) -> setTimeout callback, ms
+window.setIntervalTo = (ms, callback) -> setInterval callback, ms

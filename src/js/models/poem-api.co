@@ -31,7 +31,7 @@ class AP.PoemApi
       poem = new AP.Poem(res)
       @cache.set date, poem
 
-      console.debug "loaded poem ##{id}"
+      console.xdebug "loaded poem ##{id}"
       next poem
 
   getForDate: (date, next) ->
@@ -91,7 +91,7 @@ class AP.PoemApi
     count = 0
     currentDateStr = MutableXDate.today().string()
     ids = []
-    for date, id of @mapping when date > currentDate
+    for date, id of @mapping when date > currentDateStr
       ids.push id
       count += 1
       break if count == limit

@@ -14,7 +14,7 @@ class AP.Router
       @go ''
 
   go: (path) ->
-    console.log "going to #{path}"
+    console.xlog "going to #{path}"
     location.hash = path
 
   route: =>
@@ -27,7 +27,7 @@ class AP.Router
     routes = this
 
     if routes[controller]
-      console.log "routing to Router.#{controller}(#{id ? ''})"
+      console.log "Router.#{controller}(#{id ? ''})"
       routes[controller](id)
     else
       console.warn "no route for Router.#{controller}(#{id ? ''})"

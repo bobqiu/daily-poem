@@ -14,7 +14,7 @@ class AP.MainView extends BaseView
     identifier = @identifier
     renderDate = (date) => @renderPoemsForDate date, next
 
-    console.debug "rendering main view for #{@identifier}"
+    console.xdebug "rendering main view for #{@identifier}"
     switch
       when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/)
         date = new XDate(identifier)
@@ -135,7 +135,7 @@ class AP.MainView extends BaseView
     console.xdebug "will render poem for #{date}"
 
     Model.getForDate date, (poem) =>
-      console.debug "rendering poem for #{date}"
+      console.xdebug "rendering poem for #{date}"
 
       if not poem
         return next ""
@@ -160,6 +160,7 @@ class AP.MainView extends BaseView
 
   sharePoem: ->
     Model.getCurrent (poem) =>
+      console.log "opening the sharing dialog..."
       if window.plugins?.socialsharing?
         window.plugins.socialsharing.share poem.content, poem.heading(), null, poem.getUrl()
 

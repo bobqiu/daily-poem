@@ -1,0 +1,57 @@
+class AP.ClickManager
+  SIZE = 80
+
+  constructor: ->
+    $(document).on "click mousedown mouseup touchstart touchend", @handleMouse
+
+  handleMouse: (e) =>
+    [type, x, y] = [e.type, e.pageX, e.pageY]
+
+    if e.originalEvent instanceof TouchEvent
+      touch = e.originalEvent.changedTouches[0]
+      if touch
+        [x, y] = [touch.pageX, touch.pageY]
+
+    if @activeElement
+      @deactivate @activeElement
+
+    console.xlog "#{type} (#{x}, #{y}) #{ if $(e.target).closest("a.link").length then 'inside' else '' }", e
+
+    return unless 0 <= y <= SIZE
+    return if $(e.target).closest("a.link").length
+
+    WW = $(window).width()
+
+    [side, number] = switch
+      when 0 <= x <= SIZE                then ['left', 1]
+      when WW - 44 - 8 <= x <= WW        then ['right', 1]
+      when WW - 44 - 8 - SIZE <= x <= WW then ['right', 2]
+
+    if link = @linkFor(side, number)
+      console.xlog "#{type} delegated"
+      switch type
+        when 'click' then @click(link)
+        when 'mousedown', 'touchstart' then @activate(link)
+        when 'mouseup', 'touchdown' then @deactivate(link)
+
+  click: (link) ->
+    if link.classList.contains("open-panel")
+      App.f7app.openPanel("left")
+    else
+      setTimeoutTo 300, => @deactivate(link)
+      $(link).click()
+
+  activate: (link) ->
+    @activeElement = link
+    link.classList.add("active-state")
+
+  deactivate: (link) ->
+    @activeElement = null if link is @activeElement
+    link.classList.remove("active-state")
+
+  linkFor: (side, number) ->
+    side = $(".navbar .#{side}")
+    if side.length
+      links = side.find("a.link").get()
+      linksCount = links.length
+      link = links[linksCount - number]
