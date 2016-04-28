@@ -117,82 +117,84 @@ class AP.MainView extends BaseView
     @viewport = $('.smm-swiper-viewport')
     @hammer = new Hammer $('#poem-swiper')[0], {}
     @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
+    @hammer.on 'tap', @tap
+    @hammer.on 'pan', @pan
 
+  tap: (e) =>
+    insideControlsBlock = $(e.target).closest(".poem-controls").length isnt 0
+    log "tap #{Util.dumpBools controls:insideControlsBlock}"
+    unless insideControlsBlock
+      e.preventDefault()
+      direction = if e.center.x > screenWidth / 2 then 1 else -1
+      @adjust direction
+
+  pan: (e) =>
     animateFullSlideOnly = no
 
-    @hammer.on 'tap', (e) =>
-      insideControlsBlock = $(e.target).closest(".poem-controls").length isnt 0
-      log "tap #{Util.dumpBools controls:insideControlsBlock}"
-      unless insideControlsBlock
-        e.preventDefault()
-        direction = if e.center.x > screenWidth / 2 then 1 else -1
+    if !@panningStep? and !@scrollingStarted?
+      clear()
+
+    dx = e.deltaX
+    dy = e.deltaY
+    dxPc = dx / screenWidth * 100
+    vxo = e.overallVelocityX
+
+    log "pan dx=#{dx} / #{dxPc.toFixed(2)}% dy=#{dy} vx=#{vxo.toFixed(2)}
+        #{Util.dumpBools first: e.isFirst, cont: @panningStep, final: e.isFinal, vertical: tooVerticalToStart}"
+
+    if @scrollingStarted
+      log "  scrolling"
+      log "  scrolling ended"  if e.isFinal
+      delete @scrollingStarted if e.isFinal
+      return
+
+    tooVerticalToStart = !@panningStep? and (abs(dy) > 20 or abs(dx) < 10)
+
+    if tooVerticalToStart
+      log "  scrolling started"
+      @scrollingStarted = true
+      return
+
+    e.preventDefault()
+    @panningStep ?= 0
+    @panningStep += 1
+
+    if animateFullSlideOnly
+
+      if e.isFinal and abs(dxPc) >= 15
+        delete @panningStep
+        direction = if dx > 0 then -1 else +1
+        @viewport.removeClass("swiping")
         @adjust direction
 
-    @hammer.on 'pan', (e) =>
-      if !@panningStep? and !@scrollingStarted?
-        clear()
+    else
 
-      dx = e.deltaX
-      dy = e.deltaY
-      dxPc = dx / screenWidth * 100
-      vxo = e.overallVelocityX
+      @dxStep ?= 0
+      @dxStep = dx - @dxStep
 
-      log "pan dx=#{dx} / #{dxPc.toFixed(2)}% dy=#{dy} vx=#{vxo.toFixed(2)}
-          #{Util.dumpBools first: e.isFirst, cont: @panningStep, final: e.isFinal, vertical: tooVerticalToStart}"
+      @viewport.addClass("swiping")
 
-      if @scrollingStarted
-        log "  scrolling"
-        log "  scrolling ended"  if e.isFinal
-        delete @scrollingStarted if e.isFinal
-        return
-
-      tooVerticalToStart = !@panningStep? and (abs(dy) > 20 or abs(dx) < 10)
-
-      if tooVerticalToStart
-        log "  scrolling started"
-        @scrollingStarted = true
-        return
-
-      e.preventDefault()
-      @panningStep ?= 0
-      @panningStep += 1
-
-      if animateFullSlideOnly
-
-        if e.isFinal and abs(dxPc) >= 15
-          delete @panningStep
-          direction = if dx > 0 then -1 else +1
-          @viewport.removeClass("swiping")
-          @adjust direction
+      unless e.isFinal
+        dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
+        log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
+        @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
 
       else
+        delete @panningStep
+        delete @dxStep
 
-        @dxStep ?= 0
-        @dxStep = dx - @dxStep
+        direction = if e.deltaX > 0 then -1 else +1
+        log "  final #{dx}px #{dxPc}% dir=#{direction} vel=#{vxo.toFixed(2)}"
+        log ""
 
-        @viewport.addClass("swiping")
-
-        unless e.isFinal
-          dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
-          log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
-          @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
-
+        if (abs(dxPc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
+          @viewport.css "transition-duration": transitionDuration
+          @adjust direction
         else
-          delete @panningStep
-          delete @dxStep
+          @viewport.css "transition-duration": transitionDuration
+          @viewport.css transform: translate3d(@shift, '%')
 
-          direction = if e.deltaX > 0 then -1 else +1
-          log "  final #{dx}px #{dxPc}% dir=#{direction} vel=#{vxo.toFixed(2)}"
-          log ""
-
-          if (abs(dxPc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
-            @viewport.css "transition-duration": transitionDuration
-            @adjust direction
-          else
-            @viewport.css "transition-duration": transitionDuration
-            @viewport.css transform: translate3d(@shift, '%')
-
-          @viewport.removeClass("swiping")
+        @viewport.removeClass("swiping")
 
   renderPoemForDate: (date, next) ->
     console.xdebug "will render poem for #{date}"
