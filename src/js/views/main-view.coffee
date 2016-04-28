@@ -121,7 +121,9 @@ class AP.MainView extends BaseView
     animateFullSlideOnly = no
 
     @hammer.on 'tap', (e) =>
-      unless $(e.target).closest(".poem-controls").length
+      insideControlsBlock = $(e.target).closest(".poem-controls").length isnt 0
+      log "tap #{Util.dumpBools controls:insideControlsBlock}"
+      unless insideControlsBlock
         e.preventDefault()
         direction = if e.center.x > screenWidth / 2 then 1 else -1
         @adjust direction
@@ -229,7 +231,7 @@ class AP.MainView extends BaseView
         window.plugins.socialsharing.share poem.content, poem.heading(), null, poem.getUrl()
 
   likePoem: ->
-    Model.currentPoem().like()
+    Model.cachedCurrent().like()
 
 logging = no
 log = (args...) -> console.log(args...) if logging
