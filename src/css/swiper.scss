@@ -10,8 +10,9 @@
 	position: relative;
 	// width: 100%;
 	height: 100%;
+	// transition-timing-function: linear;
 	transition-timing-function: ease-in-out;
-	transition-duration: 600ms;
+	// transition-duration: 600ms;
 	// overflow-y: hidden;
 }
 
@@ -31,5 +32,5 @@
 }
 
 .smm-swiper-viewport.swiping .content-block {
-	overflow-y: hidden;
+	// overflow-y: hidden;
 }

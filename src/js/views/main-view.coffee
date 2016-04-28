@@ -76,9 +76,9 @@ class AP.MainView extends BaseView
 
     Model.date.move(direction)
 
-    @container.addClass "panning"
+    # @container.addClass "panning"
     @viewport.addClass "animating"
-    @viewport.css transform: translate3d(@shift)
+    @viewport.css transform: translate3d(@shift), "transition-duration": '400ms'
 
     curr = @viewport.find('.smm-swiper-slide.current').show()
     prev = @viewport.find('.smm-swiper-slide.prev').show()
@@ -117,11 +117,12 @@ class AP.MainView extends BaseView
     @hammer = new Hammer $('#poem-swiper')[0], {}
     @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
 
-    mode = 'full-slide'
+    animateFullSlideOnly = no
 
-    @hammer.on 'tap', (e) =>
-      direction = if e.center.x > screenWidth / 2 then 1 else -1
-      @adjust direction
+    # @hammer.on 'tap', (e) =>
+    #   e.preventDefault()
+    #   direction = if e.center.x > screenWidth / 2 then 1 else -1
+    #   @adjust direction
 
     @hammer.on 'pan', (e) =>
       if !@panningStep? and !@scrollingStarted?
@@ -131,23 +132,20 @@ class AP.MainView extends BaseView
       dy = e.deltaY
       dxPc = dx / screenWidth * 100
       vxo = e.overallVelocityX
-      tooVerticalToStart = !@panningStep? and (abs(dy) > 20 or abs(dx) < 10)
 
       log "pan dx=#{dx} / #{dxPc.toFixed(2)}% dy=#{dy} vx=#{vxo.toFixed(2)}
           #{Util.dumpBools first: e.isFirst, cont: @panningStep, final: e.isFinal, vertical: tooVerticalToStart}"
 
       if @scrollingStarted
         log "  scrolling"
-        log "  reset vertical"  if e.isFinal
+        log "  scrolling ended"  if e.isFinal
         delete @scrollingStarted if e.isFinal
         return
-      else
-        if !@panningStep? and abs(dy) < 10
-          log "  scrolling prevented"
-          e.preventDefault()
+
+      tooVerticalToStart = !@panningStep? and (abs(dy) > 20 or abs(dx) < 10)
 
       if tooVerticalToStart
-        log "  scrolling (first)"
+        log "  scrolling started"
         @scrollingStarted = true
         return
 
@@ -155,11 +153,12 @@ class AP.MainView extends BaseView
       @panningStep ?= 0
       @panningStep += 1
 
-      if mode isnt 'full-slide'
+      if animateFullSlideOnly
 
         if e.isFinal and abs(dxPc) >= 15
           delete @panningStep
           direction = if dx > 0 then -1 else +1
+          @viewport.removeClass("swiping")
           @adjust direction
 
       else
@@ -170,7 +169,7 @@ class AP.MainView extends BaseView
         @viewport.addClass("swiping")
 
         unless e.isFinal
-          # dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
+          dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
           log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
           @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
 
@@ -183,10 +182,10 @@ class AP.MainView extends BaseView
           log ""
 
           if (abs(dxPc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
-            @viewport.css "transition-duration": '500ms'
+            @viewport.css "transition-duration": '400ms'
             @adjust direction
           else
-            @viewport.css "transition-duration": '500ms'
+            @viewport.css "transition-duration": '400ms'
             @viewport.css transform: translate3d(@shift, '%')
 
           @viewport.removeClass("swiping")
@@ -230,6 +229,6 @@ class AP.MainView extends BaseView
   likePoem: ->
     Model.currentPoem().like()
 
-logging = yes
+logging = no
 log = (args...) -> console.log(args...) if logging
 clear = -> console.clear() if logging
