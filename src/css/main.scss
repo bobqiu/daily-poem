@@ -18,7 +18,10 @@ $light-gray: rgba(#000, .3);
 
 .app-title { font-variant: small-caps; }
 .sidebar { background: #efeff4; }
-.panel-overlay { background: #000; opacity: 0.2; }
+.panel-overlay { transition: 400ms ease-out; }
+.panel-overlay.active { opacity: 0.4; background: #000; transition: 400ms ease-out; }
+
+
 .main-page-content { overflow: hidden; }
 .navbar { background-color: $app-color; color: $navbar-text-color; }
 
