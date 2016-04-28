@@ -1,6 +1,7 @@
+{floor, abs} = Math
+
 class AP.MainView extends BaseView
   width = 100
-  animationDuration = 250
   defaultUnit = '%'
   screenWidth = $(window).width()
   translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 0px)"
@@ -60,9 +61,13 @@ class AP.MainView extends BaseView
     @likePoem()
 
   adjust: (direction) ->
+    log 'adjusting if needed'
+
     return unless Model.date.canMove(direction)
     return unless @done
     @done = no
+
+    log 'adjusting'
 
     @container = $('.smm-swiper')
     @viewport = $('.smm-swiper-viewport')
@@ -79,7 +84,7 @@ class AP.MainView extends BaseView
     prev = @viewport.find('.smm-swiper-slide.prev').show()
     next = @viewport.find('.smm-swiper-slide.next').show()
 
-    animationEnd = =>
+    finishAnimation = =>
       @done = yes
       @viewport.removeClass "animating"
       @container.removeClass "panning"
@@ -88,14 +93,14 @@ class AP.MainView extends BaseView
       @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
 
 
-    setTimeout =>
+    @viewport.one "transitionend", =>
       if direction is +1
         curr.toggleClass('current prev')
         next.toggleClass('next current')
         prev.toggleClass('prev next').css transform: translate3d(-@shift + width)
         @renderPoemForDate Model.date.next(), (html) =>
           prev.html html
-          animationEnd()
+          finishAnimation()
 
       else
         prev.toggleClass('prev current')
@@ -103,77 +108,94 @@ class AP.MainView extends BaseView
         next.toggleClass('next prev').css transform: translate3d(-@shift - width)
         @renderPoemForDate Model.date.prev(), (html) =>
           next.html html
-          animationEnd()
-    , animationDuration
+          finishAnimation()
 
     true
 
   initSwiping: ->
     @viewport = $('.smm-swiper-viewport')
-
     @hammer = new Hammer $('#poem-swiper')[0], {}
     @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
-    # @hammer.get('swipe').set direction: Hammer.DIRECTION_HORIZONTAL
 
-    # $('#poem-swiper')[0].addEventListener 'touchstart', (e) =>
-    #   console.log e
-    # , false
-    #
-    # $('#poem-swiper')[0].addEventListener 'touchmove', (e) =>
-    #   console.log e
-    # , false
+    mode = 'full-slide'
 
-    {floor, abs} = Math
+    @hammer.on 'tap', (e) =>
+      direction = if e.center.x > screenWidth / 2 then 1 else -1
+      @adjust direction
 
     @hammer.on 'pan', (e) =>
+      if !@panningStep? and !@scrollingStarted?
+        clear()
+
       dx = e.deltaX
       dy = e.deltaY
+      dxPc = dx / screenWidth * 100
       vxo = e.overallVelocityX
       tooVerticalToStart = !@panningStep? and (abs(dy) > 20 or abs(dx) < 10)
 
-      # console.log "pan dx=#{dx} dy=#{dy} vx=#{vxo.toFixed(2)}
-      #   #{Util.dumpBools first: e.isFirst, cont: @panningStep, final: e.isFinal, vertical: tooVerticalToStart}"
+      log "pan dx=#{dx} / #{dxPc.toFixed(2)}% dy=#{dy} vx=#{vxo.toFixed(2)}
+          #{Util.dumpBools first: e.isFirst, cont: @panningStep, final: e.isFinal, vertical: tooVerticalToStart}"
 
-      return true if tooVerticalToStart
+      if @scrollingStarted
+        log "  scrolling"
+        log "  reset vertical"  if e.isFinal
+        delete @scrollingStarted if e.isFinal
+        return
+      else
+        if !@panningStep? and abs(dy) < 10
+          log "  scrolling prevented"
+          e.preventDefault()
 
+      if tooVerticalToStart
+        log "  scrolling (first)"
+        @scrollingStarted = true
+        return
+
+      e.preventDefault()
       @panningStep ?= 0
       @panningStep += 1
 
-      @viewport.addClass("swiping")
+      if mode isnt 'full-slide'
 
-      dx_pc = dx / screenWidth * 100
-
-      unless e.isFinal
-        @viewport.css transform: translate3d(@shift + dx_pc, '%'), 'transition-duration': '0ms'
+        if e.isFinal and abs(dxPc) >= 15
+          delete @panningStep
+          direction = if dx > 0 then -1 else +1
+          @adjust direction
 
       else
-        delete @panningStep
 
-        direction = if e.deltaX > 0 then -1 else +1
-        # console.log "final #{dx}px #{dx_pc}% dir=#{direction} vel=#{vxo.toFixed(2)}"
-        # console.log ""
+        @dxStep ?= 0
+        @dxStep = dx - @dxStep
 
-        if (abs(dx_pc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
-          @viewport.css "transition-duration": '.4s'
-          @adjust direction
+        @viewport.addClass("swiping")
+
+        unless e.isFinal
+          # dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
+          log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
+          @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
+
         else
-          @viewport.css "transition-duration": '.6s'
-          @viewport.css transform: translate3d(@shift, '%')
+          delete @panningStep
+          delete @dxStep
 
-        @viewport.removeClass("swiping")
+          direction = if e.deltaX > 0 then -1 else +1
+          log "  final #{dx}px #{dxPc}% dir=#{direction} vel=#{vxo.toFixed(2)}"
+          log ""
 
-    # @hammer.on 'swipe', (e) =>
-    #   console.log 'swipe', e
-    #   direction = if e.deltaX > 0 then -1 else +1
-    #   delta = Math.floor(e.deltaX / screenWidth * 100)
-    #   if Math.abs(delta) >= 20
-    #     @adjust direction
+          if (abs(dxPc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
+            @viewport.css "transition-duration": '500ms'
+            @adjust direction
+          else
+            @viewport.css "transition-duration": '500ms'
+            @viewport.css transform: translate3d(@shift, '%')
+
+          @viewport.removeClass("swiping")
 
   renderPoemForDate: (date, next) ->
     console.xdebug "will render poem for #{date}"
 
     Model.getForDate date, (poem) =>
-      console.xdebug "rendering poem for #{date}"
+      console.debug "rendering poem for #{date}"
 
       if not poem
         return next ""
@@ -207,3 +229,7 @@ class AP.MainView extends BaseView
 
   likePoem: ->
     Model.currentPoem().like()
+
+logging = yes
+log = (args...) -> console.log(args...) if logging
+clear = -> console.clear() if logging

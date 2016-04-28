@@ -7,7 +7,7 @@ class AP.ClickManager
   handleMouse: (e) =>
     [type, x, y] = [e.type, e.pageX, e.pageY]
 
-    if e.originalEvent instanceof TouchEvent
+    if TouchEvent? and e.originalEvent instanceof TouchEvent
       touch = e.originalEvent.changedTouches[0]
       if touch
         [x, y] = [touch.pageX, touch.pageY]
@@ -26,6 +26,9 @@ class AP.ClickManager
       when 0 <= x <= SIZE                then ['left', 1]
       when WW - 44 - 8 <= x <= WW        then ['right', 1]
       when WW - 44 - 8 - SIZE <= x <= WW then ['right', 2]
+      else []
+
+    return unless side? and number?
 
     if link = @linkFor(side, number)
       console.xlog "#{type} delegated"
