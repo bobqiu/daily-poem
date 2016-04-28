@@ -5,6 +5,7 @@ class AP.MainView extends BaseView
   defaultUnit = '%'
   screenWidth = $(window).width()
   translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 0px)"
+  transitionDuration = '400ms'
 
   constructor: (@identifier) ->
 
@@ -78,7 +79,7 @@ class AP.MainView extends BaseView
 
     # @container.addClass "panning"
     @viewport.addClass "animating"
-    @viewport.css transform: translate3d(@shift), "transition-duration": '400ms'
+    @viewport.css transform: translate3d(@shift), "transition-duration": transitionDuration
 
     curr = @viewport.find('.smm-swiper-slide.current').show()
     prev = @viewport.find('.smm-swiper-slide.prev').show()
@@ -119,10 +120,11 @@ class AP.MainView extends BaseView
 
     animateFullSlideOnly = no
 
-    # @hammer.on 'tap', (e) =>
-    #   e.preventDefault()
-    #   direction = if e.center.x > screenWidth / 2 then 1 else -1
-    #   @adjust direction
+    @hammer.on 'tap', (e) =>
+      unless $(e.target).closest(".poem-controls").length
+        e.preventDefault()
+        direction = if e.center.x > screenWidth / 2 then 1 else -1
+        @adjust direction
 
     @hammer.on 'pan', (e) =>
       if !@panningStep? and !@scrollingStarted?
@@ -182,10 +184,10 @@ class AP.MainView extends BaseView
           log ""
 
           if (abs(dxPc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
-            @viewport.css "transition-duration": '400ms'
+            @viewport.css "transition-duration": transitionDuration
             @adjust direction
           else
-            @viewport.css "transition-duration": '400ms'
+            @viewport.css "transition-duration": transitionDuration
             @viewport.css transform: translate3d(@shift, '%')
 
           @viewport.removeClass("swiping")
