@@ -12,7 +12,10 @@ class AP.Router
       @route()
 
     $(document).on "click", 'a.action', (e) =>
-      @go $(e.target).closest("a.action").attr('href')
+      link = $(e.target).closest("a.action")
+      return if $(link).hasClass("external")
+      return if link.attr('href')[0] isnt '#'
+      @go link.attr('href')
 
     $(document).on 'click', 'a.back.link', (e) =>
       @go ''
@@ -44,6 +47,7 @@ class AP.Router
       routes[controller](id)
     else
       console.warn "no route for Router.#{controller}(#{id ? ''})"
+      @go ''
 
   main:          -> @openView 'Main', Model.date
   favorites:     -> @openView 'Favorites'

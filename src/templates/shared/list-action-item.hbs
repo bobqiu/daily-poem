@@ -1,7 +1,14 @@
 <li>
-  <a class="item-link item-content action" href='{{url}}'>
+  <a
+    class="item-link item-content action {{#if external}}external{{/if}}"
+    href='{{url}}'
+    {{#if external}}target="_blank"{{/if}}
+  >
     <div class="item-inner">
       <div class="item-title">{{title}}</div>
+      {{#if subtitle}}
+        <div class="item-after">{{{subtitle}}}</div>
+      {{/if}}
     </div>
   </a>
 </li>
