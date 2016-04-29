@@ -1,36 +1,20 @@
 .smm-swiper {
 	position: relative;
 	height: 100%;
-	// width: 100%;
-	// overflow-x: hidden;
-	// overflow-y: hidden;
 }
 
 .smm-swiper-viewport {
 	position: relative;
-	// width: 100%;
 	height: 100%;
-	// transition-timing-function: linear;
 	transition-timing-function: ease-in-out;
-	// transition-duration: 600ms;
-	// overflow-y: hidden;
 }
 
 .smm-swiper-slide {
 	position: absolute; left: 0; top: 0;
 	width: 100%;
 	height: 100%;
-	// overflow-y: hidden;
 
 	&.current {
 		min-height: 100%;
 	}
-}
-
-.smm-swiper-slide .content-block {
-	// overflow-y: scroll;
-}
-
-.smm-swiper-viewport.swiping .content-block {
-	// overflow-y: hidden;
 }

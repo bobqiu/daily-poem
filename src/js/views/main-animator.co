@@ -1,8 +1,8 @@
 {floor, abs} = Math
 
 logging = no
-log = (args...) -> console.log(args...) if logging
-clear = -> console.clear() if logging
+log = (args...) -> console.log(args...) if logging; true
+clear = -> console.clear() if logging; true
 
 AnimateFullSlideOnly = no
 Width = 100
@@ -13,10 +13,15 @@ translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 
 
 class AP.MainAnimator
   constructor: (@view) ->
+    console.log 'created'
     @container = $('.smm-swiper')
     @viewport = $('.smm-swiper-viewport')
-    @done = yes
     @shift = 0
+    @animating = false
+    @nextLoaded = true
+    @prevLoaded = true
+
+    @viewport.on "transitionend", @movementAnimated
 
     @hammer = new Hammer $('#poem-swiper')[0], {}
     @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
@@ -27,67 +32,70 @@ class AP.MainAnimator
     @hammer.off 'tap'
     @hammer.off 'pan'
 
-  adjust: (direction) ->
-    log 'adjusting if needed'
-
+  move: (direction) ->
     return unless Model.date.canMove(direction)
-    return unless @done
+    return log "stop moving as not done yet" if !@done()
 
-    @done = no
-
-    log 'adjusting'
-
-    @shift = @shift - direction * Width
+    log 'moving'
 
     Model.date.move(direction)
-
-    # @container.addClass "panning"
-    @viewport.addClass "animating"
-    @viewport.css transform: translate3d(@shift), "transition-duration": transitionDuration
 
     curr = @viewport.find('.smm-swiper-slide.current').show()
     prev = @viewport.find('.smm-swiper-slide.prev').show()
     next = @viewport.find('.smm-swiper-slide.next').show()
 
-    @viewport.one "transitionend", _.partial(@viewportTransititionEnded, curr, prev, next, direction)
+    @shift = @shift - direction * Width
+    @animating = true
+    @viewport.css transform: translate3d(@shift), 'transition-duration': transitionDuration
+    @viewport.one "transitionend", (e) => @movementToSiblingAnimated(curr, prev, next, direction, e)
 
     true
 
-  finishAdjusting: =>
-    @done = yes
-    @viewport.removeClass "animating"
-    @container.removeClass "panning"
-    # $('.smm-swiper-slide.prev', @viewport).hide()
-    # $('.smm-swiper-slide.next', @viewport).hide()
-    @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
+  moveBack: ->
+    log "moving back"
+    @animating = true
+    @viewport.css transform: translate3d(@shift, '%'), 'transition-duration': transitionDuration
 
-  viewportTransititionEnded: (curr, prev, next, direction, e) =>
+  movementAnimated: (e) =>
+    @animating = false
+
+  movementToSiblingAnimated: (curr, prev, next, direction, e) =>
     if direction is +1
       curr.toggleClass('current prev')
       next.toggleClass('next current')
       prev.toggleClass('prev next').css transform: translate3d(-@shift + Width)
+      @prevLoaded = false
       @view.renderDate Model.date.next(), (html) =>
         prev.html html
-        @finishAdjusting()
+        @prevLoaded = true
+        @resetNonCurrentScrolling()
     else
       prev.toggleClass('prev current')
       curr.toggleClass('current next')
       next.toggleClass('next prev').css transform: translate3d(-@shift - Width)
+      @nextLoaded = false
       @view.renderDate Model.date.prev(), (html) =>
         next.html html
-        @finishAdjusting()
+        @nextLoaded = true
+        @resetNonCurrentScrolling()
+
+  resetNonCurrentScrolling: =>
+    @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
 
   tap: (e) =>
+    return log "prevent tapping as not done yet" if !@done()
     insideControlsBlock = $(e.target).closest(".poem-controls").length isnt 0
     log "tap #{Util.dumpBools controls:insideControlsBlock}"
     unless insideControlsBlock
       e.preventDefault()
       direction = if e.center.x > screenWidth / 2 then 1 else -1
-      @adjust direction
+      @move direction
 
   pan: (e) =>
-    if !@panningStep? and !@scrollingStarted?
-      clear()
+    return log "prevent panning as not done yet" if !@done()
+
+    # if !@panningStep? and !@scrollingStarted?
+    #   clear()
 
     dx = e.deltaX
     dy = e.deltaY
@@ -123,15 +131,12 @@ class AP.MainAnimator
       if e.isFinal and abs(dxPc) >= 15
         delete @panningStep
         direction = if dx > 0 then -1 else +1
-        @viewport.removeClass("swiping")
-        @adjust direction
+        @move direction
 
     else
 
       @dxStep ?= 0
       @dxStep = dx - @dxStep
-
-      @viewport.addClass("swiping")
 
       unless e.isFinal
         dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
@@ -142,15 +147,14 @@ class AP.MainAnimator
         delete @panningStep
         delete @dxStep
 
-        direction = if e.deltaX > 0 then -1 else +1
+        direction = if dx > 0 then -1 else +1
         log "  final #{dx}px #{dxPc}% dir=#{direction} vel=#{vxo.toFixed(2)}"
         log ""
 
         if (abs(dxPc) >= 50 or abs(vxo) > 0.5) and Model.date.canMove(direction)
-          @viewport.css "transition-duration": transitionDuration
-          @adjust direction
+          @move direction
         else
-          @viewport.css "transition-duration": transitionDuration
-          @viewport.css transform: translate3d(@shift, '%')
+          @moveBack()
 
-        @viewport.removeClass("swiping")
+  done: ->
+    !@animating and @nextLoaded and @prevLoaded
