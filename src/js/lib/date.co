@@ -39,3 +39,9 @@ class window.XDate
 
   @today = ->
     new this
+
+  @from = (identifier) ->
+    switch
+      when identifier instanceof XDate then identifier
+      when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/) then new @constructor(identifier)
+      else null

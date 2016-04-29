@@ -13,7 +13,8 @@ class AP.Router
     $(document).on 'click', 'a.back.link', (e) =>
       @go ''
 
-  go: (path) ->
+  go: (path...) ->
+    path = path.join("/")
     console.xlog "going to #{path}"
     location.hash = path
 

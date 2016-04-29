@@ -15,9 +15,11 @@ class AP.CalendarView extends BaseView
       onMonthYearChangeStart: (p) =>
         $('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
         $('.calendar-custom-toolbar .center').text(Util.t('months')[p.currentMonth] + ', ' + p.currentYear)
-      onDayClick: (p, dayContainer, year, month, day) =>
-        date = new Date(year, month, day)
-        Router.go("poems/#{Util.dateString date}")
-        @f7app().closePanel()
+      onDayClick: @openDay
 
     next?()
+
+  openDay: (p, dayContainer, year, month, day) =>
+    date = new Date(year, month, day)
+    Router.go("poems/#{Util.dateString date}")
+    @f7app().closePanel()
