@@ -43,5 +43,8 @@ class window.XDate
   @from = (identifier) ->
     switch
       when identifier instanceof XDate then identifier
-      when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/) then new @constructor(identifier)
+      when typeof identifier is 'string' and identifier.match(/\d{4}-\d{2}-\d{2}/) then new @(identifier)
       else null
+
+  @fromYMD = (year, month, day) ->
+    new this new Date(year, month, day)

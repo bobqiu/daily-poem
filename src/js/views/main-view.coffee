@@ -44,7 +44,7 @@ class AP.MainView extends BaseView
     console.xdebug "will render poem for #{date}"
 
     Model.getForDate date, (poem) =>
-      console.debug "rendering poem for #{date}"
+      console.xdebug "rendering poem for #{date}"
 
       if not poem
         return next null

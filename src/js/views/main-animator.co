@@ -1,10 +1,11 @@
 {floor, abs} = Math
 
-logging = yes
+logging = no
 log = (args...) -> console.log(args...) if logging
 clear = -> console.clear() if logging
 
-width = 100
+AnimateFullSlideOnly = no
+Width = 100
 defaultUnit = '%'
 screenWidth = $(window).width()
 transitionDuration = '400ms'
@@ -36,7 +37,7 @@ class AP.MainAnimator
 
     log 'adjusting'
 
-    @shift = @shift - direction * width
+    @shift = @shift - direction * Width
 
     Model.date.move(direction)
 
@@ -48,31 +49,33 @@ class AP.MainAnimator
     prev = @viewport.find('.smm-swiper-slide.prev').show()
     next = @viewport.find('.smm-swiper-slide.next').show()
 
-    finishAnimation = =>
-      @done = yes
-      @viewport.removeClass "animating"
-      @container.removeClass "panning"
-      # $('.smm-swiper-slide.prev', @viewport).hide()
-      # $('.smm-swiper-slide.next', @viewport).hide()
-      @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
-
-    @viewport.one "transitionend", =>
-      if direction is +1
-        curr.toggleClass('current prev')
-        next.toggleClass('next current')
-        prev.toggleClass('prev next').css transform: translate3d(-@shift + width)
-        @view.renderDate Model.date.next(), (html) =>
-          prev.html html
-          finishAnimation()
-      else
-        prev.toggleClass('prev current')
-        curr.toggleClass('current next')
-        next.toggleClass('next prev').css transform: translate3d(-@shift - width)
-        @view.renderDate Model.date.prev(), (html) =>
-          next.html html
-          finishAnimation()
+    @viewport.one "transitionend", _.partial(@viewportTransititionEnded, curr, prev, next, direction)
 
     true
+
+  finishAdjusting: =>
+    @done = yes
+    @viewport.removeClass "animating"
+    @container.removeClass "panning"
+    # $('.smm-swiper-slide.prev', @viewport).hide()
+    # $('.smm-swiper-slide.next', @viewport).hide()
+    @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
+
+  viewportTransititionEnded: (curr, prev, next, direction, e) =>
+    if direction is +1
+      curr.toggleClass('current prev')
+      next.toggleClass('next current')
+      prev.toggleClass('prev next').css transform: translate3d(-@shift + Width)
+      @view.renderDate Model.date.next(), (html) =>
+        prev.html html
+        @finishAdjusting()
+    else
+      prev.toggleClass('prev current')
+      curr.toggleClass('current next')
+      next.toggleClass('next prev').css transform: translate3d(-@shift - Width)
+      @view.renderDate Model.date.prev(), (html) =>
+        next.html html
+        @finishAdjusting()
 
   tap: (e) =>
     insideControlsBlock = $(e.target).closest(".poem-controls").length isnt 0
@@ -83,8 +86,6 @@ class AP.MainAnimator
       @adjust direction
 
   pan: (e) =>
-    animateFullSlideOnly = no
-
     if !@panningStep? and !@scrollingStarted?
       clear()
 
@@ -109,11 +110,15 @@ class AP.MainAnimator
       @scrollingStarted = true
       return
 
+    @doPanning(e, dx, dy, dxPc, vxo)
+
+  doPanning: (e, dx, dy, dxPc, vxo) ->
     e.preventDefault()
+
     @panningStep ?= 0
     @panningStep += 1
 
-    if animateFullSlideOnly
+    if AnimateFullSlideOnly
 
       if e.isFinal and abs(dxPc) >= 15
         delete @panningStep
