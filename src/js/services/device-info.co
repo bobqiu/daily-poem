@@ -8,3 +8,7 @@ class AP.DeviceInfo
 
   setScreenWidth: ->
     @screenWidth = $(window).width()
+
+  share: ({text, heading, url}) ->
+    console.log "opening the sharing dialog..."
+    window.plugins?.socialsharing?.share text, heading, null, url

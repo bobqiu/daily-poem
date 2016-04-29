@@ -1,7 +1,6 @@
 class AP.Poem
   constructor: (data) ->
     this[prop] = value for prop, value of data
-    this.url = "#poems/#{@id}"
 
   heading: ->
     @title || @firstLine
@@ -16,7 +15,7 @@ class AP.Poem
     Model.likes.has(@id)
 
   getUrl: ->
-    "https://dailypoem.firebaseapp.com/poems/#{@id}.html"
+    "https://dailypoem.firebaseapp.com/poems/#{@slug}.html"
 
   notificationTime: ->
     moment(@date()).startOf('day').add({hours: 12, minutes: 30}).valueOf()

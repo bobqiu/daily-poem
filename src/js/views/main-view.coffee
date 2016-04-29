@@ -63,8 +63,7 @@ class AP.MainView extends BaseView
 
   share: (e) =>
     Model.getCurrent (poem) =>
-      console.log "opening the sharing dialog..."
-      window.plugins?.socialsharing?.share poem.content, poem.heading(), null, poem.getUrl()
+      App.deviceInfo.share text: poem.content, heading: poem.heading(), url: poem.getUrl()
 
   like: (e) =>
     target = $(e.target).closest(".x-like")
