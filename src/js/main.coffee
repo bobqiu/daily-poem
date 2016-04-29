@@ -31,3 +31,13 @@ main = ->
 
 event = if cordova? then "deviceready" else "DOMContentLoaded"
 document.addEventListener event, main, false
+
+# window.xParseURLToPath = (url) ->
+#   link = document.createElement('a')
+#   link.href = url
+#   link.pathname
+
+window.handleOpenURL = (url) ->
+  console.log "Trying to open URL: #{url}"
+  # path = xParseURLToPath(url)
+  # Router.go(path)
