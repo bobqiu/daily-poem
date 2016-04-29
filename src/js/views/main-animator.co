@@ -1,6 +1,6 @@
 {floor, abs} = Math
 
-logging = yes
+logging = no
 log = (args...) -> console.log(args...) if logging; true
 clear = -> console.clear() if logging; true
 
@@ -34,8 +34,6 @@ class AP.MainAnimator
     return unless Model.date.canMove(direction)
     return log "stop moving as not done yet" if !@done()
 
-    log 'moving'
-
     Model.date.move(direction)
 
     curr = @viewport.find('.smm-swiper-slide.current').show()
@@ -58,6 +56,8 @@ class AP.MainAnimator
     @animating = false
 
   movementToSiblingAnimated: (curr, prev, next, direction, e) =>
+    Router.replace "poems", Model.date
+
     if direction is +1
       curr.toggleClass('current prev')
       next.toggleClass('next current')
@@ -137,7 +137,7 @@ class AP.MainAnimator
       @dxStep = dx - @dxStep
 
       unless e.isFinal
-        dxPc = @panningStep * 1.0 * (if dx < 0 then -1 else 1)
+        dxPc = @panningStep * 1.2 * (if dx < 0 then -1 else 1)
         log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
         @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
 

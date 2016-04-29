@@ -5,6 +5,10 @@ class AP.Router
       return
 
     $(window).on 'hashchange', =>
+      if @skipNext
+        @skipNext = false
+        return
+
       @route()
 
     $(document).on "click", 'a.action', (e) =>
@@ -16,10 +20,18 @@ class AP.Router
   go: (path...) ->
     path = path.join("/")
     console.xlog "going to #{path}"
+
+    @skipNext = true
+    location.hash = path
+    @route()
+
+  replace: (path...) ->
+    path = path.join("/")
+    @skipNext = true
     location.hash = path
 
   route: =>
-    return if @constructor.disabled
+    return if @constructor.disabled or @disabled
 
     hash = decodeURIComponent location.hash.slice(1)
     [controller, id, other...] = hash.split('/')
@@ -33,12 +45,11 @@ class AP.Router
     else
       console.warn "no route for Router.#{controller}(#{id ? ''})"
 
-    return false
-
   main:          -> @openView 'Main', Model.date
   favorites:     -> @openView 'Favorites'
   about:         -> @openView 'About'
   developer:     -> @openView 'DeveloperMenu'
+  today:         -> @openView 'Main', Model.date
   tomorrow:      -> @openView 'Main', Model.date.last().next()
   poems: (id)    -> @openView 'Main', id
   calendar: (id) -> @openView 'Calendar'
@@ -47,3 +58,4 @@ class AP.Router
     @currentView?.unmount()
     @currentView = new AP["#{viewName}View"](args...)
     @currentView.show()
+    null
