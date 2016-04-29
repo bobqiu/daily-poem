@@ -18,10 +18,9 @@ configure :build do
   # set :http_prefix, "/Content/images/"
 end
 
-poem_summary = JSON.parse File.read "data/poem_summary.json"
-poem_summary['items'].each do |poem|
-  slug = poem['id']
-  proxy "/poems/#{slug}.html", "poem.html", locals: { poem_id: poem['id'], poem_title: poem['title'] }
+poems = JSON.parse File.read "data/poem_details.json"
+poems.each do |id, poem|
+  proxy "/poems/#{poem['slug']}.html", "poem.html", locals: { poem_id: poem['id'], poem_title: poem['title'] }
 end
 
 helpers do

@@ -24,6 +24,10 @@ module PoemSources
       yield src, index, tags, body, basename
     end
   end
+
+  def parameterize(string)
+    Translit.convert(string, :english).downcase.gsub(/[^\w\s]/, '').strip.gsub(/\s+/, '-')
+  end
 end
 
 
@@ -56,6 +60,7 @@ task :data do
     poem.translator = tags['перевод']
     poem.firstLine = body.lines.first.chomp
     poem.initialDate = date
+    poem.slug = PoemSources.parameterize("#{id} #{poem.author} #{poem.title}")
 
     summary[:items] << {id: id, title: poem.title, author: poem.author}
 

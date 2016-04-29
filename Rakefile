@@ -3,6 +3,7 @@ require 'pathname'
 require 'erb'
 require 'json'
 require 'date'
+require 'translit'
 
 Dir.glob("tasks/*.rake") { |tasks| load tasks }
 

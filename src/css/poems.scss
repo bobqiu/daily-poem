@@ -39,7 +39,13 @@ $smalles-font-size: 10px;
 	.author {
 	  text-align: right;
 		font-style: italic;
-		margin: 22px 0;
+		margin: 22px 0 1em;
+	}
+
+	.translator {
+	  text-align: right;
+		font-style: italic;
+		margin: 1em 0;
 	}
 
 	.date {

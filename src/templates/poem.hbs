@@ -15,6 +15,10 @@
       <div class='poem-extra'>
         <p class='author'>{{author}}</p>
 
+        {{#if translator}}
+          <p class='translator'>Перевод: {{translator}}</p>
+        {{/if}}
+
         {{#if year}}
           <p class='date'>{{year}} г</p>
         {{/if}}
