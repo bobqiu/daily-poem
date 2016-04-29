@@ -1,26 +1,44 @@
-def poem_id_for_date(date)
-  date.strftime("%Y%m%d").to_i
+$original_poems_dir = Pathname.new "assets/poems-src"
+$utf8_poems_dir = Pathname.new "assets/poems-utf"
+
+module PoemSources
+  module_function
+
+  def poem_id_for_date(date)
+    date.strftime("%Y%m%d").to_i
+  end
+
+  def all_sources
+    Pathname.glob($poems_src / "*.txt").sort_by { |path| path.basename.to_s.to_i }.each_with_index do |src, index|
+      basename = File.basename(src, '.txt')
+      text = File.read(src)
+      text = text.gsub("\r", "")
+      header, body = text.split("---\n", 2)
+
+      tag_lines = header.split("\n")
+      tags = tag_lines.each_with_object({}) do |line, map|
+        name, value = line.split(/\: ?/)
+        map[name] = value
+      end
+
+      yield src, index, tags, body, basename
+    end
+  end
 end
 
+
 task :data do
-  $poems_dst.mkpath
+  rm_rf $poems_dst
+  mkpath $poems_dst
 
   details = {}
   summary = {items: [], mapping: {}}
 
-  Pathname.glob("#{$poems_src}/*.txt").each_with_index do |src, index|
-    basename = File.basename(src, '.txt')
-    text = File.read(src)
-    header, body = text.split("---\n", 2)
-    date = Date.today - 5 + index
-    id = poem_id_for_date(date) # basename.to_i
+  PoemSources.all_sources do |src, index, tags, body, basename|
+    date = Date.parse("2016-04-01") + index
+    id = basename.to_i # poem_id_for_date(date)
 
-
-    tag_lines = header.split("\n")
-    tags = tag_lines.each_with_object({}) do |line, map|
-      name, value = line.split(': ')
-      map[name] = value
-    end
+    puts "processing ##{id}: #{src.basename}"
 
     poem = OpenStruct.new
     poem.id = id
@@ -31,24 +49,61 @@ task :data do
       "<p>#{line}</p>"
     end.join
     poem.author = tags['автор']
+    poem.authorYears = tags['годы жизни']
     poem.year = tags['год'] ? tags['год'].to_i : nil
-    poem.source = tags['источник']
     poem.title = tags['название']
+    poem.country = tags['страна']
+    poem.translator = tags['перевод']
     poem.firstLine = body.lines.first.chomp
-
-    # template = ERB.new(File.read('other/poem.erb'), nil, '-')
-    # template.result(binding)
+    poem.initialDate = date
 
     summary[:items] << {id: id, title: poem.title, author: poem.author}
-    details[id] = poem.to_h
+
+    poem = poem.to_h
+    poem.each_pair do |key, val|
+      poem.delete(key) if val == nil || val == ''
+    end
+
+    details[id] = poem
     summary[:mapping][date] = id
   end
-
-  # summary[:mapping] = (Date.today - 5 .. Date.today + 5).inject({}) { |map, date| map[date] = map.size + 1; map }
 
   details.each { |id, data| File.write $poems_dst / "#{id}.json", data.to_json }
   File.write $poems_dst / 'summary.json', summary.to_json
 
   File.write "site/data/poem_details.json", details.to_json
   File.write "site/data/poem_summary.json", summary.to_json
+end
+
+namespace :data do
+  task :fix_encoding do
+    rm_rf $utf8_poems_dir
+    mkpath $utf8_poems_dir
+
+    Pathname.glob($original_poems_dir / "*.txt").each do |path|
+      sh "iconv -f CP1251 -t utf8 #{path.to_s.shellescape} > #{$utf8_poems_dir}/#{path.basename.to_s.shellescape}"
+    end
+  end
+
+  task :randomize_and_number do
+    rm_rf $shuffled_poems_dir
+    mkpath $shuffled_poems_dir
+
+    Pathname.glob($utf8_poems_dir / "*.txt").to_a.map { |path| path }.shuffle.each_with_index do |path, index|
+      cp path, $poems_src / "#{index + 1} #{path.basename}"
+    end
+  end
+
+  task :header_stats do
+    headers = {}
+
+    PoemSources.all_sources do |src, index, tags, body, basename|
+      tags.each do |key, value|
+        headers[key] ||= 0
+        headers[key] += 1
+      end
+    end
+
+    pp headers
+  end
 end

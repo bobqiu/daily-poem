@@ -7,7 +7,7 @@ class AP.CalendarView extends BaseView
       weekHeader: false,
       toolbarTemplate: @renderTemplate('shared/calendar-toolbar')
       value: [Model.date.getDate()]
-      disabled: [ {from: Model.date.last().getDate()}, {to: Model.date.first().getDate()} ]
+      disabled: [ {from: Model.date.last().getDate()}, {to: Model.date.first().prev().getDate()} ]
       onOpen: (p) =>
         $('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
         $('.calendar-custom-toolbar .left .link').click => calendar.prevMonth()

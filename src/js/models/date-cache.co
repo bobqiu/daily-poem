@@ -9,6 +9,6 @@ class AP.DateCache extends AP.Cache
     super key.string()
 
   cleanup: (key) ->
-    date = key
+    date = new XDate(key)
     keysToLeave = [ date, date.next(), date.prev() ].map (d) -> d.string()
     @removeAllKeysBut keysToLeave
