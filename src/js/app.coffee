@@ -21,6 +21,7 @@ class AP.App
 
       @lifecycle = new AP.Lifecycle
       @clickManager = new AP.ClickManager
+      @deviceInfo = new AP.DeviceInfo
 
       if @screenshotsMode
         @screenshots ?= AP.Screenshots

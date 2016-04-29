@@ -1,0 +1,10 @@
+class AP.DeviceInfo
+  constructor: ->
+    @setScreenWidth()
+    $(window).on 'orientationchange', @orientationChanged
+
+  orientationChanged: =>
+    @setScreenWidth()
+
+  setScreenWidth: ->
+    @screenWidth = $(window).width()

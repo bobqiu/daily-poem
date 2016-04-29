@@ -1,19 +1,17 @@
 {floor, abs} = Math
 
-logging = no
+logging = yes
 log = (args...) -> console.log(args...) if logging; true
 clear = -> console.clear() if logging; true
 
 AnimateFullSlideOnly = no
 Width = 100
 defaultUnit = '%'
-screenWidth = $(window).width()
 transitionDuration = '400ms'
 translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 0px)"
 
 class AP.MainAnimator
   constructor: (@view) ->
-    console.log 'created'
     @container = $('.smm-swiper')
     @viewport = $('.smm-swiper-viewport')
     @shift = 0
@@ -88,18 +86,18 @@ class AP.MainAnimator
     log "tap #{Util.dumpBools controls:insideControlsBlock}"
     unless insideControlsBlock
       e.preventDefault()
-      direction = if e.center.x > screenWidth / 2 then 1 else -1
+      direction = if e.center.x > App.deviceInfo.screenWidth / 2 then 1 else -1
       @move direction
 
   pan: (e) =>
     return log "prevent panning as not done yet" if !@done()
 
-    # if !@panningStep? and !@scrollingStarted?
-    #   clear()
+    if !@panningStep? and !@scrollingStarted?
+      clear()
 
     dx = e.deltaX
     dy = e.deltaY
-    dxPc = dx / screenWidth * 100
+    dxPc = dx / App.deviceInfo.screenWidth * 100
     vxo = e.overallVelocityX
 
     log "pan dx=#{dx} / #{dxPc.toFixed(2)}% dy=#{dy} vx=#{vxo.toFixed(2)}
