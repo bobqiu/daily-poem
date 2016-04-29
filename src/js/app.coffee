@@ -14,10 +14,9 @@ class AP.App
     Model.load =>
       Router.route()
 
-      setTimeout =>
+      setTimeoutTo 100, =>
         @notifications = new AP.Notifications
         @notifications.setReminders()
-      , 100
 
       @lifecycle = new AP.Lifecycle
       @clickManager = new AP.ClickManager

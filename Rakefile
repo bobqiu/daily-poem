@@ -40,7 +40,7 @@ task s: :server
 
 
 task :config do
-  build_number = Time.now.strftime('%m%d%H%M')
+  build_number = Time.now.strftime('%y%m%d.%H%M')
   ios_portrait_screen_sizes = $ios_screen_sizes.keys.map { |size| size.split('x') }
   ios_landscrape_screen_sizes = ios_portrait_screen_sizes.map { |w, h| [h, w] }
 
@@ -59,6 +59,7 @@ task :config do
   File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
 end
 
+task rebuild:  [:config, :clean, :prepare, :www, :device]
 task appstore: [:config, :clean, :prepare, :www_release, :ios_release]
 
 #  do
