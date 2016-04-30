@@ -14,7 +14,7 @@ $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
 $ios_emulator_target = ENV['target'] || "iPhone-6"
-$ios_version = "0.4.2"
+$ios_version = "0.5"
 
 
 task(:server) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
