@@ -14,13 +14,10 @@ class AP.App
     Model.load =>
       Router.route()
 
-      setTimeoutTo 100, =>
-        @notifications = new AP.Notifications
-        @notifications.setReminders()
-
-      @lifecycle = new AP.Lifecycle
+      @notifications = new AP.Notifications
       @clickManager = new AP.ClickManager
       @deviceInfo = new AP.DeviceInfo
+      @lifecycle = new AP.Lifecycle
 
       if @screenshotsMode
         @screenshots ?= AP.Screenshots

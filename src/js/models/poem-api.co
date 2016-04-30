@@ -89,6 +89,7 @@ class AP.PoemApi
 
   closest: (limit = 5, next) ->
     count = 0
+    # currentDateStr = @date.first().string() # TEMP
     currentDateStr = MutableXDate.today().string()
     ids = []
     for date, id of @mapping when date > currentDateStr

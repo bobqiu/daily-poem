@@ -1,6 +1,19 @@
 class AP.Lifecycle
   constructor: ->
     $(document).on 'resume', @resume
+    $(document).on 'active', @active
+    $(document).on 'resign', @resign
+    $(document).on 'pause',  @pause
 
-  resume: ->
+    @entered()
+
+  resume: =>@entered()
+  active: =>
+  entered: ->
+    setTimeoutTo 1000, =>
+      App.notifications?.scheduleAll()
+
+  resign: ->
+
+  pause: ->
     App.notifications?.clearAll()

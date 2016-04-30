@@ -1,6 +1,7 @@
 class AP.Poem
   constructor: (data) ->
     this[prop] = value for prop, value of data
+    @path = "#poems/#{@id}"
 
   heading: ->
     @title || @firstLine
@@ -18,7 +19,7 @@ class AP.Poem
     "https://dailypoem.firebaseapp.com/poems/#{@slug}.html"
 
   notificationTime: ->
-    moment(@date()).startOf('day').add({hours: 12, minutes: 30}).valueOf()
+    moment(@date().getDate()).startOf('day').add({hours: 12, minutes: 30}).valueOf()
 
   date: ->
     new XDate Model.reverseMapping[@id]

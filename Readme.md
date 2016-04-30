@@ -25,3 +25,7 @@ handlebars templates/*.hbs -f tmp/gen/handlebars.js -k each -k if -k unless
 * copy DailyPoemUITests.swift from lib into the UITests target
 * customize Snapfile
 * $ snapshot
+
+## Docs
+
+* https://github.com/katzer/cordova-plugin-local-notifications
