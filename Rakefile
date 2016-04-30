@@ -72,3 +72,8 @@ task appstore: [:config, :clean, :prepare, :www_release, :ios_release]
 # end
 
 task(:deliver) { sh "BINARY=YES deliver" }
+
+task :reinstall_customizations do
+  sh "cordova plugin rm cordova-plugin-app-customization"
+  sh "cordova plugin add assets/plugins/cordova-plugin-app-customization"
+end

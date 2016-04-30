@@ -7,7 +7,7 @@ tmp
 www
 src/img
 platforms
-plugins
+plugins/*
 assets/app-icons
 assets/launch-screens
 assets/poems-utf
