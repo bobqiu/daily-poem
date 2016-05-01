@@ -137,7 +137,8 @@ class AP.MainAnimator
       @dxStep = dx - @dxStep
 
       unless e.isFinal
-        dxPc = @panningStep * 1.2 * (if dx < 0 then -1 else 1)
+        tinyStep = @panningStep * 1.2 * (if dx < 0 then -1 else 1)
+        dxPc = tinyStep if abs(dxPc) > abs(tinyStep)
         log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
         @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
 
