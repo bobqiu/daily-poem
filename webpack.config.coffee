@@ -20,8 +20,8 @@ sourcePrefix = if release then '' else 'http://10.0.1.3:3000/'
 module.exports =
   devtool: if production then null else 'source-map'
   entry:
-    app: './src/js/main.coffee'
-    lib: './src/js/lib.coffee'
+    app: './src/main.coffee'
+    lib: './src/lib.coffee'
 
   output:
     path: "./www/#{targetDir}"
@@ -48,10 +48,10 @@ module.exports =
   plugins: [
     cssExtractor
     new HtmlWebpackPlugin(
-      title: 'Custom Index', filename: 'index.html', template: 'src/index.html.ejs', inject: false, targetDir: sourcePrefix
+      title: 'Custom Index', filename: 'index.html', template: 'src/html/layouts/index.html.ejs', inject: false, targetDir: sourcePrefix
     )
     new HtmlWebpackPlugin(
-      title: 'Test Index', filename: 'test.html', template: 'src/test.html.ejs', inject: false, targetDir: sourcePrefix
+      title: 'Test Index', filename: 'test.html', template: 'src/html/layouts/test.html.ejs', inject: false, targetDir: sourcePrefix
     )
   ]
 

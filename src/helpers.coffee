@@ -1,4 +1,4 @@
-{render} = require '../helpers/support'
+{render} = require './helpers/support'
 
 Handlebars.registerHelper
   navbarBox: (options) ->

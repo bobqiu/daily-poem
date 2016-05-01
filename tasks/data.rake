@@ -42,7 +42,7 @@ task :data do
     date = Date.parse("2016-05-01") + index
     id = basename.to_i # poem_id_for_date(date)
 
-    puts "processing ##{id}: #{src.basename}"
+    puts "processing ##{id}: #{src.basename}".yellow
 
     poem = OpenStruct.new
     poem.id = id
@@ -74,8 +74,9 @@ task :data do
   end
 
   details.each { |id, data| File.write $poems_dst / "#{id}.json", data.to_json }
-  File.write $poems_dst / 'summary.json', summary.to_json
-  File.write "site/data/poem_details.json", details.to_json
+
+  write_file $poems_dst / 'summary.json', summary.to_json
+  write_file "site/data/poem_details.json", details.to_json
 end
 
 namespace :data do
@@ -109,4 +110,9 @@ namespace :data do
 
     pp headers
   end
+end
+
+def write_file(path, data)
+  File.write path, data
+  puts "copy #{path}".magenta
 end

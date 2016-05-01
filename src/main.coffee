@@ -1,5 +1,4 @@
-require "../css/main.scss"
-require "../about.html"
+require "./css/main.scss"
 
 console.xdebug ?= ->
 console.xlog ?= ->

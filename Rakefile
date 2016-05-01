@@ -4,6 +4,7 @@ require 'erb'
 require 'json'
 require 'date'
 require 'translit'
+require 'colorize'
 
 Dir.glob("tasks/*.rake") { |tasks| load tasks }
 
@@ -88,6 +89,12 @@ task :check_release do
   checks.devserver = File.read("www/index.html").include?("http://10.0.1.3:3000")
   checks.non_minified = File.read("www/app.js").include?("webpackBootstrap")
   checks.each_pair do |key, value|
-    puts "Release invariant failed: #{key.to_s.upcase}" if value
+    puts "Release invariant failed: #{key.to_s.upcase}".red if value
   end
+end
+
+task :colors do
+  puts String.color_samples
+  p String.colors
+  p String.modes
 end

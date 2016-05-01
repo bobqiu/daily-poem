@@ -38,7 +38,7 @@ module.exports = window.Util =
     $(button).find('i').toggleClass('filled')
 
   render: (template, args...) ->
-    @templates ?= require.context("../../templates", true, /\.hbs$/)
+    @templates ?= require.context("../html", true, /\.hbs$/)
     @templates("./#{template}.hbs")(args...)
 
   dumpBools: (options) ->
