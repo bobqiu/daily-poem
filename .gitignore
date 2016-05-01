@@ -14,3 +14,10 @@ assets/poems-utf
 screenshots
 Preview.html
 config.xml
+
+site/build
+site/src/favicon*
+site/src/images/favicon*
+site/src/images/screen*
+site/src/images/promo*
+site/data/poem_*

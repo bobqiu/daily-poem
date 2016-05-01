@@ -29,3 +29,14 @@ handlebars templates/*.hbs -f tmp/gen/handlebars.js -k each -k if -k unless
 ## Docs
 
 * https://github.com/katzer/cordova-plugin-local-notifications
+
+
+
+## Site
+### Promo image generation
+
+  http://mockuphone.com/
+
+### Deployment
+
+  rake site:deploy

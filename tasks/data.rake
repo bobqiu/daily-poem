@@ -75,9 +75,7 @@ task :data do
 
   details.each { |id, data| File.write $poems_dst / "#{id}.json", data.to_json }
   File.write $poems_dst / 'summary.json', summary.to_json
-
   File.write "site/data/poem_details.json", details.to_json
-  File.write "site/data/poem_summary.json", summary.to_json
 end
 
 namespace :data do
