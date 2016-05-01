@@ -14,7 +14,7 @@ requireAll require.context("./lib", true, /.(co|coffee)$/)
 requireAll require.context("./models", true, /.(co|coffee)$/)
 requireAll require.context("./services", true, /.(co|coffee)$/)
 
-require "./app"
+require "./application"
 require "./router"
 
 require './views/base'
@@ -26,7 +26,7 @@ main = ->
 
   window.PoemApi = new AP.PoemApi
   window.Model = PoemApi
-  window.App = new AP.App
+  window.App = new AP.Application
   window.Router = new AP.Router
 
 event = if cordova? then "deviceready" else "DOMContentLoaded"

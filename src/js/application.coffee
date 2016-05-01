@@ -1,4 +1,4 @@
-class AP.App
+class AP.Application
   constructor: ->
     @sidebar = new AP.SidebarView
     @sidebar.show()
@@ -18,6 +18,7 @@ class AP.App
       @clickManager = new AP.ClickManager
       @deviceInfo = new AP.DeviceInfo
       @lifecycle = new AP.Lifecycle
+      @sharingManager = new AP.SharingManager
 
       if @screenshotsMode
         @screenshots ?= AP.Screenshots

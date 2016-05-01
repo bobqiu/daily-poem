@@ -1,0 +1,9 @@
+class AP.SharingManager
+  share: ({text, heading, url}) ->
+    console.log "opening the sharing dialog..."
+    plugins?.socialsharing?.share text, heading, null, url
+
+  setPopupPosition: (button) ->
+    rect = button.getBoundingClientRect()
+    bounds = rect.left + ',' + rect.top + ',' + rect.width + ',' + rect.height
+    plugins?.socialsharing?.setIPadPopupCoordinates(bounds)

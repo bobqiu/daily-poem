@@ -63,7 +63,8 @@ class AP.MainView extends BaseView
 
   share: (e) =>
     Model.getCurrent (poem) =>
-      App.deviceInfo.share text: poem.content, heading: poem.heading(), url: poem.getUrl()
+      App.sharingManager.setPopupPosition $(".x-share")[0]
+      App.sharingManager.share text: poem.content, heading: poem.heading(), url: poem.getUrl()
 
   like: (e) =>
     target = $(e.target).closest(".x-like")
