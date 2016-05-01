@@ -20,8 +20,8 @@ sourcePrefix = if release then '' else 'http://10.0.1.3:3000/'
 module.exports =
   devtool: if production then null else 'source-map'
   entry:
-    app: './src/main.coffee'
-    lib: './src/lib.coffee'
+    app: './src/main.cofe'
+    lib: './src/lib.cofe'
 
   output:
     path: "./www/#{targetDir}"
@@ -38,7 +38,7 @@ module.exports =
         helperDirs: [ "#{__dirname}/src/helpers" ]
         inlineRequires: '../images/'
     }
-    { test: /\.(coffee|co)$/, loaders: [ 'coffee' ] }
+    { test: /\.(coffee|cofe)$/, loaders: [ 'coffee' ] }
     { test: /\.js$/, exclude: /node_modules/, loader: 'babel' } # presets[]=react,presets[]=es2015
     { test: /\.(png|jpe?g|gif|svg)$/, loader: "url?limit=1024&name=#{assetFormat}" }
     { test: /\.html$/, loader: 'file?name=[name].[ext]!html-minify' }
@@ -59,8 +59,8 @@ module.exports =
     root: path.resolve(__dirname)
     alias:
       ext: "lib/js"
-    extensions: ['', '.js', '.json', '.coffee', '.co', '.cjsx']
+    extensions: ['', '.js', '.json', '.coffee', '.cofe', '.cjsx']
 
   ejsHtml: {}
 
-module.exports.entry.spec = './spec/spec.co' unless release
+module.exports.entry.spec = './spec/spec.cofe' unless release

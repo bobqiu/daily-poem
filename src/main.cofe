@@ -9,15 +9,15 @@ window.Handlebars = require "handlebars/runtime"
 require "./helpers"
 
 window.AP = {}
-requireAll require.context("./lib", true, /.(co|coffee)$/)
-requireAll require.context("./models", true, /.(co|coffee)$/)
-requireAll require.context("./services", true, /.(co|coffee)$/)
+requireAll require.context("./lib", true, /.cofe$/)
+requireAll require.context("./models", true, /.cofe$/)
+requireAll require.context("./services", true, /.cofe$/)
 
 require "./application"
 require "./router"
 
 require './views/base'
-requireAll require.context("./views", true, /.coffee$/)
+requireAll require.context("./views", true, /.cofe$/)
 
 main = ->
   # StatusBar?.backgroundColorByHexString("#ff9500")
