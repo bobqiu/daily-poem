@@ -22,7 +22,6 @@ module.exports =
   entry:
     app: './src/js/main.coffee'
     lib: './src/js/lib.coffee'
-    spec: './spec/spec.co'
 
   output:
     path: "./www/#{targetDir}"
@@ -63,3 +62,5 @@ module.exports =
     extensions: ['', '.js', '.json', '.coffee', '.co', '.cjsx']
 
   ejsHtml: {}
+
+module.exports.entry.spec = './spec/spec.co' unless release

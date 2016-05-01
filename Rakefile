@@ -14,7 +14,7 @@ $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
 $ios_emulator_target = ENV['target'] || "iPhone-6"
-$ios_version = "0.5"
+$ios_version = "1.0"
 
 
 task(:server) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
@@ -39,7 +39,7 @@ task prepare_all: %w(icons:build vendor:copy data)
 task s: :server
 
 
-task :config do
+task :conf do
   build_number = Time.now.strftime('%y%m%d.%H%M')
   ios_portrait_screen_sizes = $ios_screen_sizes.keys.map { |size| size.split('x') }
   ios_landscrape_screen_sizes = ios_portrait_screen_sizes.map { |w, h| [h, w] }
@@ -59,8 +59,8 @@ task :config do
   File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
 end
 
-task rebuild:  [:config, :clean, :prepare, :www, :device]
-task appstore: [:config, :clean, :prepare, :www_release, :ios_release]
+task rebuild:  [:conf, :clean, :prepare, :www, :device]
+task appstore: [:conf, :clean, :prepare, :www_release, :ios_release, :check_release]
 
 #  do
 #   is_release = true
@@ -76,4 +76,14 @@ task(:deliver) { sh "BINARY=YES deliver" }
 task :reinstall_customizations do
   sh "cordova plugin rm cordova-plugin-app-customization"
   sh "cordova plugin add assets/plugins/cordova-plugin-app-customization"
+end
+
+task :check_release do
+  checks = OpenStruct.new
+  checks.specs = File.exist?("www/spec.js")
+  checks.devserver = File.read("www/index.html").include?("http://10.0.1.3:3000")
+  checks.non_minified = File.read("www/app.js").include?("webpackBootstrap")
+  checks.each_pair do |key, value|
+    puts "Release invariant failed: #{key.to_s.upcase}" if value
+  end
 end

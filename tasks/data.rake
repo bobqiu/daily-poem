@@ -39,7 +39,7 @@ task :data do
   summary = {items: [], mapping: {}}
 
   PoemSources.all_sources do |src, index, tags, body, basename|
-    date = Date.parse("2016-04-01") + index
+    date = Date.parse("2016-05-01") + index
     id = basename.to_i # poem_id_for_date(date)
 
     puts "processing ##{id}: #{src.basename}"
