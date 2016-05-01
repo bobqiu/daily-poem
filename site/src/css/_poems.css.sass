@@ -17,6 +17,8 @@ body.poems
       vertical-align: -10px
     &:hover
       text-decoration: none
+  +phone
+    text-align: center
 
 .poem
   font-family: $poem-font-family
@@ -27,6 +29,8 @@ body.poems
   padding: 1em
   padding-top: 0
   max-width: $screen-sm-min
+
+  padding-top: 1em
 
   .poem-date
     margin: 1em 0
@@ -54,16 +58,21 @@ body.poems
     .poem-id
       float: left
       color: #ccc
+    +phone
+      margin-top: 2em
 
 .poem-footer
   border-top: 1px solid #ccc
+  text-align: right
 
   .poem-stores
     margin: 1em
-    text-align: right
+
   .poem-copy
     margin: 1em
     p
-      text-align: right
       color: #999
       font-size: 14px
+
+  +phone
+    text-align: center
