@@ -23,7 +23,8 @@ task(:www) { sh "webpack" }
 task(:www_release) { sh "RELEASE=YES webpack -p" }
 task(:watch) { sh "webpack -w" }
 task(:clean) { sh "rm -rf www/*" }
-task(:sim) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
+task(:build) { sh "cordova build ios" }
+task(:simulator) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
 task(:device) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
 
 task(:ios_release) { sh "cordova build ios --device --release" }
@@ -37,6 +38,8 @@ end
 
 task prepare_all: %w(icons:build vendor:copy data)
 task s: :server
+task dev: :device
+task sim: :simulator
 
 
 task :conf do
@@ -51,7 +54,8 @@ task :conf do
     plist_options: {
       UIStatusBarStyle: 'UIStatusBarStyleDefault',
       UIStatusBarHidden: true,
-      UIViewControllerBasedStatusBarAppearance: false
+      UIViewControllerBasedStatusBarAppearance: false,
+      ITSAppUsesNonExemptEncryption: false
     }
   }
 
