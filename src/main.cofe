@@ -1,41 +1,19 @@
-require "./css/main.scss"
-
-console.xdebug ?= ->
-console.xlog ?= ->
+window.AP = {}
+window.Handlebars = require "handlebars/runtime" # must be in same files as templates 
 
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 
-window.Handlebars = require "handlebars/runtime"
+require "./css/main.scss"
 require "./helpers"
-
-window.AP = {}
 require "./lib/globals"
 requireAll require.context("./lib", true, /.cofe$/)
 requireAll require.context("./models", true, /.cofe$/)
 requireAll require.context("./services", true, /.cofe$/)
-
 require "./application"
 require "./router"
-
 require './views/base'
 requireAll require.context("./views", true, /.cofe$/)
 
-main = ->
-  # StatusBar?.backgroundColorByHexString("#ff9500")
-  # StatusBar?.styleLightContent()
-
+document.addEventListener (if cordova? then "deviceready" else "DOMContentLoaded"), ->
   window.Model = new AP.PoemApi
   window.app = new AP.Application
-
-event = if cordova? then "deviceready" else "DOMContentLoaded"
-document.addEventListener event, main, false
-
-# window.xParseURLToPath = (url) ->
-#   link = document.createElement('a')
-#   link.href = url
-#   link.pathname
-
-window.handleOpenURL = (url) ->
-  console.log "Trying to open URL: #{url}"
-  # path = xParseURLToPath(url)
-  # app.router.open(path)

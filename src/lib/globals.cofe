@@ -17,3 +17,6 @@ module.exports =
 
 for key, func of module.exports
   window[key] = func
+
+console.xdebug ?= ->
+console.xlog ?= ->
