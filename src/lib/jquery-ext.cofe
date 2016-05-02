@@ -1,4 +1,4 @@
-Object.assign $.fn,
+_.extend $.fn,
   get: (index) ->
     if index >= 0
       this[index]
@@ -12,3 +12,7 @@ Object.assign $.fn,
       @hide()
 
   one: $.fn.once
+
+  cssTransform: (transformString, transitionDuration) ->
+    @transition transitionDuration if transitionDuration?
+    @transform transformString

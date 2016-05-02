@@ -14,5 +14,6 @@ $poems_src = Pathname.new 'assets/poems'
 $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
-$ios_emulator_target = ENV['target'] || "iPhone-6"
 $ios_version = "1.0"
+$ios_emulator_target = "iPhone-6"
+$ios_emulator_target = "iPhone-6, 8.1"

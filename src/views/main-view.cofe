@@ -55,7 +55,7 @@ class AP.MainView extends BaseView
       if date.gt Model.date.last().next()
         return next null
 
-      context = Object.assign {}, poem, domId: "poem-#{poem.id}", appDate: date.formattedString(), liked: poem.isLiked()
+      context = _.extend {}, poem, domId: "poem-#{poem.id}", appDate: date.formattedString(), liked: poem.isLiked()
       next @renderTemplate 'poem', context
 
   openRandom: (e) =>

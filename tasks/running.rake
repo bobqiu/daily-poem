@@ -5,7 +5,7 @@ task(:www_release) { sh "RELEASE=YES webpack -p" }
 task(:watch) { sh "webpack -w" }
 task(:clean) { sh "rm -rf www/*" }
 task(:build) { sh "cordova build ios" }
-task(:simulator) { sh "cordova emulate ios --target='#{$ios_emulator_target}'" }
+task(:simulator) { sh "cordova emulate ios --target='#{ENV['target'] || $ios_emulator_target}'" }
 task(:device) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
 
 task(:ios_release) { sh "cordova build ios --device --release" }
@@ -13,8 +13,10 @@ task(:xcode) {   sh "open platforms/ios/#$app_name.xcodeproj" }
 task(:ios_simulators) { sh "platforms/ios/cordova/lib/list-emulator-images" }
 
 task prepare: %w(data) do
-  sh "touch www/cordova.js"
-  sh "touch www/favicon.ico"
+  touch "www/cordova.js"
+  touch "www/favicon.ico"
+  touch "www/framework7.js.map"
+  touch "www/app.css.map"
 end
 
 task prepare_all: %w(icons:build vendor:copy data)

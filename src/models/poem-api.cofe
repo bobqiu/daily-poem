@@ -54,7 +54,7 @@ class AP.PoemApi
 
   like: (poemId) ->
     if @likes.has(poemId) then @likes.delete(poemId) else @likes.add(poemId)
-    localStorage.likes = JSON.stringify Array.from @likes
+    localStorage.likes = JSON.stringify _.toArray @likes
 
   randomPoemId: ->
     currentDate = MutableXDate.today()
@@ -75,7 +75,7 @@ class AP.PoemApi
     !!Model.reverseMapping[id]
 
   getFavorites: (next) ->
-    poemIds = (id for id in Array.from @likes)
+    poemIds = (id for id in _.toArray @likes)
     poemIds = poemIds.filter @exists
 
     return next() if poemIds.length is 0

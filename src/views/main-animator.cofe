@@ -20,6 +20,10 @@ class AP.MainAnimator
     @prevLoaded = true
 
     @viewport.on "transitionend", @movementAnimated
+    @viewport.cssTransform translate3d(0, '%')
+    @viewport.find('.smm-swiper-slide.prev').cssTransform translate3d(-100, '%')
+    @viewport.find('.smm-swiper-slide.current').cssTransform translate3d(0, '%')
+    @viewport.find('.smm-swiper-slide.next').cssTransform translate3d(100, '%')
 
     @hammer = new Hammer $('#poem-swiper')[0], {}
     @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
@@ -43,7 +47,7 @@ class AP.MainAnimator
     @shift = @shift - direction * Width
     @animating = true
 
-    @viewport.css transform: translate3d(@shift), 'transition-duration': transitionDuration
+    @viewport.cssTransform translate3d(@shift), transitionDuration
     @viewport.one "transitionend", (e) => @movementToSiblingAnimated(curr, prev, next, direction, e)
 
     true
@@ -51,7 +55,7 @@ class AP.MainAnimator
   moveBack: ->
     log "moving back"
     @animating = true
-    @viewport.css transform: translate3d(@shift, '%'), 'transition-duration': transitionDuration
+    @viewport.cssTransform translate3d(@shift, '%'), transitionDuration
 
   movementAnimated: (e) =>
     @animating = false
@@ -62,7 +66,7 @@ class AP.MainAnimator
     if direction is +1
       curr.toggleClass('current prev')
       next.toggleClass('next current')
-      prev.toggleClass('prev next').css transform: translate3d(-@shift + Width)
+      prev.toggleClass('prev next').cssTransform translate3d(-@shift + Width)
       @prevLoaded = false
       @view.renderDate Model.date.next(), (html) =>
         prev.html html
@@ -71,7 +75,7 @@ class AP.MainAnimator
     else
       prev.toggleClass('prev current')
       curr.toggleClass('current next')
-      next.toggleClass('next prev').css transform: translate3d(-@shift - Width)
+      next.toggleClass('next prev').cssTransform translate3d(-@shift - Width)
       @nextLoaded = false
       @view.renderDate Model.date.prev(), (html) =>
         next.html html
@@ -141,7 +145,7 @@ class AP.MainAnimator
         tinyStep = @panningStep * 1.2 * (if dx < 0 then -1 else 1)
         dxPc = tinyStep if abs(dxPc) > abs(tinyStep)
         log "  moving step=#{@panningStep} #{dxPc}% / #{@dxStep}px"
-        @viewport.css transform: translate3d(@shift + dxPc, '%'), 'transition-duration': '0ms'
+        @viewport.cssTransform translate3d(@shift + dxPc, '%'), '0ms'
 
       else
         delete @panningStep
