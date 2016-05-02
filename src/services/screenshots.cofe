@@ -10,9 +10,9 @@ class AP.Screenshots
       =>
         Router.go("poems/6")
       =>
-        App.f7app.openPanel('left')
+        app.f7app.openPanel('left')
       =>
-        App.f7app.closePanel()
+        app.f7app.closePanel()
         Router.go("favorites")
     ]
     @lastActionIndex ?= 0

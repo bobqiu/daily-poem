@@ -1,6 +1,6 @@
 class window.BaseView
   router: ->
-    App.f7view.router
+    app.f7view.router
 
   renderLayout: ->
   render: ->
@@ -25,4 +25,4 @@ class window.BaseView
     $('#pages').html @renderTemplate template, args...
 
   f7app: ->
-    App.f7app
+    app.f7app

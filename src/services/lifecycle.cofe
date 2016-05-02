@@ -11,9 +11,9 @@ class AP.Lifecycle
   active: =>
   entered: ->
     setTimeoutTo 1000, =>
-      App.notifications?.scheduleAll()
+      app.notifications.scheduleAll()
 
   resign: ->
 
   pause: ->
-    App.notifications?.clearAll()
+    app.notifications.clearAll()

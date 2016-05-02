@@ -25,7 +25,7 @@ main = ->
 
   window.PoemApi = new AP.PoemApi
   window.Model = PoemApi
-  window.App = new AP.Application
+  window.app = new AP.Application
   window.Router = new AP.Router
 
 event = if cordova? then "deviceready" else "DOMContentLoaded"

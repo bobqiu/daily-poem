@@ -39,7 +39,7 @@ class AP.ClickManager
 
   click: (link) ->
     if link.classList.contains("open-panel")
-      App.f7app.openPanel("left")
+      app.f7app.openPanel("left")
     else
       setTimeoutTo 300, => @deactivate(link)
       $(link).click()
