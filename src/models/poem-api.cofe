@@ -27,7 +27,7 @@ class AP.PoemApi
     if @cache.has date
       return next @cache.get date
 
-    $.getJSON "poems/#{id}.json", (res) =>
+    fetchJSON "poems/#{id}.json", (res) =>
       poem = new AP.Poem(res)
       @cache.set date, poem
 
@@ -39,7 +39,7 @@ class AP.PoemApi
     @get id, next
 
   load: (next) ->
-    $.getJSON "poems/summary.json", (res) =>
+    fetchJSON "poems/summary.json", (res) =>
       @mapping = res.mapping
       @reverseMapping = _.invert(@mapping)
       @descriptors = res.items

@@ -1,0 +1,14 @@
+Object.assign $.fn,
+  get: (index) ->
+    if index >= 0
+      this[index]
+    else
+      _.toArray(this)
+
+  toggle: ->
+    if @css('display') is 'none'
+      @show()
+    else
+      @hide()
+
+  one: $.fn.once

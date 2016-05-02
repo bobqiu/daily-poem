@@ -1,0 +1,19 @@
+module.exports =
+  $$: (selector) -> document.querySelector(selector)
+  $$$: (selector) -> document.querySelectorAll(selector)
+
+  __console_ins: (arg) -> console.log(arg)
+  __console_ins_arr: (args) -> console.log(arg) for arg in args
+
+  setTimeoutTo: (ms, callback) -> setTimeout callback, ms
+  setIntervalTo: (ms, callback) -> setInterval callback, ms
+
+  fetchJSON: (url, options, success) ->
+    if typeof options is "function"
+      success = options
+      options = {}
+    fetch(url, options).then (response) ->
+      response.json().then success
+
+for key, func of module.exports
+  window[key] = func

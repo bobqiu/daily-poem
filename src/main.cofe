@@ -9,6 +9,7 @@ window.Handlebars = require "handlebars/runtime"
 require "./helpers"
 
 window.AP = {}
+require "./lib/globals"
 requireAll require.context("./lib", true, /.cofe$/)
 requireAll require.context("./models", true, /.cofe$/)
 requireAll require.context("./services", true, /.cofe$/)

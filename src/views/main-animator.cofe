@@ -42,6 +42,7 @@ class AP.MainAnimator
 
     @shift = @shift - direction * Width
     @animating = true
+
     @viewport.css transform: translate3d(@shift), 'transition-duration': transitionDuration
     @viewport.one "transitionend", (e) => @movementToSiblingAnimated(curr, prev, next, direction, e)
 
