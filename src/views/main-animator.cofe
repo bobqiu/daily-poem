@@ -12,8 +12,8 @@ translate3d = (value, unit = defaultUnit) -> "translate3d(#{value}#{unit}, 0px, 
 
 class AP.MainAnimator
   constructor: (@view) ->
-    @container = $('.smm-swiper')
-    @viewport = $('.smm-swiper-viewport')
+    @container = $('x-swiper')
+    @viewport = $('x-swiper-viewport')
     @shift = 0
     @animating = false
     @nextLoaded = true
@@ -21,9 +21,9 @@ class AP.MainAnimator
 
     @viewport.on "transitionend", @movementAnimated
     @viewport.cssTransform translate3d(0, '%')
-    @viewport.find('.smm-swiper-slide.prev').cssTransform translate3d(-100, '%')
-    @viewport.find('.smm-swiper-slide.current').cssTransform translate3d(0, '%')
-    @viewport.find('.smm-swiper-slide.next').cssTransform translate3d(100, '%')
+    @viewport.find('x-swiper-slide.prev').cssTransform translate3d(-100, '%')
+    @viewport.find('x-swiper-slide.current').cssTransform translate3d(0, '%')
+    @viewport.find('x-swiper-slide.next').cssTransform translate3d(100, '%')
 
     @hammer = new Hammer $('#poem-swiper')[0], {}
     @hammer.get('pan').set direction: Hammer.DIRECTION_ALL
@@ -40,9 +40,9 @@ class AP.MainAnimator
 
     Model.date.move(direction)
 
-    curr = @viewport.find('.smm-swiper-slide.current').show()
-    prev = @viewport.find('.smm-swiper-slide.prev').show()
-    next = @viewport.find('.smm-swiper-slide.next').show()
+    curr = @viewport.find('x-swiper-slide.current').show()
+    prev = @viewport.find('x-swiper-slide.prev').show()
+    next = @viewport.find('x-swiper-slide.next').show()
 
     @shift = @shift - direction * Width
     @animating = true
@@ -83,7 +83,7 @@ class AP.MainAnimator
         @resetNonCurrentScrolling()
 
   resetNonCurrentScrolling: =>
-    @viewport.find('.smm-swiper-slide:not(.current) .content-block').scrollTop(0)
+    @viewport.find('x-swiper-slide:not(.current) .content-block').scrollTop(0)
 
   tap: (e) =>
     return log "prevent tapping as not done yet" if !@done()

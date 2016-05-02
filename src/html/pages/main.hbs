@@ -14,13 +14,13 @@
 
 <div data-page="index" class="page">
   <div class="page-content main-page-content">
-    <div id='poem-swiper' class='smm-swiper'>
-      <div class='smm-swiper-viewport' data-shift="0">
-        <div class='smm-swiper-slide prev'></div>
-        <div class='smm-swiper-slide current'></div>
-        <div class='smm-swiper-slide next'></div>
-      </div>
-    </div>
+    <x-swiper id='poem-swiper'>
+      <x-swiper-viewport data-shift="0">
+        <x-swiper-slide class='prev'></x-swiper-slide>
+        <x-swiper-slide class='current'></x-swiper-slide>
+        <x-swiper-slide class='next'></x-swiper-slide>
+      </x-swiper-viewport>
+    </x-swiper>
   </div>
   {{!-- <div class="toolbar toolbar-bottom">
     <div class="toolbar-inner">

@@ -36,9 +36,9 @@ class AP.MainView extends BaseView
     Model.setDate date
     count = 0
     done = -> ++count == 3 and next?()
-    @renderDate date,        (html) => $('.smm-swiper-slide.current').html html; done()
-    @renderDate date.prev(), (html) => $('.smm-swiper-slide.prev').html html; done()
-    @renderDate date.next(), (html) => $('.smm-swiper-slide.next').html html; done()
+    @renderDate date,        (html) => $('x-swiper-slide.current').html html; done()
+    @renderDate date.prev(), (html) => $('x-swiper-slide.prev').html html; done()
+    @renderDate date.next(), (html) => $('x-swiper-slide.next').html html; done()
 
   renderDate: (date, next) ->
     console.xdebug "will render poem for #{date}"
