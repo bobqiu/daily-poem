@@ -25,4 +25,4 @@ class AP.SidebarView extends BaseView
       opened = false
 
   renderLayout: (next) ->
-    $('#sidebar').html @renderTemplate('sidebar')
+    $('#sidebar .sidebar-content').html @renderTemplate('sidebar')

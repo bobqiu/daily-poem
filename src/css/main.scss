@@ -20,13 +20,17 @@ $light-gray: rgba(#000, .3);
 .sidebar { background: #efeff4; }
 .panel-overlay { transition: 400ms ease-out; }
 .panel-overlay.active { opacity: 0.4; background: #000; transition: 400ms ease-out; }
+.panel-statusbar-overlay { background-color: $app-color; width: 100%; }
 
+.statusbar-overlay { background: $app-color; transition: 400ms; z-index: 5900; }
 
 .main-page-content { overflow: hidden; }
 .navbar { background-color: $app-color; color: $navbar-text-color; }
 
+
 html.ios-gt-8 .navbar .center { font-weight: normal; }
-.statusbar-overlay { background: $app-color; transition: 400ms; }
+html.with-statusbar-overlay body .panel { padding-top: 0; }
+html.with-statusbar-overlay body .panel-statusbar-overlay { height: 20px; }
 
 //
 // About
