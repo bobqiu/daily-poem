@@ -24,10 +24,8 @@ main = ->
   # StatusBar?.backgroundColorByHexString("#ff9500")
   # StatusBar?.styleLightContent()
 
-  window.PoemApi = new AP.PoemApi
-  window.Model = PoemApi
+  window.Model = new AP.PoemApi
   window.app = new AP.Application
-  window.Router = new AP.Router
 
 event = if cordova? then "deviceready" else "DOMContentLoaded"
 document.addEventListener event, main, false
@@ -40,4 +38,4 @@ document.addEventListener event, main, false
 window.handleOpenURL = (url) ->
   console.log "Trying to open URL: #{url}"
   # path = xParseURLToPath(url)
-  # Router.go(path)
+  # app.router.open(path)

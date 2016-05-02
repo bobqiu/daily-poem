@@ -1,53 +1,23 @@
-class AP.Router
-  constructor: ->
-    if @constructor.disabled
-      console.warn "router disabled"
-      return
+class AP.Router extends Backbone.Router
+  routes:
+    "*path": 'glob'
 
-    $(window).on 'hashchange', =>
-      if @skipNext
-        @skipNext = false
-        return
+  open: (path...) ->
+    @navigate path.join("/"), trigger: true
 
-      @route()
+  update: (path...) ->
+    @navigate path.join("/")
 
-    $(document).on "click", 'a.action', (e) =>
-      link = $(e.target).closest("a.action")
-      return if $(link).hasClass("external")
-      return if link.attr('href')[0] isnt '#'
-      @go link.attr('href')
+  glob: (path) ->
+    [action, id, other...] = (path ? '').split('/')
+    action ||= 'main'
 
-    $(document).on 'click', 'a.back.link', (e) =>
-      @go ''
-
-  go: (path...) ->
-    path = path.join("/")
-    console.xlog "going to #{path}"
-
-    @skipNext = true
-    location.hash = path
-    @route()
-
-  replace: (path...) ->
-    path = path.join("/")
-    @skipNext = true
-    location.hash = path
-
-  route: =>
-    return if @constructor.disabled or @disabled
-
-    hash = decodeURIComponent location.hash.slice(1)
-    [controller, id, other...] = hash.split('/')
-
-    controller = 'main' unless controller
-    routes = this
-
-    if routes[controller]
-      console.log "Router.#{controller}(#{id ? ''})"
-      routes[controller](id)
+    if @[action]
+      console.debug "open #{action}(#{id ? ''})"
+      @[action](id, other...)
     else
-      console.warn "no route for Router.#{controller}(#{id ? ''})"
-      @go ''
+      console.warn "no route for #{path}"
+      @navigate '', trigger: true
 
   main:          -> @openView 'Main', Model.date
   favorites:     -> @openView 'Favorites'
@@ -63,3 +33,17 @@ class AP.Router
     @currentView = new AP["#{viewName}View"](args...)
     @currentView.show()
     null
+
+  start: ->
+    Backbone.history.start()
+
+#
+# if @constructor.disabled
+#   console.warn "router disabled"
+#   return
+#
+# ... return if $(link).hasClass("external")
+#
+# $(document).on 'click', 'a.back.link', (e) =>
+#   @go ''
+#

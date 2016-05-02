@@ -61,7 +61,7 @@ class AP.MainAnimator
     @animating = false
 
   movementToSiblingAnimated: (curr, prev, next, direction, e) =>
-    Router.replace "poems", Model.date
+    app.router.update "poems", Model.date
 
     if direction is +1
       curr.toggleClass('current prev')

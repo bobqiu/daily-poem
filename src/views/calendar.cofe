@@ -20,5 +20,5 @@ class AP.CalendarView extends BaseView
     next?()
 
   openDay: (p, dayContainer, year, month, day) =>
-    Router.go "poems", XDate.fromYMD(year, month, day)
+    app.router.open "poems", XDate.fromYMD(year, month, day)
     @f7app().closePanel()

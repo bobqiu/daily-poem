@@ -39,7 +39,7 @@ class AP.Notifications
 
     @api.on "click", (notification, state) =>
       console.log "notification #{notification.id} clicked in #{state}", notification
-      Router.go "poems", notification.id
+      app.router.open "poems", notification.id
 
   clearAll: ->
     console.log "clearing all notifications"

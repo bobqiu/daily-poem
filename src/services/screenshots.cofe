@@ -8,12 +8,12 @@ class AP.Screenshots
   performNextTestAction: ->
     @actions ?= [
       =>
-        Router.go("poems/6")
+        app.router.open("poems/6")
       =>
         app.f7app.openPanel('left')
       =>
         app.f7app.closePanel()
-        Router.go("favorites")
+        app.router.open("favorites")
     ]
     @lastActionIndex ?= 0
     action = @actions[@lastActionIndex++]

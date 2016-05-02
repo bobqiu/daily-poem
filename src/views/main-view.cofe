@@ -59,14 +59,17 @@ class AP.MainView extends BaseView
       next @renderTemplate 'poem', context
 
   openRandom: (e) =>
-    Router.go "poems", Model.randomPoemId()
+    e.preventDefault()
+    app.router.open "poems", Model.randomPoemId()
 
   share: (e) =>
+    e.preventDefault()
     Model.getCurrent (poem) =>
       app.sharingManager.setPopupPosition $(".x-share")[0]
       app.sharingManager.share text: poem.content, heading: poem.heading(), url: poem.getUrl()
 
   like: (e) =>
+    e.preventDefault()
     target = $(e.target).closest(".x-like")
     icon = $(target).find('i')
 

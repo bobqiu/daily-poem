@@ -1,6 +1,7 @@
 require "framework7"
 require 'hammerjs'
 require 'whatwg-fetch'
+require 'backbone'
 
 # window.jQuery = require 'jquery'
 
