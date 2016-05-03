@@ -1,7 +1,7 @@
 class AP.Application
   constructor: ->
     @sidebar = new AP.SidebarView
-    @sidebar.show()
+    @sidebar.render()
 
     @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: true, ajaxLinks: 'ajax'
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
@@ -9,17 +9,19 @@ class AP.Application
     navigator.splashscreen?.hide()
     setTimeoutTo 500, => StatusBar?.show()
 
-    Model.load =>
-      @router = new AP.Router
-      @router.start()
+    Model.load @loaded
 
-      @notifications = new AP.Notifications
-      @clickManager = new AP.ClickManager
-      @deviceInfo = new AP.DeviceInfo
-      @lifecycle = new AP.Lifecycle
-      @sharingManager = new AP.SharingManager
+  loaded: =>
+    @router = new AP.Router
+    @router.start()
 
-      if @screenshotsMode
-        @screenshots = new AP.Screenshots
-        @screenshots.enable()
-        @screenshots.performNextTestAction()
+    @notifications = new AP.Notifications
+    @clickManager = new AP.ClickManager
+    @deviceInfo = new AP.DeviceInfo
+    @lifecycle = new AP.Lifecycle
+    @sharingManager = new AP.SharingManager
+
+    if @screenshotsMode
+      @screenshots = new AP.Screenshots
+      @screenshots.enable()
+      @screenshots.performNextTestAction()

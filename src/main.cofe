@@ -1,5 +1,5 @@
 window.AP = {}
-window.Handlebars = require "handlebars/runtime" # must be in same files as templates 
+window.Handlebars = require "handlebars/runtime" # must be in same files as templates
 
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 
@@ -9,10 +9,10 @@ require "./lib/globals"
 requireAll require.context("./lib", true, /.cofe$/)
 requireAll require.context("./models", true, /.cofe$/)
 requireAll require.context("./services", true, /.cofe$/)
-require "./application"
-require "./router"
-require './views/base'
+require './views/base-view'
 requireAll require.context("./views", true, /.cofe$/)
+require "./router"
+require "./application"
 
 document.addEventListener (if cordova? then "deviceready" else "DOMContentLoaded"), ->
   window.Model = new AP.PoemApi

@@ -1,4 +1,7 @@
-class AP.SidebarView extends BaseView
+class AP.SidebarView extends AP.BaseView
+  templateName: 'sidebar'
+  containerSelector: '#sidebar .sidebar-content'
+
   mount: ->
     overlay = $('.panel-overlay')
     sidebar = $('.sidebar')
@@ -24,5 +27,5 @@ class AP.SidebarView extends BaseView
     sidebar.on 'closed', =>
       opened = false
 
-  renderLayout: (next) ->
-    $('#sidebar .sidebar-content').html @renderTemplate('sidebar')
+    sidebar.on 'closed', =>
+      opened = false

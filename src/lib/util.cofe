@@ -46,8 +46,7 @@ module.exports = window.Util =
     for key, condition of options
       if condition
         str += "#{key} "
-
-    str
+    return str    
 
   # whenAllDone: (promises..., next) ->
   #   hasNullPromises = promises.some (p) -> p is null or p is undefined

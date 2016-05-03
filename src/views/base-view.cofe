@@ -1,0 +1,75 @@
+class AP.BaseView extends Backbone.View
+  containerSelector: '#pages'
+
+  initialize: ->
+    @container = $$(@containerSelector)
+
+  render: ->
+    @loadTemplate()
+    @mount()
+
+  mount: ->
+
+  unmount: ->
+
+  loadTemplate: ->
+    @el.innerHTML = @template @data()
+    @container.innerHTML = ''
+    @container.appendChild @el
+
+  template: (data = @data()) ->
+    @renderTemplate _.result(this, 'templateName'), data
+
+  data: ->
+    this
+
+  id: ->
+    _.dasherize @constructor.name
+
+  templateName: ->
+    "pages/#{_.dasherize(@constructor.name).replace(/-view$/, '')}"
+
+  #
+  # Backbone & F7 event fixes
+  #
+
+  delegateEvents: (events) ->
+    events || (events = _.result(this, 'events'))
+    return this if !events
+    this.undelegateEvents()
+    for key, method of events
+      method = this[method] if !_.isFunction(method)
+      continue if (!method)
+      match = key.match /^(\S+)\s*(.*)$/
+      this.delegate match[1], match[2], method
+    return this;
+
+  delegate: (eventName, selector, listener) ->
+    this.$el.on(eventName, selector, listener)
+    this
+
+  undelegateEvents: ->
+    return unless @$el
+    events || (events = _.result(this, 'events'))
+    return this if !events
+    for key, method of events
+      method = this[method] if !_.isFunction(method)
+      continue if (!method)
+      match = key.match /^(\S+)\s*(.*)$/
+      this.undelegate match[1], match[2], method
+    return this
+
+  undelegate: (eventName, selector, listener) ->
+    this.$el.off(eventName, selector, listener)
+    this
+
+  #
+  #
+  #
+
+  f7app: -> app.f7app
+
+  router: -> app.router
+
+  renderTemplate: (template, args...) ->
+    Util.render(template, args...)

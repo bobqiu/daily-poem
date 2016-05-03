@@ -1,0 +1,10 @@
+_.mixin
+
+  dasherize: (string) ->
+    string?.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()
+
+  setToArray: (set) ->
+    array = []
+    set.forEach (element) ->
+      array.push element
+    array

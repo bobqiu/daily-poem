@@ -11,6 +11,9 @@ _.extend $.fn,
     else
       @hide()
 
+  empty: ->
+    this.html('')
+
   one: $.fn.once
 
   cssTransform: (transformString, transitionDuration) ->

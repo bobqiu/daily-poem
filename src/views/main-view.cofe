@@ -1,36 +1,27 @@
-require "./main-animator"
+class AP.MainView extends AP.BaseView
+  events:
+    "click .x-random": 'openRandom'
+    "click .x-share": 'share'
+    "click .x-like": 'like'
 
-class AP.MainView extends BaseView
-  constructor: (@identifier) ->
+  initialize: (@identifier) ->
+    super
 
   mount: ->
-    @container = $(document)
-
-    @container.on 'click', '.x-random', @openRandom
-    @container.on 'click', '.x-share', @share
-    @container.on 'click', '.x-like', @like
-
     @animator = new AP.MainAnimator(this)
 
   unmount: ->
     @animator.unmount()
 
-    @container.off 'click', '.x-random', @openRandom
-    @container.off 'click', '.x-share', @share
-    @container.off 'click', '.x-like', @like
-
-  renderLayout: ->
-    @loadTemplateOnMainPage 'pages/main'
-
-  render: (next) ->
-    console.xdebug "rendering main view for #{@identifier}"
+  render: ->
+    super
 
     if typeof @identifier is 'string' and @identifier.match(/^\d+$/)
       Model.get Number(@identifier), (poem) =>
         @identifier = poem.date()
-        @renderDateWithSiblings poem.date(), next
+        @renderDateWithSiblings poem.date()
     else
-      @renderDateWithSiblings XDate.from(@identifier) ? Model.date, next
+      @renderDateWithSiblings XDate.from(@identifier) ? Model.date
 
   renderDateWithSiblings: (date, next) ->
     Model.setDate date

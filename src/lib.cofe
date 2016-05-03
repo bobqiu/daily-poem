@@ -3,8 +3,8 @@ require 'hammerjs'
 require 'whatwg-fetch'
 require 'backbone'
 
-# window.jQuery = require 'jquery'
-
 window.$ = Dom7
 window._ = require "underscore"
 window.moment = require 'moment'
+
+Backbone.$ = $

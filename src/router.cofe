@@ -29,9 +29,9 @@ class AP.Router extends Backbone.Router
   developer:     -> @openView 'DeveloperMenu'
 
   openView: (viewName, args...) ->
-    @currentView?.unmount()
+    @currentView?.unmount?()
     @currentView = new AP["#{viewName}View"](args...)
-    @currentView.show()
+    @currentView.render()
     null
 
   start: ->

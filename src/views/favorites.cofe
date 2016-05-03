@@ -1,5 +1,5 @@
-class AP.FavoritesView extends BaseView
-  render: (next) ->
+class AP.FavoritesView extends AP.BaseView
+  render: ->
     Model.getFavorites (poems) =>
-      @loadTemplateOnMainPage 'pages/favorites', poems: poems
-      next?()
+      @poems = poems
+      super
