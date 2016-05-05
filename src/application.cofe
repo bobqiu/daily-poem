@@ -5,11 +5,14 @@ class AP.Application
 
     @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: true, ajaxLinks: 'ajax'
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
+    @f7router = @f7view.router
 
     navigator.splashscreen?.hide()
     setTimeoutTo 500, => StatusBar?.show()
 
     Model.load @loaded
+
+    @setupGlobalEvents()
 
   loaded: =>
     @router = new AP.Router
@@ -25,3 +28,8 @@ class AP.Application
       @screenshots = new AP.Screenshots
       @screenshots.enable()
       @screenshots.performNextTestAction()
+
+  setupGlobalEvents: ->
+    $(document).on 'click', 'a.slide', (e) ->
+      e.preventDefault()
+      app.router.slide @getAttribute('href')

@@ -8,14 +8,22 @@ class AP.BaseView extends Backbone.View
     @loadTemplate()
     @mount()
 
+  renderOffDocument: ->
+    @setTemplateToElement()
+    @mount()
+    @el
+
   mount: ->
 
   unmount: ->
 
   loadTemplate: ->
-    @el.innerHTML = @template @data()
+    @setTemplateToElement()
     @container.innerHTML = ''
     @container.appendChild @el
+
+  setTemplateToElement: ->
+    @el.innerHTML = @template @data()
 
   template: (data = @data()) ->
     @renderTemplate _.result(this, 'templateName'), data

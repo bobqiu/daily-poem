@@ -1,8 +1,8 @@
 class AP.CalendarView extends AP.BaseView
   mount: ->
     @calendar = @f7app().calendar
-      container: '#calendar-inline-container',
-      weekHeader: false,
+      container: @el.querySelector('#calendar-inline-container')
+      weekHeader: false
       toolbarTemplate: @renderTemplate('shared/calendar-toolbar')
       value: [Model.date.getDate()]
       disabled: [ {from: Model.date.last().getDate()}, {to: Model.date.first().prev().getDate()} ]
@@ -10,15 +10,15 @@ class AP.CalendarView extends AP.BaseView
       onMonthYearChangeStart: @calendarMonthYearChanging
       onDayClick: @calendarDayClicked
 
-  calendarOpened: (p) =>
-    $('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
-    $('.calendar-custom-toolbar .left .link').click => @calendar.prevMonth()
-    $('.calendar-custom-toolbar .right .link').click => @calendar.nextMonth()
+  calendarOpened: (cal) =>
+    toolbar = cal.container.find('.calendar-custom-toolbar')
+    toolbar.find('.center').text "#{Util.t('months')[cal.currentMonth]}, #{cal.currentYear}"
+    toolbar.find('.left .link').click -> cal.prevMonth()
+    toolbar.find('.right .link').click -> cal.nextMonth()
 
-  calendarMonthYearChanging: (p) =>
-    $('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
-    $('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
+  calendarMonthYearChanging: (cal) =>
+    cal.container.find('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
 
-  calendarDayClicked: (p, dayContainer, year, month, day) =>
+  calendarDayClicked: (cal, dayContainer, year, month, day) =>
     @router().open "poems", XDate.fromYMD(year, month, day)
     @f7app().closePanel()

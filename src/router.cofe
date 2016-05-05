@@ -9,12 +9,14 @@ class AP.Router extends Backbone.Router
     @navigate path.join("/")
 
   glob: (path) ->
+    @path = path
+
     [action, id, other...] = (path ? '').split('/')
     action ||= 'main'
 
-    if @[action]
+    if this[action]
       console.debug "open #{action}(#{id ? ''})"
-      @[action](id, other...)
+      this[action](id, other...)
     else
       console.warn "no route for #{path}"
       @navigate '', trigger: true
@@ -31,11 +33,23 @@ class AP.Router extends Backbone.Router
   openView: (viewName, args...) ->
     @currentView?.unmount?()
     @currentView = new AP["#{viewName}View"](args...)
+
     @currentView.render()
+
+    # unless @slidePath is @path
+    #   @currentView.render()
+    # else
+    #   @slidePath = null
+    #   app.f7router.loadContent @currentView.renderOffDocument()
+
     null
 
   start: ->
     Backbone.history.start()
+
+  slide: (path) ->
+    @slidePath = path.replace(/^#/, '')
+    @open path
 
 #
 # if @constructor.disabled
