@@ -21,3 +21,5 @@ site/src/images/favicon*
 site/src/images/screen*
 site/src/images/promo*
 site/data/poem_*
+
+lib/js
