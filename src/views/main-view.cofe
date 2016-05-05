@@ -49,6 +49,18 @@ class AP.MainView extends AP.BaseView
       context = _.extend {}, poem, domId: "poem-#{poem.id}", appDate: date.formattedString(), liked: poem.isLiked()
       next @renderTemplate 'poem', context
 
+  updateLeftButton: (slided) ->
+    return if slided is @slided
+    @slided = slided
+
+    button = @$el.find(".left button.link")
+    button.removeClass('back open-panel').find('i').removeClass('icon-back icon-menu')
+    if @slided
+      button.addClass('back').find('i').addClass('icon-back')
+    else
+      button.addClass('open-panel').find('i').addClass('icon-menu')
+
+
   openRandom: (e) =>
     e.preventDefault()
     app.router.open "poems", Model.randomPoemId()

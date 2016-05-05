@@ -33,3 +33,6 @@ class AP.Application
     $(document).on 'click', 'a.slide', (e) ->
       e.preventDefault()
       app.router.slide @getAttribute('href')
+
+    $(document).on 'click', '.navbar .link.back', (e) ->
+      history.back()

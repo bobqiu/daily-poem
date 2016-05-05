@@ -62,6 +62,7 @@ class AP.MainAnimator
 
   movementToSiblingAnimated: (curr, prev, next, direction, e) =>
     app.router.update "poems", Model.date
+    @view.updateLeftButton(false)
 
     if direction is +1
       curr.toggleClass('current prev')

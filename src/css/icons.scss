@@ -23,6 +23,7 @@ $icon-height: $icon-height-value + px;
 
 @include define-icon(share, upload);
 @include define-icon(menu);
+@include define-icon(back);
 @include define-icon(star, $filled: true);
 @include define-icon(shutdown, $filled: true);
 @include define-icon(about, help, $filled: true);

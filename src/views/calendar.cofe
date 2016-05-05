@@ -20,5 +20,5 @@ class AP.CalendarView extends AP.BaseView
     cal.container.find('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
 
   calendarDayClicked: (cal, dayContainer, year, month, day) =>
-    @router().open "poems", XDate.fromYMD(year, month, day)
+    @router().slide "poems", XDate.fromYMD(year, month, day)
     @f7app().closePanel()

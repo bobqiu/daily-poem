@@ -33,8 +33,10 @@ class AP.Router extends Backbone.Router
   openView: (viewName, args...) ->
     @currentView?.unmount?()
     @currentView = new AP["#{viewName}View"](args...)
-
+    @currentView.slided = @slidePath?
     @currentView.render()
+
+    @slidePath = null
 
     # unless @slidePath is @path
     #   @currentView.render()
@@ -47,7 +49,8 @@ class AP.Router extends Backbone.Router
   start: ->
     Backbone.history.start()
 
-  slide: (path) ->
+  slide: (path...) ->
+    path = path.join("/")
     @slidePath = path.replace(/^#/, '')
     @open path
 

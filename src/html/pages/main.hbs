@@ -1,6 +1,10 @@
 {{#navbarBox}}
   <div class="left">
-    {{ navbar-button linkClass="open-panel" iconType="menu" }}
+    {{#unless slided}}
+      {{ navbar-button linkClass="open-panel" iconType="menu" }}
+    {{else}}
+      {{ navbar-button linkClass="back" iconType="back" }}
+    {{/unless}}
     {{ navbar-button-stub }}
   </div>
   <div class="center sliding">
