@@ -36,3 +36,6 @@ class AP.Application
 
     $(document).on 'click', '.navbar .link.back', (e) ->
       history.back()
+
+    $(document).on 'click', "a.link[href='#']", (e) ->
+      e.preventDefault()

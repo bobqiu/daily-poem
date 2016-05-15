@@ -17,7 +17,7 @@ class AP.CalendarView extends AP.BaseView
     toolbar.find('.right .link').click -> cal.nextMonth()
 
   calendarMonthYearChanging: (cal) =>
-    cal.container.find('.calendar-custom-toolbar .center').text Util.t('months')[p.currentMonth] + ', ' + p.currentYear
+    cal.container.find('.calendar-custom-toolbar .center').text Util.t('months')[cal.currentMonth] + ', ' + cal.currentYear
 
   calendarDayClicked: (cal, dayContainer, year, month, day) =>
     @router().slide "poems", XDate.fromYMD(year, month, day)
