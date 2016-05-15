@@ -3,7 +3,7 @@ class AP.Application
     @sidebar = new AP.SidebarView
     @sidebar.render()
 
-    @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: true, ajaxLinks: 'ajax'
+    @f7app = new Framework7 dynamicPageUrl: 'page-{{name}}', pjax: true, ajaxLinks: 'ajax', material: APP_THEME_NAME is 'material'
     @f7view = @f7app.addView '.view-main', dynamicNavbar: true
     @f7router = @f7view.router
 

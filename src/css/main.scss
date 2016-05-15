@@ -1,43 +1,5 @@
-@import "~framework7/dist/css/framework7.ios.min.css";
-@import "~framework7/dist/css/framework7.ios.colors.min.css";
-
-$app-color: #ff9500;
-$navbar-text-color: #fff;
-$light-gray: rgba(#000, .3);
-
 @import "shared";
-@import "icons";
+@import "layout";
 @import "swiper";
 @import "poems";
-
-
-
-//
-// Layout
-//
-
-.app-title { font-variant: small-caps; }
-.sidebar { background: #efeff4; }
-.panel-overlay { transition: 400ms ease-out; }
-.panel-overlay.active { opacity: 0.4; background: #000; transition: 400ms ease-out; }
-.panel-statusbar-overlay { background-color: $app-color; width: 100%; }
-
-.statusbar-overlay { background: $app-color; transition: 400ms; z-index: 5900; }
-
-.main-page-content { overflow: hidden; }
-.navbar { background-color: $app-color; color: $navbar-text-color; }
-
-
-html.ios-gt-8 .navbar .center { font-weight: normal; }
-html.with-statusbar-overlay body .panel { padding-top: 0; }
-html.with-statusbar-overlay body .panel-statusbar-overlay { height: 20px; }
-
-//
-// About
-//
-
-.about-authors p { text-align: center; margin: 0.5em 0; }
-.about-authors .img-avatar { width: 128px; height: 128px; }
-.img-avatar { border-radius: 50%; }
-
-.navbar .right a+a { margin-left: 0; }
+@import "about";

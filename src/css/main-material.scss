@@ -1,0 +1,17 @@
+@import "~framework7/dist/css/framework7.material.min.css";
+@import "~framework7/dist/css/framework7.material.colors.min.css";
+
+@import "_icons";
+$icon-theme: material;
+
+@include define-icon(share);
+@include define-icon(menu);
+@include define-icon(back);
+@include define-icon(star, $filled: true);
+@include define-icon(shutdown, $theme: ios);
+@include define-icon(about, help, $theme: ios);
+@include define-icon(like, $filled: true);
+@include define-icon(today, $filled: true, $theme: ios);
+@include define-icon(calendar, month_view);
+@include define-icon(align_center);
+@include define-icon(random, shuffle);

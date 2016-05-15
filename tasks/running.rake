@@ -19,7 +19,7 @@ task prepare: %w(data) do
   touch "www/app.css.map"
 end
 
-task prepare_all: %w(icons:build vendor:copy data)
+task prepare_all: %w(icons vendor:copy data)
 task s: :server
 task dev: :device
 task sim: :simulator

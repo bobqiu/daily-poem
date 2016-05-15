@@ -1,5 +1,9 @@
 <!DOCTYPE html>
-<html>
+<%
+  APP_THEME_NAME = 'material'
+%>
+
+<html class="<%= APP_THEME_NAME %>">
   <% conf = htmlWebpackPlugin.options %>
   <head>
     <meta charset="utf-8">
@@ -8,10 +12,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="format-detection" content="telephone=no">
     <title>Стих Дня</title>
+    <link href='<%= conf.targetDir %>app_<%= APP_THEME_NAME %>.css' rel='stylesheet'>
     <link href="<%= conf.targetDir %>app.css" rel="stylesheet">
     <script src="cordova.js"></script>
     <script src="<%= conf.targetDir %>lib.js"></script>
     <script src="<%= conf.targetDir %>app.js"></script>
+    <script>
+      window.APP_THEME_NAME = '<%= APP_THEME_NAME %>'
+    </script>
   </head>
 
   <body class="theme-orange">

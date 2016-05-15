@@ -12,6 +12,7 @@ knownHelpers = ['assetUrl', 'navbarBox', 'textIf', 'textUnless']
 production = process.argv[1] == '/usr/local/bin/webpack'
 release = process.env.RELEASE
 
+appTheme = process.env.THEME ? 'material'
 
 targetDir = ''
 publicPath = ''
@@ -21,6 +22,8 @@ module.exports =
   devtool: if production then null else 'source-map'
   entry:
     app: './src/main.cofe'
+    app_ios: './src/css/main-ios.scss'
+    app_material: './src/css/main-material.scss'
     lib: './src/lib.cofe'
 
   output:
@@ -47,12 +50,11 @@ module.exports =
 
   plugins: [
     cssExtractor
-    new HtmlWebpackPlugin(
-      title: 'Custom Index', filename: 'index.html', template: 'src/html/layouts/index.html.ejs', inject: false, targetDir: sourcePrefix
-    )
-    new HtmlWebpackPlugin(
-      title: 'Test Index', filename: 'test.html', template: 'src/html/layouts/test.html.ejs', inject: false, targetDir: sourcePrefix
-    )
+    new HtmlWebpackPlugin title: 'Custom Index', filename: 'index.html', \
+      template: 'src/html/layouts/index.html.ejs', inject: false, targetDir: sourcePrefix
+    new HtmlWebpackPlugin title: 'Test Index', filename: 'test.html', \
+      template: 'src/html/layouts/test.html.ejs', inject: false, targetDir: sourcePrefix
+    new webpack.DefinePlugin APP_THEME: JSON.stringify(appTheme)
   ]
 
   resolve:

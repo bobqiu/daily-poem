@@ -21,10 +21,11 @@ task :icons do
   end
 
   $icons_dst.mkpath
-  Pathname.glob("#{$icons_src}/*.png") do |path|
+  Pathname.glob("#{$icons_src}/{ios,material}/*.png") do |path|
+    theme = path.to_s.include?('ios/') ? 'ios' : 'material'
     file = path.basename('.png')
     colors.each do |color_name, color|
-      target = $icons_dst / "ai-#{file}-#{color_name}.png"
+      target = $icons_dst / "#{theme}-#{file}-#{color_name}.png"
       convert.call(path, target, color) if !target.exist? or ENV['force']
     end
   end
