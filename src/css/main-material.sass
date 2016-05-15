@@ -3,11 +3,11 @@
 
 @import _icons
 $icon-theme: material
-$icon-height-value: 26
+$icon-height-value: 24
 
 +define-icon(share)
 +define-icon(menu)
-+define-icon(back)
+// +define-icon(back)
 +define-icon(star, $filled: true)
 +define-icon(shutdown, $theme: ios)
 +define-icon(about, help, $theme: ios)
@@ -21,3 +21,10 @@ html.material
   .list-block .item-media
     padding-top: 0
     padding-bottom: 0
+
+  .picker-calendar
+    .picker-header, .picker-footer
+      display: none
+
+  .picker-calendar.picker-modal-inline
+    height: 420px
