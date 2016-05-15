@@ -1,5 +1,4 @@
-$brand_color = '#ff9500'
-# $brand_color = '#007aff'
+$brand_color = '#ff9800'
 $brand_color_gradient = '#FF7500'
 
 $ios_screen_sizes = {

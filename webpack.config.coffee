@@ -22,8 +22,8 @@ module.exports =
   devtool: if production then null else 'source-map'
   entry:
     app: './src/main.cofe'
-    app_ios: './src/css/main-ios.scss'
-    app_material: './src/css/main-material.scss'
+    app_ios: './src/css/main-ios.sass'
+    app_material: './src/css/main-material.sass'
     lib: './src/lib.cofe'
 
   output:
@@ -34,7 +34,7 @@ module.exports =
 
   module: loaders: [
     { test: /\.css$/, loader: 'style!css?sourceMap' }
-    { test: /\.scss$/, loader: cssExtractor.extract('style', 'css?sourceMap!sass?sourceMap&includePaths[]=node_modules') }
+    { test: /\.(scss|sass)$/, loader: cssExtractor.extract('style', 'css?sourceMap!sass?sourceMap&includePaths[]=node_modules') }
     { test: /\.hbs$/, loader: 'handlebars', query:
         knownHelpers: knownHelpers
         exclude: 'node_modules'

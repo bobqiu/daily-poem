@@ -3,7 +3,7 @@ window.Handlebars = require "handlebars/runtime" # must be in same files as temp
 
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 
-require "./css/main.scss"
+require "./css/main.sass"
 require "./helpers"
 require "./lib/globals"
 requireAll require.context("./lib", true, /.cofe$/)

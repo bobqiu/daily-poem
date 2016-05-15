@@ -1,0 +1,23 @@
+@import ~framework7/dist/css/framework7.material.min.css
+@import ~framework7/dist/css/framework7.material.colors.min.css
+
+@import _icons
+$icon-theme: material
+$icon-height-value: 26
+
++define-icon(share)
++define-icon(menu)
++define-icon(back)
++define-icon(star, $filled: true)
++define-icon(shutdown, $theme: ios)
++define-icon(about, help, $theme: ios)
++define-icon(like, $filled: true)
++define-icon(today, $filled: true, $theme: ios)
++define-icon(calendar, month_view)
++define-icon(align_center)
++define-icon(random, shuffle)
+
+html.material
+  .list-block .item-media
+    padding-top: 0
+    padding-bottom: 0
