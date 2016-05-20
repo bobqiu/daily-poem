@@ -9,6 +9,7 @@ src/img
 platforms
 plugins/*
 assets/app-icons
+assets/app-icons-android
 assets/launch-screens
 assets/poems-utf
 screenshots

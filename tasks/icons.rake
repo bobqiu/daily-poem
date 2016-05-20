@@ -12,6 +12,7 @@ $ios_screen_sizes = {
 }
 
 
+desc "generates coloured/gray/white icons out of the source black icons"
 task :icons do
   colors = { main: $brand_color, gray: '#cccccc', light: '#ffffff' }
 
@@ -30,6 +31,7 @@ task :icons do
   end
 end
 
+desc "generates ios splash screens of all sizes out of one 2208x2208 image"
 task :splash do
   src = "assets/app-icons/Default-Src.png"
 
@@ -49,4 +51,51 @@ end
 task :frames do
   Dir.chdir "assets/screenshots"
   sh "bundle exec frameit silver"
+end
+
+namespace :android do
+  $base_app_icon = "assets/app-icons/AppIcon-1024.png"
+  $base_launch_screen = "assets/app-icons/Default-Src.png"
+  $android_res_dir = Pathname.new "assets/app-icons-android"
+  $base_android_app_icon = $android_res_dir / "android-icon-1024.png"
+
+  task resources: [:app_icons, :launch_screens, :playstore]
+
+  task :mkdir do
+    mkdir_p $android_res_dir
+  end
+
+  task base_appicon: :mkdir do
+    size = 1024
+    corners = 128
+    background = "xc:none -fill white -draw 'roundRectangle 0,0 #{size},#{size} #{corners},#{corners}'"
+    sh "convert -size #{size}x#{size} #{background} #{$base_app_icon} -compose SrcIn -composite #{$base_android_app_icon}"
+  end
+
+  task app_icons: :base_appicon do
+    src = $base_android_app_icon
+    sizes = %w(36 48 72 96 144 192)
+    sizes.each do |size|
+      dst = $android_res_dir / "android-icon-#{size}.png"
+      sh "convert #{src} -resize #{size}x#{size} #{dst}"
+    end
+  end
+
+  task launch_screens: :mkdir do
+    src = $base_launch_screen
+    sizes = %w(1920 1600 1280 800 480 320)
+    sizes.each do |size1|
+      size2 = size1.to_i * 9 / 16
+      command = "convert #{src} -resize #{size1}x#{size1} -gravity center"
+      sh "#{command} -crop #{size2}x#{size1}+0+0 #{$android_res_dir}/launch-portrait-#{size1}.png"
+      sh "#{command} -crop #{size1}x#{size2}+0+0 #{$android_res_dir}/launch-landscape-#{size1}.png"
+    end
+  end
+
+  task playstore: :mkdir do
+    sh "convert #{$base_android_app_icon} -resize 512x512 #{$android_res_dir}/playstore-icon.png"
+    sh "convert #{$base_launch_screen} -resize 1024x1024 -gravity center -crop 1024x500+0+0 #{$android_res_dir}/playstore-feature.jpg"
+    sh "convert #{$base_launch_screen} -resize 180x180   -gravity center -crop 180x120+0+0  #{$android_res_dir}/playstore-promo.jpg"
+    sh "convert #{$base_launch_screen} -resize 320x320   -gravity center -crop 320x180+0+0  #{$android_res_dir}/playstore-tv.jpg"
+  end
 end
