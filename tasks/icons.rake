@@ -1,6 +1,3 @@
-$brand_color = '#ff9800'
-$brand_color_gradient = '#FF7500'
-
 $ios_screen_sizes = {
   "320x480"   => 1,
   "640x960"   => 2,
@@ -96,6 +93,6 @@ namespace :android do
     sh "convert #{$base_android_app_icon} -resize 512x512 #{$android_res_dir}/playstore-icon.png"
     sh "convert #{$base_launch_screen} -resize 1024x1024 -gravity center -crop 1024x500+0+0 #{$android_res_dir}/playstore-feature.jpg"
     sh "convert #{$base_launch_screen} -resize 180x180   -gravity center -crop 180x120+0+0  #{$android_res_dir}/playstore-promo.jpg"
-    sh "convert #{$base_launch_screen} -resize 320x320   -gravity center -crop 320x180+0+0  #{$android_res_dir}/playstore-tv.jpg"
+    sh "convert #{$base_launch_screen} -resize 1280x1280 -gravity center -crop 1280x720+0+0  #{$android_res_dir}/playstore-tv.jpg"
   end
 end

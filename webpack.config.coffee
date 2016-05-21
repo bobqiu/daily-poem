@@ -12,7 +12,7 @@ knownHelpers = ['assetUrl', 'navbarBox', 'textIf', 'textUnless']
 production = process.argv[1] == '/usr/local/bin/webpack'
 release = process.env.RELEASE
 
-appTheme = process.env.THEME ? 'material'
+appTheme = process.env.THEME
 
 targetDir = ''
 publicPath = ''

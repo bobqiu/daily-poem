@@ -12,8 +12,10 @@ module.exports =
     if typeof options is "function"
       success = options
       options = {}
-    fetch(url, options).then (response) ->
-      response.json().then success
+    # fetch(url, options).then (response) ->
+    #   response.json().then success
+    $.get url, options, (res) ->
+      success JSON.parse(res)
 
 for key, func of module.exports
   window[key] = func

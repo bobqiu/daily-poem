@@ -57,29 +57,29 @@
   </platform>
 
   <platform name="android">
-      <allow-intent href="market:*" />
-      <preference name="android-targetSdkVersion" value="23" />
-      <%#
-      <!-- <preference name="StatusBarBackgroundColor" value="#444444" />
-      <icon density="ldpi" src="originals/res/Icon-36.png" />
-      <icon density="mdpi" src="originals/res/Icon-48.png" />
-      <icon density="hdpi" src="originals/res/Icon-72.png" />
-      <icon density="xhdpi" src="originals/res/Icon-96.png" />
-      <icon density="xxhdpi" src="originals/res/Icon-144.png" />
-      <icon density="xxxhdpi" src="originals/res/Icon-192.png" />
-      <splash density="land-ldpi" src="originals/res/Default-Landscape-320.png" />
-      <splash density="land-mdpi" src="originals/res/Default-Landscape-480.png" />
-      <splash density="land-hdpi" src="originals/res/Default-Landscape-800.png" />
-      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1280.png" />
-      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1600.png" />
-      <splash density="land-xhdpi" src="originals/res/Default-Landscape-1920.png" />
-      <splash density="port-ldpi" src="originals/res/Default-Portrait-320.png" />
-      <splash density="port-mdpi" src="originals/res/Default-Portrait-480.png" />
-      <splash density="port-hdpi" src="originals/res/Default-Portrait-800.png" />
-      <splash density="port-xhdpi" src="originals/res/Default-Portrait-1280.png" />
-      <splash density="port-xxhdpi" src="originals/res/Default-Portrait-1600.png" />
-      <splash density="port-xxxhdpi" src="originals/res/Default-Portrait-1920.png" /> -->
-      %>
+    <allow-intent href="market:*" />
+    <preference name="android-minSdkVersion" value="20" />
+    <preference name="android-targetSdkVersion" value="22" />
+    <preference name="StatusBarBackgroundColor" value="<%= brand_color %>" />
+
+    <icon   density="ldpi"         src="assets/app-icons-android/android-icon-36.png" />
+    <icon   density="mdpi"         src="assets/app-icons-android/android-icon-48.png" />
+    <icon   density="hdpi"         src="assets/app-icons-android/android-icon-72.png" />
+    <icon   density="xhdpi"        src="assets/app-icons-android/android-icon-96.png" />
+    <icon   density="xxhdpi"       src="assets/app-icons-android/android-icon-144.png" />
+    <icon   density="xxxhdpi"      src="assets/app-icons-android/android-icon-192.png" />
+    <splash density="land-ldpi"    src="assets/app-icons-android/launch-landscape-320.png" />
+    <splash density="land-mdpi"    src="assets/app-icons-android/launch-landscape-480.png" />
+    <splash density="land-hdpi"    src="assets/app-icons-android/launch-landscape-800.png" />
+    <splash density="land-xhdpi"   src="assets/app-icons-android/launch-landscape-1280.png" />
+    <splash density="land-xhdpi"   src="assets/app-icons-android/launch-landscape-1600.png" />
+    <splash density="land-xhdpi"   src="assets/app-icons-android/launch-landscape-1920.png" />
+    <splash density="port-ldpi"    src="assets/app-icons-android/launch-portrait-320.png" />
+    <splash density="port-mdpi"    src="assets/app-icons-android/launch-portrait-480.png" />
+    <splash density="port-hdpi"    src="assets/app-icons-android/launch-portrait-800.png" />
+    <splash density="port-xhdpi"   src="assets/app-icons-android/launch-portrait-1280.png" />
+    <splash density="port-xxhdpi"  src="assets/app-icons-android/launch-portrait-1600.png" />
+    <splash density="port-xxxhdpi" src="assets/app-icons-android/launch-portrait-1920.png" />
   </platform>
 
   <!-- <plugin name="cordova-plugin-device" spec="~1.1.1" />

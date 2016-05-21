@@ -1,6 +1,9 @@
 window.AP = {}
 window.Handlebars = require "handlebars/runtime" # must be in same files as templates
 
+require 'es6-collections'
+require('es6-promise').polyfill()
+
 requireAll = (requireContext) -> requireContext.keys().forEach(requireContext)
 
 require "./css/main.sass"

@@ -1,25 +1,38 @@
 task(:server) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
-task(:server_www) { sh "ruby -run -e httpd www -p 3000" }
-task(:www) { sh "webpack" }
-task(:www_release) { sh "RELEASE=YES webpack -p" }
+task(:fsserver) { sh "ruby -run -e httpd www -p 3000" }
 task(:watch) { sh "webpack -w" }
-task(:clean) { sh "rm -rf www/*" }
-task(:build) { sh "cordova build ios" }
-task(:simulator) { sh "cordova emulate ios --target='#{ENV['target'] || $ios_emulator_target}'" }
-task(:device) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
 
+task(:ios_build) { sh "cordova build ios" }
+task(:ios) { sh "cordova emulate ios --target='#{ENV['target'] || $ios_emulator_target}'" }
+task(:ios_device) { sh "cordova build ios --device; ios-deploy -b platforms/ios/build/device/#$app_name.ipa" }
 task(:ios_release) { sh "cordova build ios --device --release" }
-task(:xcode) {   sh "open platforms/ios/#$app_name.xcodeproj" }
 task(:ios_simulators) { sh "platforms/ios/cordova/lib/list-emulator-images" }
+task(:xcode) {   sh "open platforms/ios/#$app_name.xcodeproj" }
 
-task prepare: %w(data) do
-  touch "www/cordova.js"
-  touch "www/favicon.ico"
-  touch "www/framework7.js.map"
-  touch "www/app.css.map"
+task(:android) { sh "cordova run android" }
+task(:android_emulators) { sh "platforms/android/cordova/lib/list-emulator-images" }
+
+task p: "pack:build"
+task pc: "pack:rebuild"
+namespace :pack do
+  task(:clean) { sh "rm -rf www/*" }
+
+  task files: :data do
+    touch "www/cordova.js"
+    touch "www/favicon.ico"
+    touch "www/framework7.js.map"
+    touch "www/app.css.map"
+  end
+
+  task(:build) { sh "webpack" }
+  task(:build_android) { sh "THEME=material webpack" }
+  task(:build_android_release) { sh "THEME=material RELEASE=YES webpack" }
+  task(:build_release) { sh "RELEASE=YES THEME=material webpack -p" }
+
+  task rebuild: [:clean, :files, :build]
 end
 
-task prepare_all: %w(icons vendor:copy data)
+task prepare_src: %w(icons vendor:copy)
 task s: :server
 task dev: :device
 task sim: :simulator
@@ -33,6 +46,7 @@ task :conf do
     version: $ios_version,
     build_number: build_number,
     ios_screen_sizes: ios_portrait_screen_sizes + ios_landscrape_screen_sizes,
+    brand_color: $brand_color,
     plist_options: {
       UIStatusBarStyle: 'UIStatusBarStyleDefault',
       UIStatusBarHidden: true,
@@ -45,8 +59,8 @@ task :conf do
   File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
 end
 
-task rebuild:  [:conf, :clean, :prepare, :www, :device]
-task appstore: [:conf, :clean, :prepare, :www_release, :ios_release, :check_release]
+task rebuild:  [:conf, 'pack:clean', 'pack:files', :pack, :device]
+task appstore: [:conf, 'pack:clean', 'pack:files', :pack_release, :ios_release, :check_release]
 
 #  do
 #   is_release = true
@@ -71,5 +85,18 @@ task :check_release do
   checks.non_minified = File.read("www/app.js").include?("webpackBootstrap")
   checks.each_pair do |key, value|
     puts "Release invariant failed: #{key.to_s.upcase}".red if value
+  end
+end
+
+namespace :playstore do
+  # run: keytool -genkey -v -keystore my-release-key.keystore -alias name.sokurenko -keyalg RSA -keysize 2048 -validity 10000
+  apk = "platforms/android/build/outputs/apk/android-release-unsigned.apk"
+
+  task :pack do
+    target = "#{Dir.home}/desktop/#{$app_name}-#{$ios_version}.apk"
+    sh "cordova build --release android"
+    sh "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore #{$android_key_path} -storepass $PS_KEYSTORE_PWD #{apk} name.sokurenko"
+    rm_rf target
+    sh "~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 #{apk} #{target}"
   end
 end
