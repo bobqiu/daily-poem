@@ -15,6 +15,7 @@ $poems_dst = Pathname.new 'www/poems'
 $vendor_dir = Pathname.new 'www/vendor'
 $app_name = 'DailyPoem'
 $brand_color = '#ff9800'
+$status_bar_color = '#EF6C00'
 $brand_color_gradient = '#FF7500'
 $ios_version = "1.0"
 $ios_emulator_target = "iPhone-6"

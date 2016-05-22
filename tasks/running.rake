@@ -47,6 +47,7 @@ task :conf do
     build_number: build_number,
     ios_screen_sizes: ios_portrait_screen_sizes + ios_landscrape_screen_sizes,
     brand_color: $brand_color,
+    status_bar_color: $status_bar_color,
     plist_options: {
       UIStatusBarStyle: 'UIStatusBarStyleDefault',
       UIStatusBarHidden: true,
