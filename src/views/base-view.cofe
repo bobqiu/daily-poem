@@ -6,12 +6,16 @@ class AP.BaseView extends Backbone.View
 
   render: ->
     @loadTemplate()
+    @mountPlumbing()
     @mount()
 
   renderOffDocument: ->
     @setTemplateToElement()
     @mount()
     @el
+
+  mountPlumbing: ->
+    app?.f7app.sizeNavbars $('#pages').children()
 
   mount: ->
 
