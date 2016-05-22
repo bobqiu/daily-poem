@@ -25,9 +25,9 @@ namespace :pack do
   end
 
   task(:build) { sh "webpack" }
-  task(:build_android) { sh "THEME=material webpack" }
-  task(:build_android_release) { sh "THEME=material RELEASE=YES webpack" }
-  task(:build_release) { sh "RELEASE=YES THEME=material webpack -p" }
+  task(:android) { sh "THEME=material webpack" }
+  task(:android_release) { sh "THEME=material RELEASE=YES webpack" }
+  task(:android_release_min) { sh "THEME=material RELEASE=YES webpack -p" }
 
   task rebuild: [:clean, :files, :build]
 end

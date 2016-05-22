@@ -15,3 +15,16 @@ $icon-theme: ios
 +define-icon(calendar, $filled: true)
 +define-icon(align_center, $filled: true)
 +define-icon(random, dice)
+
+html.ios
+  .panel-overlay
+    transition: 400ms ease-out
+
+  .panel-overlay.active
+    opacity: 0.4
+    background: #000
+    transition: 400ms ease-out
+
+  .app-title
+    font-variant: small-caps
+    font-weight: normal
