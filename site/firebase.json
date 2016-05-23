@@ -1,9 +1,5 @@
 {
-  "firebase": "dailypoem",
-  "public": "build",
-  "ignore": [
-    "firebase.json",
-    "**/.*",
-    "**/node_modules/**"
-  ]
+  "hosting": {
+    "public": "build"
+  }
 }
