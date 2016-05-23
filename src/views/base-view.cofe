@@ -38,6 +38,8 @@ class AP.BaseView extends Backbone.View
   id: ->
     _.dasherize @constructor.name
 
+  className: 'page-view'
+
   templateName: ->
     "pages/#{_.dasherize(@constructor.name).replace(/-view$/, '')}"
 
