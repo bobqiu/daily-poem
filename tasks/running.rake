@@ -10,6 +10,7 @@ task(:ios_simulators) { sh "platforms/ios/cordova/lib/list-emulator-images" }
 task(:xcode) {   sh "open platforms/ios/#$app_name.xcodeproj" }
 
 task(:android) { sh "cordova run android" }
+task(:android_release) { sh "cordova build android --device --release" }
 task(:android_emulators) { sh "platforms/android/cordova/lib/list-emulator-images" }
 
 task p: "pack:build"
@@ -31,6 +32,7 @@ namespace :pack do
 
   task rebuild: [:clean, :files, :build]
 end
+# rake pack:clean pack:files pack:android_release
 
 task prepare_src: %w(icons vendor:copy)
 task s: :server
@@ -89,15 +91,12 @@ task :check_release do
   end
 end
 
-namespace :playstore do
+task :playstore do
   # run: keytool -genkey -v -keystore my-release-key.keystore -alias name.sokurenko -keyalg RSA -keysize 2048 -validity 10000
   apk = "platforms/android/build/outputs/apk/android-release-unsigned.apk"
-
-  task :pack do
-    target = "#{Dir.home}/desktop/#{$app_name}-#{$ios_version}.apk"
-    sh "cordova build --release android"
-    sh "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore #{$android_key_path} -storepass $PS_KEYSTORE_PWD #{apk} name.sokurenko"
-    rm_rf target
-    sh "~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 #{apk} #{target}"
-  end
+  target = "#{Dir.home}/desktop/#{$app_name}-#{$ios_version}.apk"
+  sh "cordova build android --release --device"
+  sh "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore #{$android_key_path} -storepass $PS_KEYSTORE_PWD #{apk} name.sokurenko"
+  rm_rf target
+  sh "~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 #{apk} #{target}"
 end
