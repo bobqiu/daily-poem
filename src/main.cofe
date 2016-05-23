@@ -17,6 +17,8 @@ requireAll require.context("./views", true, /.cofe$/)
 require "./router"
 require "./application"
 
+AP.info = require 'json!./data.json'
+
 document.addEventListener (if cordova? then "deviceready" else "DOMContentLoaded"), ->
   window.Model = new AP.PoemApi
   window.app = new AP.Application

@@ -7,11 +7,16 @@ class AP.AboutView extends AP.BaseView
       super
 
   loadVersion: (next) ->
-    p1 = cordova?.getAppVersion.getVersionNumber().then (value) -> @version = value
-    p2 = cordova?.getAppVersion.getVersionCode().then (value) -> @build = value
-    Promise.all([p1, p2]).then =>
-      @versionText = "#{@version}&nbsp;<span class='build-number'>(#{@buildNumber})</span>"
-      next()
+    # p1 = cordova?.getAppVersion.getVersionNumber().then (value) -> @version = value
+    # p2 = cordova?.getAppVersion.getVersionCode().then (value) -> @build = value
+    # Promise.all([p1, p2]).then =>
+    #   @versionText = "#{@version}&nbsp;<span class='build-number'>(#{@buildNumber})</span>"
+    #   next()
+
+    @version = AP.info.version
+    @buildNumber = AP.info.build
+    @versionText = "#{@version}&nbsp;<span class='build-number'>(#{@buildNumber})</span>"
+    next()
 
   clickAvatar: =>
     @developerClickCount ?= 0

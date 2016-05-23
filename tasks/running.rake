@@ -25,7 +25,7 @@ namespace :pack do
     touch "www/app.css.map"
   end
 
-  task(:build) { sh "webpack" }
+  task(:ios) { sh "THEME=ios webpack" }
   task(:android) { sh "THEME=material webpack" }
   task(:android_release) { sh "THEME=material RELEASE=YES webpack" }
   task(:android_release_min) { sh "THEME=material RELEASE=YES webpack -p" }
@@ -60,6 +60,12 @@ task :conf do
 
   template = ERB.new File.read("config.xml.erb"), nil, '-'
   File.write "config.xml", template.result(OpenStruct.new(variables).instance_eval('binding'))
+
+  appinfo = {
+    version: $ios_version,
+    build: build_number
+  }
+  File.write "src/data.json", appinfo.to_json
 end
 
 task rebuild:  [:conf, 'pack:clean', 'pack:files', :pack, :device]

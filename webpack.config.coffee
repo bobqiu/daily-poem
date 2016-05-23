@@ -45,7 +45,7 @@ module.exports =
     { test: /\.js$/, exclude: /node_modules/, loader: 'babel' } # presets[]=react,presets[]=es2015
     { test: /\.(png|jpe?g|gif|svg)$/, loader: "url?limit=1024&name=#{assetFormat}" }
     { test: /\.html$/, loader: 'file?name=[name].[ext]!html-minify' }
-    { test: /\.(ttf|eot|woff2?|json?)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file?name=#{assetFormat}" }
+    { test: /\.(ttf|eot|woff2??)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file?name=#{assetFormat}" }
   ]
 
   plugins: [
@@ -61,7 +61,7 @@ module.exports =
     root: path.resolve(__dirname)
     alias:
       ext: "lib/js"
-    extensions: ['', '.js', '.json', '.coffee', '.cofe', '.cjsx']
+    extensions: ['', '.js', '.coffee', '.cofe', '.cjsx']
 
   ejsHtml: {}
 

@@ -24,3 +24,5 @@ site/src/images/promo*
 site/data/poem_*
 
 lib/js
+
+src/data.json
