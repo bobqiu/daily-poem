@@ -5,7 +5,11 @@ class AP.CalendarView extends AP.BaseView
       weekHeader: false
       toolbarTemplate: @renderTemplate('shared/calendar-toolbar')
       value: [Model.date.getDate()]
-      disabled: [ {from: Model.date.last().getDate()}, {to: Model.date.first().prev().getDate()} ]
+      disabled: [
+        {from: Model.date.last().getDate()},
+        {to: Model.date.first().prev().getDate()},
+        {from: _.date('2016-07-29'), to: _.date('2016-08-09')} 
+      ]
       onOpen: @calendarOpened
       onMonthYearChangeStart: @calendarMonthYearChanging
       onDayClick: @calendarDayClicked

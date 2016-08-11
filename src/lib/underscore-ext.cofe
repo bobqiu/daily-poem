@@ -8,3 +8,6 @@ _.mixin
     set.forEach (element) ->
       array.push element
     array
+
+   date: (string) ->
+    new Date(Date.parse(string))

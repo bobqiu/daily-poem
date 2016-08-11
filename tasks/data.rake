@@ -39,9 +39,9 @@ task :data do
 
   details = {}
   summary = {items: [], mapping: {}}
-  gap = Date.parse("2016-07-30")..Date.parse("2016-08-09")
+  gap = Date.parse("2016-07-29")..Date.parse("2016-08-09")
 
-  date = Date.parse("2016-05-01")
+  date = Date.parse("2016-05-01") - 1
 
   PoemSources.all_sources do |src, index, tags, body, basename|
     date = gap.end if gap.include?(date)

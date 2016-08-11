@@ -37,6 +37,9 @@ class AP.MainView extends AP.BaseView
     Model.getForDate date, (poem) =>
       console.xdebug "rendering poem for #{date}"
 
+      if not poem and date.gt(Model.date.first()) and date.lt(Model.date.last())
+        return next @renderTemplate 'no-data', appDate: date.formattedString()
+
       if not poem
         return next null
 

@@ -16,6 +16,9 @@ class window.XDate
   plus: (days) ->
     new @constructor @value.getTime() + days * 86400 * 1000
 
+  lt: (other) ->
+    @string() < other.string()
+
   lte: (other) ->
     @string() <= other.string()
 
