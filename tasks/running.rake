@@ -26,7 +26,7 @@ namespace :pack do
   end
 
   task(:ios) { sh "THEME=ios webpack" }
-  task(:ios_release) { sh "THEME=ios RELEASE=YES webpack -p" }
+  task(:ios_release) { sh "THEME=ios RELEASE=YES webpack" }
   task(:android) { sh "THEME=material webpack" }
   task(:android_release) { sh "THEME=material RELEASE=YES webpack" }
   task(:android_release_min) { sh "THEME=material RELEASE=YES webpack -p" }
@@ -70,7 +70,8 @@ task :conf do
 end
 
 task rebuild:  [:conf, 'pack:clean', 'pack:files', :pack, :device]
-task appstore: [:conf, 'pack:clean', 'pack:files', 'pack:ios_release', :ios_release, :check_release]
+task appstore: [:conf, 'pack:clean', 'pack:files', 'pack:ios_release', :ios_release]
+task playstore: [:conf, 'pack:clean', 'pack:files', 'pack:android_release', :android_release]
 
 #  do
 #   is_release = true
@@ -91,19 +92,19 @@ end
 task :check_release do
   checks = OpenStruct.new
   checks.specs = File.exist?("www/spec.js")
-  checks.devserver = File.read("www/index.html").include?("http://10.0.1.3:3000")
+  checks.devserver = File.read("www/index.html").include?("http://10.0.1.2:3000")
   checks.non_minified = File.read("www/app.js").include?("webpackBootstrap")
   checks.each_pair do |key, value|
     puts "Release invariant failed: #{key.to_s.upcase}".red if value
   end
 end
 
-task :playstore do
+task :playstore_sign do
   # run: keytool -genkey -v -keystore my-release-key.keystore -alias name.sokurenko -keyalg RSA -keysize 2048 -validity 10000
   apk = "platforms/android/build/outputs/apk/android-release-unsigned.apk"
   target = "#{Dir.home}/desktop/#{$app_name}-#{$ios_version}.apk"
   sh "cordova build android --release --device"
   sh "jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -keystore #{$android_key_path} -storepass $PS_KEYSTORE_PWD #{apk} name.sokurenko"
   rm_rf target
-  sh "~/Library/Android/sdk/build-tools/23.0.1/zipalign -v 4 #{apk} #{target}"
+  sh "~/Library/Android/sdk/build-tools/24.0.0/zipalign -v 4 #{apk} #{target}"
 end
