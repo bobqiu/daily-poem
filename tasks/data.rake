@@ -39,9 +39,14 @@ task :data do
 
   details = {}
   summary = {items: [], mapping: {}}
+  gap = Date.parse("2016-07-30")..Date.parse("2016-08-09")
+
+  date = Date.parse("2016-05-01")
 
   PoemSources.all_sources do |src, index, tags, body, basename|
-    date = Date.parse("2016-05-01") + index
+    date = gap.end if gap.include?(date)
+    date = date + 1
+
     id = basename.to_i # poem_id_for_date(date)
 
     puts "processing ##{id}: #{src.basename}".yellow
