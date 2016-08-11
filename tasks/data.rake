@@ -1,5 +1,7 @@
-$original_poems_dir = Pathname.new "assets/poems-src"
-$utf8_poems_dir = Pathname.new "assets/poems-utf"
+$original_poems_dir = Pathname.new "assets/poems-src-2"
+$utf8_poems_dir = Pathname.new "assets/poems-utf-2"
+
+require 'shellwords'
 
 module PoemSources
   module_function
@@ -90,6 +92,13 @@ namespace :data do
   end
 
   task :randomize_and_number do
+    start_index = 90
+    Pathname.glob($utf8_poems_dir / "*.txt").to_a.map { |path| path }.shuffle.each_with_index do |path, index|
+      cp path, $poems_src / "#{start_index + index + 1} #{path.basename}"
+    end
+  end
+
+  task :randomize_and_number_original do
     rm_rf $shuffled_poems_dir
     mkpath $shuffled_poems_dir
 

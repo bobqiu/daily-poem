@@ -1,4 +1,4 @@
-task(:server) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.3" }
+task(:server) { sh "webpack-dev-server --content-base www --port 3000 --host 10.0.1.2" }
 task(:fsserver) { sh "ruby -run -e httpd www -p 3000" }
 task(:watch) { sh "webpack -w" }
 

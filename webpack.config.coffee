@@ -16,7 +16,7 @@ appTheme = process.env.THEME
 
 targetDir = ''
 publicPath = ''
-sourcePrefix = if release then '' else 'http://10.0.1.3:3000/'
+sourcePrefix = if release then '' else 'http://10.0.1.2:3000/'
 
 module.exports =
   devtool: if production then null else 'source-map'
