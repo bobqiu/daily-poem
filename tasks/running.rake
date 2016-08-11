@@ -26,6 +26,7 @@ namespace :pack do
   end
 
   task(:ios) { sh "THEME=ios webpack" }
+  task(:ios_release) { sh "THEME=ios RELEASE=YES webpack -p" }
   task(:android) { sh "THEME=material webpack" }
   task(:android_release) { sh "THEME=material RELEASE=YES webpack" }
   task(:android_release_min) { sh "THEME=material RELEASE=YES webpack -p" }
@@ -37,7 +38,7 @@ end
 task prepare_src: %w(icons vendor:copy)
 task s: :server
 task dev: :device
-task sim: :simulator
+task sim: :ios
 
 task :conf do
   build_number = Time.now.strftime('%y%m%d.%H%M')
@@ -69,7 +70,7 @@ task :conf do
 end
 
 task rebuild:  [:conf, 'pack:clean', 'pack:files', :pack, :device]
-task appstore: [:conf, 'pack:clean', 'pack:files', :pack_release, :ios_release, :check_release]
+task appstore: [:conf, 'pack:clean', 'pack:files', 'pack:ios_release', :ios_release, :check_release]
 
 #  do
 #   is_release = true
