@@ -13,8 +13,7 @@ task(:android) { sh "cordova run android" }
 task(:android_release) { sh "cordova build android --device --release" }
 task(:android_emulators) { sh "platforms/android/cordova/lib/list-emulator-images" }
 
-task p: "pack:build"
-task pc: "pack:rebuild"
+task p: %w(pack:clean pack:files pack:ios)
 namespace :pack do
   task(:clean) { sh "rm -rf www/*" }
 
@@ -30,8 +29,6 @@ namespace :pack do
   task(:android) { sh "THEME=material webpack" }
   task(:android_release) { sh "THEME=material RELEASE=YES webpack" }
   task(:android_release_min) { sh "THEME=material RELEASE=YES webpack -p" }
-
-  task rebuild: [:clean, :files, :build]
 end
 # rake pack:clean pack:files pack:android_release
 
