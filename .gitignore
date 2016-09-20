@@ -8,6 +8,8 @@ www
 src/img
 platforms
 plugins/*
+!plugins/fetch.json
+
 assets/app-icons
 assets/app-icons-android
 assets/launch-screens

@@ -1,0 +1,99 @@
+{
+    "cordova-plugin-whitelist": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-whitelist@~1.2.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-device": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-device@~1.1.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-statusbar": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-statusbar@~2.1.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-app-version": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-app-version@~0.1.8"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-x-socialsharing": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-x-socialsharing @~5.0.11"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-splashscreen": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-splashscreen@~3.1.0"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-custom-config": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-custom-config"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-app-event": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-app-event"
+        },
+        "is_top_level": false,
+        "variables": {}
+    },
+    "de.appplant.cordova.plugin.local-notification": {
+        "source": {
+            "type": "registry",
+            "id": "de.appplant.cordova.plugin.local-notification@0.8.4"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-private-mathmage-app-title-localization": {
+        "source": {
+            "type": "local",
+            "path": "cordova-plugin-private-mathmage-app-title-localization"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "cordova-plugin-app-customization": {
+        "source": {
+            "type": "local",
+            "path": "assets/plugins/cordova-plugin-app-customization"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
+    "com.internrocket.plugins.statusbarcolor": {
+        "source": {
+            "type": "git",
+            "url": "https://github.com/internrocket/cordova-plugin-StatusBarColor",
+            "subdir": "."
+        },
+        "is_top_level": true,
+        "variables": {}
+    }
+}
