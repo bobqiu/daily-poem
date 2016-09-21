@@ -16,7 +16,7 @@ gem "colorize"
 # site
 gem "middleman"
 gem "middleman-livereload"
-gem "middleman-sprockets", '>= 4.0.0.rc.2'
+gem "middleman-sprockets", '>= 4.0.0'
 
 gem "slim"
 gem "bootstrap-sass", :require => false
